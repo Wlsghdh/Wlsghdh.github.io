@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Data Scientist Portfolio">
+<title>Your Name | Data Scientist</title>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0a0a0a;--bg2:#111;--bg3:#181818;--bg4:#1e1e1e;
+  --white:#fff;--gray1:#e0e0e0;--gray2:#aaa;--gray3:#666;--gray4:#333;
+  --accent:#61DAFB;--accent2:#7C3AED;--green:#10B981;
+  --border:#252525;
+  --mono:'Fira Code','Consolas',monospace;--sans:'Noto Sans KR',sans-serif;
+  --tr:all .3s ease;--sidebar:48px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:#333 #0a0a0a}
+body{font-family:var(--mono);background:var(--bg);color:var(--white);line-height:1.7;overflow-x:hidden}
+::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:#333;border-radius:3px}
+a{color:var(--gray2);text-decoration:none;transition:var(--tr)}a:hover{color:var(--white)}
+
+/* ===== TITLE BAR ===== */
+.titlebar{height:32px;background:#0e0e0e;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--gray3);position:fixed;top:0;left:0;right:0;z-index:1000}
+.dots{position:absolute;left:12px;display:flex;gap:7px}
+.dot{width:11px;height:11px;border-radius:50%}.dr{background:#ff5f57}.dy{background:#febc2e}.dg{background:#28c840}
+
+/* ===== SIDEBAR (고정, 항상 따라다님) ===== */
+.sidebar{width:var(--sidebar);background:#0e0e0e;border-right:1px solid var(--border);display:flex;flex-direction:column;align-items:center;padding-top:12px;position:fixed;top:32px;left:0;bottom:24px;z-index:900;gap:4px}
+.nav-icon{width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--gray3);transition:var(--tr);position:relative;font-size:16px;border-radius:6px}
+.nav-icon:hover{color:var(--gray1);background:var(--bg3)}
+.nav-icon.active{color:var(--white)}
+.nav-icon.active::after{content:'';position:absolute;left:0;top:8px;bottom:8px;width:2px;background:var(--white);border-radius:0 2px 2px 0}
+.sidebar .spacer{flex:1}
+
+/* ===== TAB BAR ===== */
+.tabs{height:38px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;overflow-x:auto;position:sticky;top:32px;z-index:800}
+.tab{padding:0 16px;display:flex;align-items:center;gap:7px;font-size:12px;color:var(--gray3);border-right:1px solid var(--border);cursor:pointer;transition:var(--tr);white-space:nowrap;background:var(--bg2)}
+.tab:hover{color:var(--gray2);background:var(--bg3)}
+.tab.active{color:var(--white);background:var(--bg);border-bottom:1px solid var(--bg);margin-bottom:-1px}
+.fdot{width:8px;height:8px;border-radius:2px;display:inline-block}
+
+/* ===== MAIN ===== */
+.main{display:flex;margin-top:32px}
+.editor{margin-left:var(--sidebar);flex:1;min-height:calc(100vh - 56px)}
+
+/* ===== STATUS BAR ===== */
+.statusbar{height:24px;background:var(--bg3);border-top:1px solid var(--border);display:flex;align-items:center;padding:0 12px;font-size:11px;color:var(--gray3);position:fixed;bottom:0;left:0;right:0;z-index:1000;gap:16px}
+.statusbar .sp{flex:1}
+
+/* ===== SECTIONS ===== */
+.sec{min-height:100vh;padding:80px 64px 80px 80px;opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
+.sec.vis{opacity:1;transform:translateY(0)}
+.sec-label{color:var(--gray3);font-size:12px;margin-bottom:6px;letter-spacing:1px;text-transform:uppercase}
+.sec-title{font-size:clamp(22px,3vw,34px);font-weight:600;margin-bottom:40px;color:var(--white);letter-spacing:-.5px}
+.sec-title .dim{color:var(--gray3);font-weight:400}
+
+/* ===== HERO ===== */
+#hero{display:flex;align-items:center;min-height:calc(100vh - 72px)}
+.hero-wrap{display:flex;align-items:center;gap:60px;width:100%}
+.hero-photo{flex-shrink:0}
+.photo-frame{width:200px;height:200px;border-radius:50%;border:2px solid var(--gray4);overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--bg2);position:relative}
+.photo-frame::after{content:'';position:absolute;inset:0;border-radius:50%;border:1px solid rgba(255,255,255,.05)}
+.photo-placeholder{color:var(--gray3);font-size:13px;text-align:center;line-height:1.5}
+.photo-frame img{width:100%;height:100%;object-fit:cover}
+.hero-text{flex:1}
+.hero-greeting{font-size:14px;color:var(--gray3);margin-bottom:8px}
+.hero-name{font-size:clamp(32px,5vw,56px);font-weight:700;color:var(--white);line-height:1.15;margin-bottom:8px;letter-spacing:-1px}
+.hero-role{font-size:clamp(16px,2vw,22px);color:var(--gray2);margin-bottom:6px;font-weight:300}
+.hero-typing{font-size:clamp(14px,1.5vw,18px);color:var(--gray3);margin-bottom:24px;min-height:28px}
+.cursor{display:inline-block;width:2px;height:1em;background:var(--white);animation:blink 1s infinite;vertical-align:text-bottom;margin-left:1px}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.hero-desc{color:var(--gray2);font-size:14px;line-height:1.8;max-width:520px;margin-bottom:28px;font-family:var(--sans)}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn{padding:10px 22px;border:1px solid var(--gray4);border-radius:4px;font-family:var(--mono);font-size:12px;cursor:pointer;transition:var(--tr);color:var(--gray2);background:transparent}
+.btn:hover{border-color:var(--white);color:var(--white);transform:translateY(-1px)}
+.btn-w{background:var(--white);color:var(--bg);border-color:var(--white);font-weight:600}
+.btn-w:hover{background:transparent;color:var(--white)}
+
+/* ===== ABOUT (Terminal) ===== */
+.term{background:var(--bg2);border:1px solid var(--border);border-radius:6px;overflow:hidden;max-width:640px}
+.term-h{background:#0e0e0e;padding:8px 14px;display:flex;align-items:center;gap:7px;border-bottom:1px solid var(--border)}
+.term-h .tdots{display:flex;gap:5px}.term-h .tdots span{width:9px;height:9px;border-radius:50%}
+.term-h .tname{font-size:11px;color:var(--gray3);margin-left:8px}
+.term-b{padding:18px;font-size:12px;line-height:2.1;color:var(--gray2)}
+.tp{color:var(--green)}.tk{color:var(--white)}.tv{color:var(--gray2)}.ts{color:var(--gray1)}
+
+/* ===== SKILLS ===== */
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.sk-card{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:22px;transition:var(--tr)}
+.sk-card:hover{border-color:var(--gray3);transform:translateY(-2px)}
+.sk-card h4{font-size:13px;font-weight:600;color:var(--white);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.sk-tags{display:flex;flex-wrap:wrap;gap:6px}
+.sk-tag{padding:3px 10px;border:1px solid var(--border);border-radius:3px;font-size:11px;color:var(--gray2);transition:var(--tr)}
+.sk-tag:hover{border-color:var(--gray2);color:var(--white)}
+
+/* ===== PROJECTS ===== */
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px}
+.proj-card{background:var(--bg2);border:1px solid var(--border);border-radius:6px;overflow:hidden;transition:var(--tr);cursor:pointer}
+.proj-card:hover{border-color:var(--gray3);transform:translateY(-3px)}
+.proj-img{height:180px;background:var(--bg3);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.proj-img img{width:100%;height:100%;object-fit:cover}
+.proj-img .placeholder{color:var(--gray3);font-size:12px}
+.proj-body{padding:18px}
+.proj-title{font-size:15px;font-weight:600;color:var(--white);margin-bottom:6px}
+.proj-desc{font-size:12px;font-family:var(--sans);color:var(--gray2);line-height:1.7;margin-bottom:12px}
+.proj-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
+.proj-t{padding:2px 8px;background:var(--bg3);border-radius:3px;font-size:10px;color:var(--gray2)}
+.proj-links{display:flex;gap:8px}
+.proj-link{font-size:11px;color:var(--gray3);border:1px solid var(--border);padding:4px 12px;border-radius:3px;transition:var(--tr)}
+.proj-link:hover{color:var(--white);border-color:var(--gray3)}
+
+/* ===== PUBLICATIONS ===== */
+.pub-list{display:flex;flex-direction:column;gap:16px;max-width:800px}
+.pub-item{padding:20px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;transition:var(--tr)}
+.pub-item:hover{border-color:var(--gray3);transform:translateX(4px)}
+.pub-venue{font-size:11px;color:var(--gray3);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
+.pub-title{font-size:14px;font-weight:600;color:var(--white);margin-bottom:4px}
+.pub-authors{font-size:12px;color:var(--gray2);font-family:var(--sans);margin-bottom:6px}
+.pub-meta{display:flex;gap:12px;font-size:11px;color:var(--gray3)}
+.pub-link{color:var(--gray2);transition:var(--tr)}.pub-link:hover{color:var(--white)}
+
+/* ===== AWARDS ===== */
+.award-list{display:flex;flex-direction:column;gap:14px;max-width:700px}
+.award-item{display:flex;gap:16px;padding:18px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;transition:var(--tr);align-items:flex-start}
+.award-item:hover{border-color:var(--gray3);transform:translateX(4px)}
+.award-year{font-size:12px;color:var(--gray3);min-width:48px;padding-top:2px;font-weight:500}
+.award-body h4{font-size:14px;font-weight:600;color:var(--white);margin-bottom:2px}
+.award-body p{font-size:12px;color:var(--gray2);font-family:var(--sans)}
+
+/* ===== CAREER (Timeline) ===== */
+.timeline{position:relative;padding-left:32px;max-width:700px}
+.timeline::before{content:'';position:absolute;left:11px;top:0;bottom:0;width:1px;background:var(--gray4)}
+.tl-item{position:relative;margin-bottom:36px;padding:20px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;transition:var(--tr)}
+.tl-item:hover{border-color:var(--gray3);transform:translateX(4px)}
+.tl-item::before{content:'';position:absolute;left:-27px;top:24px;width:8px;height:8px;border-radius:50%;background:var(--white);border:2px solid var(--bg);z-index:1}
+.tl-date{font-size:11px;color:var(--gray3);margin-bottom:4px}
+.tl-title{font-size:15px;font-weight:600;color:var(--white);margin-bottom:2px}
+.tl-org{font-size:13px;color:var(--gray2);margin-bottom:8px}
+.tl-desc{font-family:var(--sans);font-size:12px;color:var(--gray2);line-height:1.8}
+
+/* ===== CONTACT ===== */
+.contact-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
+.c-link{padding:10px 20px;background:var(--bg2);border:1px solid var(--border);border-radius:4px;font-size:12px;color:var(--gray2);transition:var(--tr);display:flex;align-items:center;gap:8px}
+.c-link:hover{border-color:var(--white);color:var(--white);transform:translateY(-2px)}
+
+/* ===== FOOTER ===== */
+.footer{padding:32px 64px 48px 80px;text-align:center;font-size:11px;color:var(--gray4);min-height:auto}
+
+/* ===== SCROLL TOP ===== */
+.scroll-top{position:fixed;bottom:36px;right:16px;width:32px;height:32px;background:var(--bg3);border:1px solid var(--border);border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--gray3);font-size:14px;opacity:0;transition:var(--tr);z-index:500}
+.scroll-top.show{opacity:1}.scroll-top:hover{border-color:var(--white);color:var(--white)}
+
+/* ===== MOBILE ===== */
+.mob-nav{display:none}
+@media(max-width:768px){
+  .sidebar{display:none}.editor{margin-left:0}.tabs{display:none}
+  .sec{padding:32px 16px}.footer{padding:24px 16px 48px}
+  .hero-wrap{flex-direction:column;gap:28px;text-align:center}
+  .photo-frame{width:160px;height:160px}
+  .hero-desc{margin:0 auto 24px}.hero-btns{justify-content:center}
+  .skills-grid{grid-template-columns:1fr}.proj-grid{grid-template-columns:1fr}
+  .mob-nav{display:flex!important;position:fixed;bottom:24px;left:0;right:0;background:#0e0e0e;border-top:1px solid var(--border);z-index:999;justify-content:space-around;padding:5px 0}
+  .mob-nav a{color:var(--gray3);font-size:8px;text-align:center;padding:4px;display:flex;flex-direction:column;align-items:center;gap:1px}
+  .mob-nav a .mi{font-size:14px}.mob-nav a.active{color:var(--white)}
+}
+
+#particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.sec,.titlebar,.sidebar,.tabs,.statusbar,.scroll-top,.mob-nav,.footer{position:relative;z-index:2}
+</style>
+</head>
+<body>
+<canvas id="particles"></canvas>
+
+<div>
+  <!-- Title Bar -->
+  <div class="titlebar">
+    <div class="dots"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div></div>
+    <span>portfolio — Your Name</span>
+  </div>
+
+  <div class="main">
+    <!-- Sidebar (고정, 스크롤 따라다님) -->
+    <nav class="sidebar" id="sidebar">
+      <div class="nav-icon active" data-s="hero" title="Home">⌂</div>
+      <div class="nav-icon" data-s="about" title="About">◐</div>
+      <div class="nav-icon" data-s="skills" title="Skills">◈</div>
+      <div class="nav-icon" data-s="projects" title="Projects">▦</div>
+      <div class="nav-icon" data-s="publications" title="Publications">◉</div>
+      <div class="nav-icon" data-s="awards" title="Awards">★</div>
+      <div class="nav-icon" data-s="career" title="Career">▬</div>
+      <div class="nav-icon" data-s="contact" title="Contact">✉</div>
+      <div class="spacer"></div>
+    </nav>
+
+    <!-- Editor -->
+    <div class="editor">
+      <!-- Tabs -->
+      <div class="tabs" id="tabBar">
+        <div class="tab active" data-s="hero"><span class="fdot" style="background:#fff"></span>home.py</div>
+        <div class="tab" data-s="about"><span class="fdot" style="background:#aaa"></span>about.yaml</div>
+        <div class="tab" data-s="skills"><span class="fdot" style="background:#666"></span>skills.py</div>
+        <div class="tab" data-s="projects"><span class="fdot" style="background:#fff"></span>projects.ipynb</div>
+        <div class="tab" data-s="publications"><span class="fdot" style="background:#aaa"></span>papers.bib</div>
+        <div class="tab" data-s="awards"><span class="fdot" style="background:#666"></span>awards.md</div>
+        <div class="tab" data-s="career"><span class="fdot" style="background:#fff"></span>career.md</div>
+        <div class="tab" data-s="contact"><span class="fdot" style="background:#aaa"></span>contact.sh</div>
+      </div>
+
+      <!-- ==================== HERO ==================== -->
+      <section class="sec vis" id="hero">
+        <div class="hero-wrap">
+          <div class="hero-photo">
+            <div class="photo-frame">
+              <!-- 사진 넣을 때: <img src="your-photo.jpg" alt="Your Name"> -->
+              <div class="photo-placeholder">your<br>photo<br>here</div>
+            </div>
+          </div>
+          <div class="hero-text">
+            <div class="hero-greeting">// hello world</div>
+            <div class="hero-name">Your Name</div>
+            <div class="hero-role">Data Scientist & ML Engineer</div>
+            <div class="hero-typing">
+              <span id="typingText"></span><span class="cursor"></span>
+            </div>
+            <p class="hero-desc">
+              데이터에서 인사이트를 발견하고, 모델을 통해 가치를 만듭니다. 복잡한 문제를 간결한 해법으로 풀어내는 과정을 좋아합니다.
+            </p>
+            <div class="hero-btns">
+              <a href="#projects" class="btn btn-w">Projects</a>
+              <a href="#publications" class="btn">Publications</a>
+              <a href="https://github.com/yourusername" target="_blank" class="btn">GitHub</a>
+              <a href="#contact" class="btn">Contact</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== ABOUT ==================== -->
+      <section class="sec" id="about">
+        <div class="sec-label">about</div>
+        <h2 class="sec-title">About Me</h2>
+        <div class="term">
+          <div class="term-h"><div class="tdots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="tname">about.yaml</span></div>
+          <div class="term-b">
+            <div><span class="tp">$</span> cat about.yaml</div><br>
+            <div><span class="tk">name</span>: <span class="ts">Your Name</span></div>
+            <div><span class="tk">role</span>: <span class="ts">Data Scientist</span></div>
+            <div><span class="tk">location</span>: <span class="ts">Seoul, Korea</span></div>
+            <div><span class="tk">education</span>:</div>
+            <div>&nbsp;&nbsp;- <span class="ts">M.S. in Data Science @ University</span></div>
+            <div>&nbsp;&nbsp;- <span class="ts">B.S. in Statistics @ University</span></div>
+            <div><span class="tk">research_interests</span>:</div>
+            <div>&nbsp;&nbsp;- <span class="tv">Machine Learning</span></div>
+            <div>&nbsp;&nbsp;- <span class="tv">Deep Learning</span></div>
+            <div>&nbsp;&nbsp;- <span class="tv">Statistical Modeling</span></div>
+            <div>&nbsp;&nbsp;- <span class="tv">NLP / Computer Vision</span></div>
+            <div><span class="tk">status</span>: <span style="color:var(--green)">open_to_opportunities</span></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== SKILLS ==================== -->
+      <section class="sec" id="skills">
+        <div class="sec-label">skills</div>
+        <h2 class="sec-title">Technical Skills</h2>
+        <div class="skills-grid">
+          <div class="sk-card">
+            <h4>◈ ML / DL</h4>
+            <div class="sk-tags">
+              <span class="sk-tag">PyTorch</span><span class="sk-tag">TensorFlow</span><span class="sk-tag">scikit-learn</span>
+              <span class="sk-tag">XGBoost</span><span class="sk-tag">LightGBM</span><span class="sk-tag">Hugging Face</span>
+            </div>
+          </div>
+          <div class="sk-card">
+            <h4>◈ Data & Analytics</h4>
+            <div class="sk-tags">
+              <span class="sk-tag">Python</span><span class="sk-tag">R</span><span class="sk-tag">SQL</span>
+              <span class="sk-tag">Pandas</span><span class="sk-tag">NumPy</span><span class="sk-tag">Spark</span>
+            </div>
+          </div>
+          <div class="sk-card">
+            <h4>◈ Visualization</h4>
+            <div class="sk-tags">
+              <span class="sk-tag">Matplotlib</span><span class="sk-tag">Seaborn</span><span class="sk-tag">Plotly</span>
+              <span class="sk-tag">Tableau</span><span class="sk-tag">D3.js</span>
+            </div>
+          </div>
+          <div class="sk-card">
+            <h4>◈ MLOps & Infra</h4>
+            <div class="sk-tags">
+              <span class="sk-tag">Docker</span><span class="sk-tag">AWS</span><span class="sk-tag">MLflow</span>
+              <span class="sk-tag">Airflow</span><span class="sk-tag">Git</span><span class="sk-tag">Linux</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== PROJECTS ==================== -->
+      <section class="sec" id="projects">
+        <div class="sec-label">projects</div>
+        <h2 class="sec-title">Projects</h2>
+        <div class="proj-grid">
+
+          <div class="proj-card">
+            <div class="proj-img">
+              <!-- <img src="project1.png" alt="Project 1"> -->
+              <span class="placeholder">project image</span>
+            </div>
+            <div class="proj-body">
+              <div class="proj-title">Predictive Modeling Pipeline</div>
+              <p class="proj-desc">고객 이탈 예측을 위한 end-to-end ML 파이프라인. Feature engineering부터 모델 배포까지 전 과정을 자동화.</p>
+              <div class="proj-tags"><span class="proj-t">Python</span><span class="proj-t">XGBoost</span><span class="proj-t">MLflow</span><span class="proj-t">Docker</span></div>
+              <div class="proj-links"><a href="#" class="proj-link">GitHub</a><a href="#" class="proj-link">Paper</a></div>
+            </div>
+          </div>
+
+          <div class="proj-card">
+            <div class="proj-img">
+              <span class="placeholder">project image</span>
+            </div>
+            <div class="proj-body">
+              <div class="proj-title">NLP Sentiment Analyzer</div>
+              <p class="proj-desc">BERT 기반 감성 분석 모델. 한국어 리뷰 데이터 100만 건 학습. F1-score 0.94 달성.</p>
+              <div class="proj-tags"><span class="proj-t">PyTorch</span><span class="proj-t">BERT</span><span class="proj-t">FastAPI</span><span class="proj-t">AWS</span></div>
+              <div class="proj-links"><a href="#" class="proj-link">GitHub</a><a href="#" class="proj-link">Demo</a></div>
+            </div>
+          </div>
+
+          <div class="proj-card">
+            <div class="proj-img">
+              <span class="placeholder">project image</span>
+            </div>
+            <div class="proj-body">
+              <div class="proj-title">Time-Series Forecasting</div>
+              <p class="proj-desc">매출 예측을 위한 시계열 분석. ARIMA, Prophet, LSTM 비교 실험 및 앙상블 모델 구축.</p>
+              <div class="proj-tags"><span class="proj-t">Python</span><span class="proj-t">Prophet</span><span class="proj-t">LSTM</span><span class="proj-t">Plotly</span></div>
+              <div class="proj-links"><a href="#" class="proj-link">GitHub</a><a href="#" class="proj-link">Report</a></div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ==================== PUBLICATIONS ==================== -->
+      <section class="sec" id="publications">
+        <div class="sec-label">publications</div>
+        <h2 class="sec-title">Publications</h2>
+        <div class="pub-list">
+
+          <div class="pub-item">
+            <div class="pub-venue">NeurIPS 2024 (예시)</div>
+            <div class="pub-title">Your Paper Title: A Novel Approach to Something Important</div>
+            <div class="pub-authors"><strong>Your Name</strong>, Co-author A, Co-author B</div>
+            <div class="pub-meta">
+              <a href="#" class="pub-link">[PDF]</a>
+              <a href="#" class="pub-link">[Code]</a>
+              <a href="#" class="pub-link">[BibTeX]</a>
+            </div>
+          </div>
+
+          <div class="pub-item">
+            <div class="pub-venue">ICML 2023 (예시)</div>
+            <div class="pub-title">Another Research Paper About Deep Learning Methods</div>
+            <div class="pub-authors"><strong>Your Name</strong>, Co-author C</div>
+            <div class="pub-meta">
+              <a href="#" class="pub-link">[PDF]</a>
+              <a href="#" class="pub-link">[Code]</a>
+              <a href="#" class="pub-link">[BibTeX]</a>
+            </div>
+          </div>
+
+          <div class="pub-item">
+            <div class="pub-venue">KDD 2023 (예시)</div>
+            <div class="pub-title">Applied ML Research in Real-World Scenarios</div>
+            <div class="pub-authors">Co-author D, <strong>Your Name</strong>, Co-author E</div>
+            <div class="pub-meta">
+              <a href="#" class="pub-link">[PDF]</a>
+              <a href="#" class="pub-link">[Code]</a>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ==================== AWARDS ==================== -->
+      <section class="sec" id="awards">
+        <div class="sec-label">awards</div>
+        <h2 class="sec-title">Awards & Honors</h2>
+        <div class="award-list">
+
+          <div class="award-item">
+            <div class="award-year">2024</div>
+            <div class="award-body">
+              <h4>Kaggle Competition — Gold Medal</h4>
+              <p>대회명 / 상위 1% 달성 (예시)</p>
+            </div>
+          </div>
+
+          <div class="award-item">
+            <div class="award-year">2023</div>
+            <div class="award-body">
+              <h4>Best Paper Award</h4>
+              <p>학회명 / 논문 제목 (예시)</p>
+            </div>
+          </div>
+
+          <div class="award-item">
+            <div class="award-year">2023</div>
+            <div class="award-body">
+              <h4>데이터 분석 경진대회 대상</h4>
+              <p>주최기관 / 설명 (예시)</p>
+            </div>
+          </div>
+
+          <div class="award-item">
+            <div class="award-year">2022</div>
+            <div class="award-body">
+              <h4>우수 졸업 논문상</h4>
+              <p>대학교명 / 논문 제목 (예시)</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ==================== CAREER ==================== -->
+      <section class="sec" id="career">
+        <div class="sec-label">career</div>
+        <h2 class="sec-title">Career</h2>
+        <div class="timeline">
+          <div class="tl-item">
+            <div class="tl-date">2023.03 — Present</div>
+            <div class="tl-title">Data Scientist</div>
+            <div class="tl-org">@ Company Name</div>
+            <div class="tl-desc">추천 시스템 모델링, A/B 테스트 설계, 실시간 데이터 파이프라인 구축. CTR 15% 향상 기여.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-date">2021.09 — 2023.02</div>
+            <div class="tl-title">ML Engineer (Intern → Full-time)</div>
+            <div class="tl-org">@ Company Name</div>
+            <div class="tl-desc">NLP 모델 개발 및 서빙. 한국어 텍스트 분류 모델 배포, 추론 속도 3배 최적화.</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-date">2019.03 — 2021.08</div>
+            <div class="tl-title">Research Assistant</div>
+            <div class="tl-org">@ University Lab</div>
+            <div class="tl-desc">딥러닝 기반 연구 수행. 논문 2편 퍼블리시, 학회 발표 다수.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==================== CONTACT ==================== -->
+      <section class="sec" id="contact">
+        <div class="sec-label">contact</div>
+        <h2 class="sec-title">Contact</h2>
+        <div class="term" style="max-width:480px">
+          <div class="term-h"><div class="tdots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="tname">contact.sh</span></div>
+          <div class="term-b">
+            <div><span class="tp">$</span> cat contact.yaml</div><br>
+            <div><span class="tk">email</span>: <span class="ts">your@email.com</span></div>
+            <div><span class="tk">github</span>: <span class="ts">github.com/you</span></div>
+            <div><span class="tk">scholar</span>: <span class="ts">scholar.google.com/...</span></div>
+            <div><span class="tk">linkedin</span>: <span class="ts">linkedin.com/in/you</span></div>
+          </div>
+        </div>
+        <div class="contact-links">
+          <a href="mailto:your@email.com" class="c-link">✉ Email</a>
+          <a href="#" class="c-link">GitHub</a>
+          <a href="#" class="c-link">Google Scholar</a>
+          <a href="#" class="c-link">LinkedIn</a>
+        </div>
+      </section>
+
+      <!-- Footer -->
+      <div class="footer">
+        <p style="color:var(--gray4)">© 2024 Your Name — Built with HTML, CSS, JS</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Status Bar -->
+  <div class="statusbar">
+    <span>⎇ main</span><span id="statusFile">home.py</span>
+    <span class="sp"></span>
+    <span>Python</span><span>UTF-8</span>
+  </div>
+
+  <!-- Mobile Nav -->
+  <nav class="mob-nav">
+    <a href="#hero" class="active" data-s="hero"><span class="mi">⌂</span>Home</a>
+    <a href="#about" data-s="about"><span class="mi">◐</span>About</a>
+    <a href="#skills" data-s="skills"><span class="mi">◈</span>Skills</a>
+    <a href="#projects" data-s="projects"><span class="mi">▦</span>Proj</a>
+    <a href="#publications" data-s="publications"><span class="mi">◉</span>Papers</a>
+    <a href="#awards" data-s="awards"><span class="mi">★</span>Awards</a>
+    <a href="#contact" data-s="contact"><span class="mi">✉</span>Contact</a>
+  </nav>
+
+  <div class="scroll-top" id="scrollTop">↑</div>
+</div>
+
+<script>
+/* === Particles (심플 버전, 흰색 톤) === */
+!function(){
+  const c=document.getElementById('particles'),x=c.getContext('2d');
+  let w,h,pts=[];
+  function resize(){w=c.width=innerWidth;h=c.height=innerHeight}
+  function mk(){return{x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*1.2+.5}}
+  function init(){resize();pts=[];for(let i=0;i<35;i++)pts.push(mk())}
+  function draw(){
+    x.clearRect(0,0,w,h);
+    for(let i=0;i<pts.length;i++){
+      const p=pts[i];p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0||p.x>w)p.vx*=-1;if(p.y<0||p.y>h)p.vy*=-1;
+      x.beginPath();x.arc(p.x,p.y,p.r,0,Math.PI*2);x.fillStyle='#fff';x.globalAlpha=.15;x.fill();
+      for(let j=i+1;j<pts.length;j++){
+        const q=pts[j],dx=p.x-q.x,dy=p.y-q.y,d=Math.sqrt(dx*dx+dy*dy);
+        if(d<140){x.beginPath();x.moveTo(p.x,p.y);x.lineTo(q.x,q.y);x.strokeStyle='#fff';x.globalAlpha=.04*(1-d/140);x.lineWidth=.6;x.stroke()}
+      }
+    }
+    x.globalAlpha=1;requestAnimationFrame(draw);
+  }
+  init();draw();addEventListener('resize',()=>{resize();pts.forEach(p=>{if(p.x>w)p.x=w*.5;if(p.y>h)p.y=h*.5})});
+}();
+
+/* === Typing Effect (데이터과학 맞춤) === */
+!function(){
+  const el=document.getElementById('typingText');
+  const words=['model.fit(X_train, y_train)','data.describe()','predict(new_data)','optimize(loss_fn)','deploy(model)'];
+  let wi=0,ci=0,del=false;
+  function type(){
+    const w=words[wi];
+    if(!del){el.textContent=w.slice(0,++ci);if(ci===w.length){del=true;setTimeout(type,2000);return}}
+    else{el.textContent=w.slice(0,--ci);if(ci===0){del=false;wi=(wi+1)%words.length;setTimeout(type,400);return}}
+    setTimeout(type,del?35:70);
+  }
+  type();
+}();
+
+/* === Scroll Observer === */
+const secs=document.querySelectorAll('.sec');
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');updateNav(e.target.id)}});
+},{threshold:.12});
+secs.forEach(s=>obs.observe(s));
+
+/* === Nav Sync === */
+const fileMap={hero:'home.py',about:'about.yaml',skills:'skills.py',projects:'projects.ipynb',publications:'papers.bib',awards:'awards.md',career:'career.md',contact:'contact.sh'};
+function updateNav(id){
+  document.querySelectorAll('.nav-icon[data-s]').forEach(i=>i.classList.toggle('active',i.dataset.s===id));
+  document.querySelectorAll('.tab[data-s]').forEach(t=>t.classList.toggle('active',t.dataset.s===id));
+  document.querySelectorAll('.mob-nav a[data-s]').forEach(a=>a.classList.toggle('active',a.dataset.s===id));
+  const sf=document.getElementById('statusFile');if(sf&&fileMap[id])sf.textContent=fileMap[id];
+}
+
+/* === Click Nav === */
+document.querySelectorAll('[data-s]').forEach(el=>{
+  el.addEventListener('click',e=>{
+    const t=document.getElementById(el.dataset.s);
+    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}
+  });
+});
+
+/* === Scroll Top === */
+const sb=document.getElementById('scrollTop');
+addEventListener('scroll',()=>sb.classList.toggle('show',scrollY>400));
+sb.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
+</script>
+</body>
+</html>
