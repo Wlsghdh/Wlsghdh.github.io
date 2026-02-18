@@ -30,6 +30,8 @@ body{font-family:var(--mono);background:var(--bg);color:var(--w);line-height:1.7
 .splash-sub{font-size:12px;color:var(--g3);font-family:var(--mono)}
 .splash-btn{padding:14px 40px;border:1px solid var(--g3);border-radius:4px;background:transparent;color:var(--g2);font-family:var(--mono);font-size:13px;cursor:pointer;transition:all .3s;letter-spacing:1px}
 .splash-btn:hover{border-color:var(--w);color:var(--w);transform:scale(1.03)}
+.splash-vol{display:flex;align-items:center;gap:12px;font-size:11px;color:var(--g3);font-family:var(--mono)}
+.splash-vol input[type=range]{width:120px;accent-color:var(--accent)}
 body:not(.loaded) .main,body:not(.loaded) .titlebar,body:not(.loaded) .sidebar,body:not(.loaded) .sbar,body:not(.loaded) .tabs,body:not(.loaded) .mnav,body:not(.loaded) .bottom-controls,body:not(.loaded) .sctop{filter:blur(12px);pointer-events:none}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:#333;border-radius:3px}
 a{color:var(--g2);text-decoration:none;transition:var(--tr)}a:hover{color:var(--w)}
@@ -343,6 +345,10 @@ body.light .sctop{background:rgba(220,216,208,.6)}
 <div class="splash-overlay" id="splash">
   <div class="splash-title">Ju Jinho — Portfolio</div>
   <div class="splash-sub">AI Researcher · Computer Vision</div>
+  <div class="splash-vol">
+    <label>BGM Volume</label>
+    <input type="range" id="splashBgmVol" min="0" max="1" step="0.05" value="0.15">
+  </div>
   <button class="splash-btn" id="splashBtn">ENTER</button>
 </div>
 <div id="three-bg"></div>
@@ -594,7 +600,7 @@ body.light .sctop{background:rgba(220,216,208,.6)}
 </div>
 <div class="settings-panel" id="settingsPanel">
   <h4>Sound Settings</h4>
-  <div class="settings-row"><label>BGM Volume</label><input type="range" id="bgmVol" min="0" max="1" step="0.05" value="0.4"></div>
+  <div class="settings-row"><label>BGM Volume</label><input type="range" id="bgmVol" min="0" max="1" step="0.05" value="0.15"></div>
   <div class="settings-row"><label>Click Volume</label><input type="range" id="clickVol" min="0" max="1" step="0.05" value="0.05"></div>
   <div class="settings-row"><label>Scroll Volume</label><input type="range" id="scrollVol" min="0" max="1" step="0.05" value="0.05"></div>
   <div class="settings-row"><label>Click Type</label><select id="clickType"><option value="clean">Clean Click</option><option value="pop">Soft Pop</option><option value="mech">Mechanical</option></select></div>
@@ -885,8 +891,12 @@ var threeScene;
   function resize(){w=c.width=innerWidth;h=c.height=innerHeight;surfImg=null}
   resize();addEventListener('resize',resize);
   function sf(x,y){
-    var nx=x/(w||1)*6-3,ny=y/(h||1)*6-3;
-    return -(nx*nx+ny*ny)+4*Math.cos(nx*1.5)*Math.cos(ny*1.2)+2*Math.sin(nx+ny*.5);
+    var nx=x/(w||1)*8-4,ny=y/(h||1)*8-4;
+    return 3*Math.exp(-(Math.pow(nx+2,2)+Math.pow(ny+2,2))/.8)
+      +4*Math.exp(-(Math.pow(nx-1,2)+Math.pow(ny+1,2))/1.2)
+      +2.5*Math.exp(-(Math.pow(nx+1,2)+Math.pow(ny-2,2))/1)
+      +3.5*Math.exp(-(Math.pow(nx-2.5,2)+Math.pow(ny-1.5,2))/.6)
+      -0.15*(nx*nx+ny*ny);
   }
   function grad(x,y){var e=2;return{dx:(sf(x+e,y)-sf(x-e,y))/(2*e),dy:(sf(x,y+e)-sf(x,y-e))/(2*e)}}
   var surfImg=null;
@@ -911,18 +921,23 @@ var threeScene;
     surfImg=ctx.getImageData(0,0,w,h);
   }
   var ball={x:0,y:0,vx:0,vy:0,trail:[],stopped:false,timer:0};
-  function findMax(){
-    var bx=w/2,by=h/2,bv=-Infinity;
-    for(var x=20;x<w;x+=30){for(var y=20;y<h;y+=30){
-      var v=sf(x,y);if(v>bv){bv=v;bx=x;by=y}
+  function findPeaks(){
+    var peaks=[];
+    for(var x=20;x<w;x+=20){for(var y=20;y<h;y+=20){
+      var v=sf(x,y);
+      var g=grad(x,y),gm=Math.sqrt(g.dx*g.dx+g.dy*g.dy);
+      if(gm<0.02&&v>0.5)peaks.push({x:x,y:y,v:v});
     }}
-    return{x:bx,y:by};
+    peaks.sort(function(a,b){return b.v-a.v});
+    return peaks.length?peaks:[ {x:w/2,y:h/2,v:0} ];
   }
   function reset(){
-    var m=findMax();
-    ball.x=m.x+(Math.random()-.5)*30;
-    ball.y=m.y+(Math.random()-.5)*30;
-    ball.vx=0;ball.vy=0;ball.trail=[];ball.stopped=false;ball.timer=0;
+    var peaks=findPeaks();
+    var p=peaks[Math.floor(Math.random()*Math.min(peaks.length,3))];
+    ball.x=p.x+(Math.random()-.5)*10;
+    ball.y=p.y+(Math.random()-.5)*10;
+    ball.vx=(Math.random()-.5)*3;ball.vy=(Math.random()-.5)*3;
+    ball.trail=[];ball.stopped=false;ball.timer=0;
   }
   reset();
   var cc=0;
@@ -1034,7 +1049,7 @@ var threeScene;
 // Audio Engine (fixed IIFE)
 var audioEngine=(function(){
   var actx=null,masterGain=null,playing=false,currentMode=null,nodes=[];
-  var clickVolume=.05,scrollVolume=.05,clickType='clean',bgmVolume=.4;
+  var clickVolume=.05,scrollVolume=.05,clickType='clean',bgmVolume=.15;
   function ensureCtx(){
     if(!actx)actx=new(window.AudioContext||window.webkitAudioContext)();
     if(actx.state==='suspended')actx.resume();
@@ -1130,6 +1145,9 @@ musicBtn.addEventListener('click',function(){
 });
 var autoStarted=false;
 document.getElementById('splashBtn').addEventListener('click',function(){
+  var vol=+document.getElementById('splashBgmVol').value;
+  document.getElementById('bgmVol').value=vol;
+  audioEngine.setBgmVol(vol);
   document.body.classList.add('loaded');
   document.getElementById('splash').classList.add('hiding');
   setTimeout(function(){document.getElementById('splash').style.display='none'},700);
