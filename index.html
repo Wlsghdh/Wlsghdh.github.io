@@ -17,11 +17,14 @@ a{color:var(--g2);text-decoration:none;transition:var(--tr)}a:hover{color:var(--
 
 /* 3D BG */
 #three-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.12}
+/* Falling balls overlay */
+#ballCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none}
 
 /* Layout */
-.titlebar{height:30px;background:#0c0c0c;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--g3);position:fixed;top:0;left:0;right:0;z-index:1000}
+.titlebar{height:30px;background:#0c0c0c;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--g3);position:fixed;top:0;left:0;right:0;z-index:1000;margin:0;padding:0}
 .dots{position:absolute;left:12px;display:flex;gap:6px}.dot{width:10px;height:10px;border-radius:50%}.dr{background:#ff5f57}.dy{background:#febc2e}.dg{background:#28c840}
 .sidebar{width:var(--sb);background:#0c0c0c;border-right:1px solid var(--border);display:flex;flex-direction:column;align-items:center;padding-top:10px;position:fixed;top:30px;left:0;bottom:22px;z-index:900;gap:2px}
+html,body{margin:0;padding:0}
 .ni{width:42px;height:42px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--g3);transition:var(--tr);font-size:15px;border-radius:4px;position:relative}
 .ni:hover{color:var(--g1);background:rgba(255,255,255,.04)}.ni.active{color:var(--w)}.ni.active::after{content:'';position:absolute;left:0;top:8px;bottom:8px;width:2px;background:var(--w)}
 .sp{flex:1}
@@ -166,6 +169,8 @@ a{color:var(--g2);text-decoration:none;transition:var(--tr)}a:hover{color:var(--
 
 <!-- 3D Background -->
 <div id="three-bg"></div>
+<!-- Falling GD Balls -->
+<canvas id="ballCanvas"></canvas>
 
 <!-- Paper Reader (전체화면) -->
 <div id="reader">
@@ -349,6 +354,90 @@ a{color:var(--g2);text-decoration:none;transition:var(--tr)}a:hover{color:var(--
 
 <script>
 /* ============================================
+   FALLING GRADIENT DESCENT BALLS (2D Canvas)
+   화면 전체에서 잘 보이는 흰색 공들
+   ============================================ */
+!function(){
+  const c=document.getElementById('ballCanvas'),ctx=c.getContext('2d');
+  let w,h;
+  function resize(){w=c.width=innerWidth;h=c.height=innerHeight}
+  resize();addEventListener('resize',resize);
+
+  const balls=[];
+  // 내리막인데 좌우로 왔다갔다하는 경사면
+  function surface(x,y){
+    const nx=x/w,ny=y/h;
+    // 아래로 내려가되, 좌우로 골짜기가 번갈아 나옴
+    return ny*h*0.8 + Math.sin(nx*12+ny*4)*60 + Math.cos(ny*8)*40;
+  }
+  function grad(x,y){
+    const e=2;
+    return{
+      dx:(surface(x+e,y)-surface(x-e,y))/(2*e),
+      dy:(surface(x,y+e)-surface(x,y-e))/(2*e)
+    };
+  }
+
+  let ball={x:w*.5,y:30,vx:0,vy:0,r:8,trail:[]};
+  function resetBall(){
+    ball.x=Math.random()*w*.6+w*.2; // 화면 중앙부에서 시작
+    ball.y=-10;
+    ball.vx=0;ball.vy=0;
+    ball.trail=[];
+  }
+
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+
+    // 경사 따라 이동 (실제 gradient descent)
+    const g=grad(ball.x,ball.y);
+    const lr=.03;
+    ball.vx=ball.vx*.97+g.dx*lr; // momentum
+    ball.vy=ball.vy*.97+g.dy*lr;
+    ball.x+=ball.vx;
+    ball.y+=ball.vy;
+
+    // 궤적
+    ball.trail.push({x:ball.x,y:ball.y});
+    if(ball.trail.length>60)ball.trail.shift();
+
+    // 궤적 그리기
+    if(ball.trail.length>1){
+      for(let j=1;j<ball.trail.length;j++){
+        const a=(j/ball.trail.length)*.25;
+        ctx.beginPath();
+        ctx.moveTo(ball.trail[j-1].x,ball.trail[j-1].y);
+        ctx.lineTo(ball.trail[j].x,ball.trail[j].y);
+        ctx.strokeStyle=`rgba(255,255,255,${a})`;
+        ctx.lineWidth=ball.r*.5*(j/ball.trail.length);
+        ctx.stroke();
+      }
+    }
+
+    // 글로우
+    const grd=ctx.createRadialGradient(ball.x,ball.y,0,ball.x,ball.y,ball.r*3);
+    grd.addColorStop(0,'rgba(255,255,255,.25)');
+    grd.addColorStop(1,'rgba(255,255,255,0)');
+    ctx.fillStyle=grd;
+    ctx.beginPath();ctx.arc(ball.x,ball.y,ball.r*3,0,Math.PI*2);ctx.fill();
+
+    // 공 본체
+    ctx.beginPath();ctx.arc(ball.x,ball.y,ball.r,0,Math.PI*2);
+    ctx.fillStyle='rgba(255,255,255,.7)';ctx.fill();
+
+    // 하이라이트
+    ctx.beginPath();ctx.arc(ball.x-ball.r*.3,ball.y-ball.r*.3,ball.r*.35,0,Math.PI*2);
+    ctx.fillStyle='rgba(255,255,255,.4)';ctx.fill();
+
+    // 화면 밖이면 리셋
+    if(ball.y>h+30||ball.x>w+30||ball.x<-30)resetBall();
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+}();
+
+/* ============================================
    THREE.JS 3D BACKGROUND
    시그모이드 표면 + Loss landscape + 파티클
    ============================================ */
@@ -378,19 +467,7 @@ a{color:var(--g2);text-decoration:none;transition:var(--tr)}a:hover{color:var(--
   mesh.rotation.x=-Math.PI*.45;
   scene.add(mesh);
 
-  // Loss landscape (smaller, offset)
-  const g2=new THREE.PlaneGeometry(15,15,40,40);
-  const p2=g2.attributes.position;
-  for(let i=0;i<p2.count;i++){
-    const x=p2.getX(i)*.2,y=p2.getY(i)*.2;
-    const z=Math.sin(x*2)*Math.cos(y*2)*Math.exp(-(x*x+y*y)*.15)*2;
-    p2.setZ(i,z);
-  }
-  g2.computeVertexNormals();
-  const m2=new THREE.MeshBasicMaterial({color:0xffffff,wireframe:true,transparent:true,opacity:.2});
-  const mesh2=new THREE.Mesh(g2,m2);
-  mesh2.position.set(12,-3,0);mesh2.rotation.x=-Math.PI*.4;
-  scene.add(mesh2);
+  // (Loss landscape removed)
 
   // Floating particles
   const ptGeo=new THREE.BufferGeometry();
@@ -402,39 +479,11 @@ a{color:var(--g2);text-decoration:none;transition:var(--tr)}a:hover{color:var(--
   const pts=new THREE.Points(ptGeo,ptMat);
   scene.add(pts);
 
-  // === GRADIENT DESCENT BALL ===
-  // Loss surface function for ball to follow
-  function lossSurface(x,y){return Math.sin(x*2)*Math.cos(y*2)*Math.exp(-(x*x+y*y)*.15)*2}
-  function lossGradient(x,y){
-    const h=.01;
-    const dx=(lossSurface(x+h,y)-lossSurface(x-h,y))/(2*h);
-    const dy=(lossSurface(x,y+h)-lossSurface(x,y-h))/(2*h);
-    return{dx,dy};
-  }
-  // GD Ball
-  const ballGeo=new THREE.SphereGeometry(.3,16,16);
-  const ballMat=new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.9});
-  const ball=new THREE.Mesh(ballGeo,ballMat);
-  scene.add(ball);
-  // Trail (path the ball has taken)
-  const trailMax=80;
-  const trailGeo=new THREE.BufferGeometry();
-  const trailPos=new Float32Array(trailMax*3);
-  trailGeo.setAttribute('position',new THREE.BufferAttribute(trailPos,3));
-  const trailMat=new THREE.PointsMaterial({color:0xffffff,size:.06,transparent:true,opacity:.4});
-  const trail=new THREE.Points(trailGeo,trailMat);
-  scene.add(trail);
-  let ballX=2.5,ballY=2.5,trailIdx=0,lr=.015;
-  // Reset ball to random start when it converges
-  function resetBall(){ballX=(Math.random()-.5)*5;ballY=(Math.random()-.5)*5;trailIdx=0;for(let i=0;i<trailMax*3;i++)trailPos[i]=0}
-
   function animate(){
     requestAnimationFrame(animate);
     mesh.rotation.z+=.0008;
-    mesh2.rotation.z-=.001;
     pts.rotation.y+=.0003;
     const t=Date.now()*.0005;
-    // Sigmoid surface animation
     const p=geo.attributes.position;
     for(let i=0;i<p.count;i++){
       const x=p.getX(i),y=p.getY(i);
@@ -443,20 +492,6 @@ a{color:var(--g2);text-decoration:none;transition:var(--tr)}a:hover{color:var(--
       p.setZ(i,z);
     }
     p.needsUpdate=true;
-    // === GD Ball movement ===
-    const grad=lossGradient(ballX,ballY);
-    ballX-=grad.dx*lr+((Math.random()-.5)*.005);
-    ballY-=grad.dy*lr+((Math.random()-.5)*.005);
-    const bz=lossSurface(ballX,ballY);
-    // Map ball to mesh2's local space
-    ball.position.set(12+ballX*1.5,-3+bz*1.5+.3,ballY*1.5);
-    // Trail
-    const ti=trailIdx%trailMax;
-    trailPos[ti*3]=ball.position.x;trailPos[ti*3+1]=ball.position.y;trailPos[ti*3+2]=ball.position.z;
-    trailGeo.attributes.position.needsUpdate=true;
-    trailIdx++;
-    // Reset if converged or out of bounds
-    if((Math.abs(grad.dx)<.001&&Math.abs(grad.dy)<.001)||Math.abs(ballX)>5||Math.abs(ballY)>5){setTimeout(resetBall,800)}
     renderer.render(scene,camera);
   }
   animate();
@@ -631,6 +666,9 @@ const sb=document.getElementById('sctop');addEventListener('scroll',()=>sb.class
   }
 
   let master;
+  function startMusic(){
+    if(!ctx){master=createAmbient();btn.classList.add('on');playing=true}
+  }
   btn.addEventListener('click',()=>{
     if(!playing){
       if(!ctx)master=createAmbient();
@@ -641,6 +679,11 @@ const sb=document.getElementById('sctop');addEventListener('scroll',()=>sb.class
       btn.classList.remove('on');playing=false;
     }
   });
+  // Auto-play on first user interaction (브라우저 정책상 클릭/스크롤 필요)
+  function autoStart(){startMusic();document.removeEventListener('click',autoStart);document.removeEventListener('scroll',autoStart);document.removeEventListener('touchstart',autoStart)}
+  document.addEventListener('click',autoStart);
+  document.addEventListener('scroll',autoStart);
+  document.addEventListener('touchstart',autoStart);
 }();
 </script>
 </body>
