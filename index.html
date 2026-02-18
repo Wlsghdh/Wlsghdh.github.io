@@ -398,7 +398,7 @@ body.light .sctop{background:rgba(220,216,208,.6)}
       <div class="h-role">Vision & Data-Efficient Learning</div>
       <div class="h-mission">"Advancing perception with less — efficient models for a data-constrained world."</div>
       <div class="h-typ"><span id="typT"></span><span class="cur"></span></div>
-      <p class="h-desc">수원대학교 AI·데이터과학부 4학년 학부연구생으로,<br><strong style="color:var(--w)">Computer Vision</strong>과 <strong style="color:var(--w)">Data-Efficient Learning</strong> 분야를 연구합니다.</p>
+      <p class="h-desc">수원대학교 AI·데이터과학부 4학년 학부연구생으로,<br>Computer Vision과 Data-Efficient Learning 분야를 연구합니다.</p>
       <p class="h-desc" style="margin-top:-14px">제한된 레이블 환경에서 강건하고 일반화 가능한 시각 모델을 설계하는 것에<br>연구 관심을 두고 있으며, 국내 AI 대학원 진학을 목표로 합니다.</p>
       <div class="h-btns">
         <a href="#research-exp" class="btn btn-w">Research</a>
@@ -877,19 +877,25 @@ var threeScene;
     var nx=x/(w||1)*6-3,ny=y/(h||1)*6-3;
     return Math.sin(nx*1.5)*Math.cos(ny*1.2)*2+Math.sin(nx*.7+ny*.5)*1.5+ny*1.8+Math.cos(nx*2.1-ny*.8)*.6;
   }
-  function gd(x,y){var e=1.5;return{dx:(sf(x+e,y)-sf(x-e,y))/(2*e),dy:(sf(x,y+e)-sf(x,y-e))/(2*e)}}
-  var ball={x:100,y:50,vx:0,vy:0,r:7,trail:[]};
-  function reset(){ball.x=Math.random()*(w||800)*.5+(w||800)*.25;ball.y=20+Math.random()*80;ball.vx=(Math.random()-.5)*.5;ball.vy=.2;ball.trail=[]}
+  function gd(x,y){var e=1;return{dx:(sf(x+e,y)-sf(x-e,y))/(2*e),dy:(sf(x,y+e)-sf(x,y-e))/(2*e)}}
+  var ball={x:0,y:0,vx:0,vy:0,r:7,trail:[]};
+  function reset(){
+    var gx=Math.floor(Math.random()*8),gy=Math.floor(Math.random()*3);
+    ball.x=(gx+.5)/(8)*(w||800);
+    ball.y=(gy+.5)/(6)*(h||600);
+    ball.vx=(Math.random()-.5)*1;ball.vy=.5;ball.trail=[];
+  }
+  reset();
   function draw(){
     ctx.clearRect(0,0,w,h);
     if(!w||!h||isNaN(ball.x)||isNaN(ball.y)){reset();requestAnimationFrame(draw);return}
     var g=gd(ball.x,ball.y);
-    ball.vx=ball.vx*.98+g.dx*.08;ball.vy=ball.vy*.98+g.dy*.08;
+    ball.vx=ball.vx*.96+g.dx*.22;ball.vy=ball.vy*.96+g.dy*.22;
     var spd=Math.sqrt(ball.vx*ball.vx+ball.vy*ball.vy);
-    if(spd>2.5){var sc=2.5/spd;ball.vx*=sc;ball.vy*=sc}
+    if(spd>5){var sc=5/spd;ball.vx*=sc;ball.vy*=sc}
     ball.x+=ball.vx;ball.y+=ball.vy;
     ball.trail.push({x:ball.x,y:ball.y});
-    if(ball.trail.length>80)ball.trail.shift();
+    if(ball.trail.length>100)ball.trail.shift();
     var cr,cg,cb,ca;
     if(isLight){cr=200;cg=160;cb=20;ca='rgba(200,160,20,';}
     else{cr=255;cg=255;cb=255;ca='rgba(255,255,255,';}
@@ -1075,8 +1081,14 @@ var autoStarted=false;
 function autoStart(){
   if(!autoStarted){autoStarted=true;audioEngine.start(isLight?'light':'dark');musicBtn.classList.add('on')}
   document.removeEventListener('click',autoStart);document.removeEventListener('scroll',autoStart);
+  document.removeEventListener('keydown',autoStart);document.removeEventListener('mousemove',autoStartOnce);document.removeEventListener('touchstart',autoStart);
 }
-document.addEventListener('click',autoStart);document.addEventListener('scroll',autoStart,{passive:true});
+function autoStartOnce(e){autoStart()}
+document.addEventListener('click',autoStart);
+document.addEventListener('scroll',autoStart,{passive:true});
+document.addEventListener('keydown',autoStart);
+document.addEventListener('mousemove',autoStartOnce,{once:true});
+document.addEventListener('touchstart',autoStart,{once:true});
 
 // Settings Panel
 var settingsBtn=document.getElementById('settingsBtn'),settingsPanel=document.getElementById('settingsPanel');
