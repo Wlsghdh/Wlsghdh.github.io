@@ -17,7 +17,7 @@
   --tr:all .3s ease;--sb:48px;--accent:#4ade80;
 }
 body.light{
-  --bg:#f0ede6;--bg2:#e8e4db;--bg3:#dedad1;--border:#c5bfb3;
+  --bg:#f5f2eb;--bg2:#ece8df;--bg3:#e3ded5;--border:#c5bfb3;
   --w:#1a1610;--g1:#2a2318;--g2:#5a5040;--g3:#8a7f6f;--g4:#c0b8a8;
   --accent:#2d8a4e;
 }
@@ -25,7 +25,7 @@ body.light{
 html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:#333 #090909}
 body{font-family:var(--mono);background:var(--bg);color:var(--w);line-height:1.7;overflow-x:hidden;transition:background .4s,color .4s}
 .splash-overlay{position:fixed;inset:0;z-index:99999;background:rgba(9,9,9,.18);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;transition:opacity .6s}
-body.light .splash-overlay{background:rgba(240,237,230,.18)}
+body.light .splash-overlay{background:rgba(245,242,235,.18)}
 .splash-overlay.hiding{opacity:0;pointer-events:none}
 .splash-title{font-family:var(--sans);font-size:clamp(18px,3vw,28px);font-weight:600;color:var(--w);letter-spacing:1px}
 .splash-sub{font-size:12px;color:var(--g3);font-family:var(--mono)}
@@ -56,7 +56,7 @@ a{color:var(--g2);text-decoration:none;transition:var(--tr)}a:hover{color:var(--
   font-size:11px;color:var(--g3);position:fixed;top:0;left:0;right:0;z-index:1000;
   transition:background .4s,border-color .4s,color .4s;
 }
-body.light .titlebar{background:#dedad1}
+body.light .titlebar{background:#e3ded5}
 .dots{position:absolute;left:12px;display:flex;gap:6px}
 .dot{width:10px;height:10px;border-radius:50%}.dr{background:#ff5f57}.dy{background:#febc2e}.dg{background:#28c840}
 .tb-right{position:absolute;right:12px;display:flex;align-items:center;gap:6px}
@@ -73,7 +73,7 @@ body.light .titlebar{background:#dedad1}
   position:fixed;top:30px;left:0;bottom:22px;z-index:900;gap:1px;
   transition:background .4s,border-color .4s;
 }
-body.light .sidebar{background:#dedad1}
+body.light .sidebar{background:#e3ded5}
 body.light .ni{color:#8a7f6f}
 body.light .ni:hover{color:#5a5040;background:rgba(90,80,64,.08)}
 body.light .ni.active{color:#3d6b4f}
@@ -927,8 +927,13 @@ var threeScene;
     var i=0;
     for(var y=0;y<h;y+=2){for(var x=0;x<w;x+=2){
       var t=(vals[i++]-min)/(max-min||1);
-      var a=isLight?t*.25:t*.06;
-      var r=isLight?60:255,g=isLight?90:255,b=isLight?50:255;
+      var a,r,g,b;
+      if(isLight){
+        a=t*.18+(1-t)*.03;
+        r=45-Math.floor(t*30);g=120-Math.floor(t*60);b=80-Math.floor(t*50);
+      }else{
+        a=t*.06;r=255;g=255;b=255;
+      }
       for(var dy=0;dy<2&&y+dy<h;dy++){for(var dx=0;dx<2&&x+dx<w;dx++){
         var p=((y+dy)*w+(x+dx))*4;
         d[p]=r;d[p+1]=g;d[p+2]=b;d[p+3]=Math.floor(a*255);
@@ -976,7 +981,7 @@ var threeScene;
     while(pathHistory.length>1&&now-pathHistory[0].t>20000)pathHistory.shift();
     ball.trail.push({x:ball.x,y:ball.y});
     if(ball.trail.length>20)ball.trail.shift();
-    var ca=isLight?'rgba(200,60,20,':'rgba(74,222,128,';
+    var ca=isLight?'rgba(30,30,30,':'rgba(255,255,255,';
     for(var j=1;j<pathHistory.length;j++){
       var age=(now-pathHistory[j].t)/20000;
       var a=Math.max(0,(1-age)*.5);
@@ -990,10 +995,10 @@ var threeScene;
       ctx.lineTo(ball.trail[j].x,ball.trail[j].y);
       ctx.strokeStyle=ca+a+')';ctx.lineWidth=3*(j/ball.trail.length);ctx.stroke();
     }
-    var gr=ctx.createRadialGradient(ball.x,ball.y,0,ball.x,ball.y,18);
-    gr.addColorStop(0,ca+'.6)');gr.addColorStop(.5,ca+'.15)');gr.addColorStop(1,ca+'0)');
-    ctx.fillStyle=gr;ctx.beginPath();ctx.arc(ball.x,ball.y,18,0,Math.PI*2);ctx.fill();
-    ctx.beginPath();ctx.arc(ball.x,ball.y,5,0,Math.PI*2);
+    var gr=ctx.createRadialGradient(ball.x,ball.y,0,ball.x,ball.y,12);
+    gr.addColorStop(0,ca+'.5)');gr.addColorStop(.5,ca+'.1)');gr.addColorStop(1,ca+'0)');
+    ctx.fillStyle=gr;ctx.beginPath();ctx.arc(ball.x,ball.y,12,0,Math.PI*2);ctx.fill();
+    ctx.beginPath();ctx.arc(ball.x,ball.y,3.5,0,Math.PI*2);
     ctx.fillStyle=ca+'1)';ctx.fill();
     requestAnimationFrame(draw);
   }
