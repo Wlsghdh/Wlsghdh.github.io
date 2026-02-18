@@ -24,8 +24,8 @@ body.light{
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:#333 #090909}
 body{font-family:var(--mono);background:var(--bg);color:var(--w);line-height:1.7;overflow-x:hidden;transition:background .4s,color .4s}
-.splash-overlay{position:fixed;inset:0;z-index:99999;background:rgba(9,9,9,.3);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;transition:opacity .6s}
-body.light .splash-overlay{background:rgba(240,237,230,.3)}
+.splash-overlay{position:fixed;inset:0;z-index:99999;background:rgba(9,9,9,.18);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;transition:opacity .6s}
+body.light .splash-overlay{background:rgba(240,237,230,.18)}
 .splash-overlay.hiding{opacity:0;pointer-events:none}
 .splash-title{font-family:var(--sans);font-size:clamp(18px,3vw,28px);font-weight:600;color:var(--w);letter-spacing:1px}
 .splash-sub{font-size:12px;color:var(--g3);font-family:var(--mono)}
@@ -616,7 +616,7 @@ body.light .sctop{background:rgba(220,216,208,.6)}
 </div>
 <div class="settings-panel" id="settingsPanel">
   <h4>Sound Settings</h4>
-  <div class="settings-row"><label>BGM Volume</label><input type="range" id="bgmVol" min="0" max="1" step="0.05" value="0.15"></div>
+  <div class="settings-row"><label>BGM Volume</label><input type="range" id="bgmVol" min="0" max="1" step="0.05" value="0.25"></div>
   <div class="settings-row"><label>Click Volume</label><input type="range" id="clickVol" min="0" max="1" step="0.05" value="0.05"></div>
   <div class="settings-row"><label>Scroll Volume</label><input type="range" id="scrollVol" min="0" max="1" step="0.05" value="0.05"></div>
   <div class="settings-row"><label>Click Type</label><select id="clickType"><option value="clean">Clean Click</option><option value="pop" selected>Soft Pop</option><option value="mech">Mechanical</option></select></div>
@@ -973,12 +973,12 @@ var threeScene;
     if(ball.y<10)ball.y=10;if(ball.y>h-10)ball.y=h-10;
     var now=performance.now();
     pathHistory.push({x:ball.x,y:ball.y,t:now});
-    while(pathHistory.length>1&&now-pathHistory[0].t>5000)pathHistory.shift();
+    while(pathHistory.length>1&&now-pathHistory[0].t>15000)pathHistory.shift();
     ball.trail.push({x:ball.x,y:ball.y});
     if(ball.trail.length>20)ball.trail.shift();
     var ca=isLight?'rgba(200,60,20,':'rgba(74,222,128,';
     for(var j=1;j<pathHistory.length;j++){
-      var age=(now-pathHistory[j].t)/5000;
+      var age=(now-pathHistory[j].t)/15000;
       var a=Math.max(0,(1-age)*.25);
       ctx.beginPath();ctx.moveTo(pathHistory[j-1].x,pathHistory[j-1].y);
       ctx.lineTo(pathHistory[j].x,pathHistory[j].y);
@@ -1068,7 +1068,7 @@ var threeScene;
 // Audio Engine (fixed IIFE)
 var audioEngine=(function(){
   var actx=null,masterGain=null,playing=false,currentMode=null,nodes=[];
-  var clickVolume=.05,scrollVolume=.05,clickType='pop',bgmVolume=.15;
+  var clickVolume=.05,scrollVolume=.05,clickType='pop',bgmVolume=.25;
   function ensureCtx(){
     if(!actx)actx=new(window.AudioContext||window.webkitAudioContext)();
     if(actx.state==='suspended')actx.resume();
@@ -1177,6 +1177,7 @@ document.getElementById('splashLight').addEventListener('click',function(){
 });
 document.getElementById('splashBtn').addEventListener('click',function(){
   document.body.classList.add('loaded');
+  if(window.invalidateSurf)window.invalidateSurf();
   document.getElementById('splash').classList.add('hiding');
   setTimeout(function(){document.getElementById('splash').style.display='none'},700);
   if(!autoStarted){
