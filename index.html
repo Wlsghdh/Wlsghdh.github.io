@@ -24,8 +24,8 @@ body.light{
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:#333 #090909}
 body{font-family:var(--mono);background:var(--bg);color:var(--w);line-height:1.7;overflow-x:hidden;transition:background .4s,color .4s}
-.splash-overlay{position:fixed;inset:0;z-index:99999;background:rgba(9,9,9,.45);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;transition:opacity .6s}
-body.light .splash-overlay{background:rgba(240,237,230,.45)}
+.splash-overlay{position:fixed;inset:0;z-index:99999;background:rgba(9,9,9,.3);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;transition:opacity .6s}
+body.light .splash-overlay{background:rgba(240,237,230,.3)}
 .splash-overlay.hiding{opacity:0;pointer-events:none}
 .splash-title{font-family:var(--sans);font-size:clamp(18px,3vw,28px);font-weight:600;color:var(--w);letter-spacing:1px}
 .splash-sub{font-size:12px;color:var(--g3);font-family:var(--mono)}
@@ -363,7 +363,6 @@ body.light .sctop{background:rgba(220,216,208,.6)}
         <button class="splash-theme" id="splashLight">Light</button>
       </div>
     </div>
-    <div class="splash-row"><label>BGM Volume</label><input type="range" id="splashBgmVol" min="0" max="1" step="0.05" value="0.15"></div>
   </div>
   <button class="splash-btn" id="splashBtn">ENTER</button>
   <div class="splash-hint">All settings can be changed inside the portfolio.</div>
@@ -928,8 +927,8 @@ var threeScene;
     var i=0;
     for(var y=0;y<h;y+=2){for(var x=0;x<w;x+=2){
       var t=(vals[i++]-min)/(max-min||1);
-      var a=isLight?t*.04:t*.06;
-      var r=isLight?40:255,g=isLight?30:255,b=isLight?10:255;
+      var a=isLight?t*.12:t*.06;
+      var r=isLight?80:255,g=isLight?60:255,b=isLight?30:255;
       for(var dy=0;dy<2&&y+dy<h;dy++){for(var dx=0;dx<2&&x+dx<w;dx++){
         var p=((y+dy)*w+(x+dx))*4;
         d[p]=r;d[p+1]=g;d[p+2]=b;d[p+3]=Math.floor(a*255);
@@ -1177,9 +1176,6 @@ document.getElementById('splashLight').addEventListener('click',function(){
   if(window.invalidateSurf)window.invalidateSurf();
 });
 document.getElementById('splashBtn').addEventListener('click',function(){
-  var bgmV=+document.getElementById('splashBgmVol').value;
-  document.getElementById('bgmVol').value=bgmV;
-  audioEngine.setBgmVol(bgmV);
   document.body.classList.add('loaded');
   document.getElementById('splash').classList.add('hiding');
   setTimeout(function(){document.getElementById('splash').style.display='none'},700);
