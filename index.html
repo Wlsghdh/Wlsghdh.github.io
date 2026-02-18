@@ -240,10 +240,15 @@ body.light .l3{background:#30a14e}body.light .l4{background:#216e39}
 .gh-stat-l{font-size:10px;color:var(--g3);font-family:var(--sans);margin-top:2px}
 .tl{position:relative;padding-left:28px;max-width:660px}
 .tl::before{content:'';position:absolute;left:9px;top:8px;bottom:8px;width:1px;background:var(--g4)}
-.tli{position:relative;margin-bottom:28px;padding:18px;background:var(--bg2);border:1px solid var(--border);border-radius:5px;transition:var(--tr);opacity:0;transform:translateY(-16px)}
+.tli{position:relative;margin-bottom:28px;padding:18px;background:var(--bg2);border:1px solid var(--border);border-radius:5px;transition:var(--tr);opacity:0;transform:translateY(-16px);display:flex;gap:16px;align-items:stretch}
 .tli.vis{opacity:1;transform:translateY(0)}
 .tli:hover{border-color:var(--g3);transform:translateX(3px)}
 .tli::before{content:'';position:absolute;left:-23px;top:22px;width:7px;height:7px;border-radius:50%;background:var(--w);border:2px solid var(--bg)}
+.tli-main{flex:1}
+.tli-bar{display:flex;flex-direction:column;align-items:center;gap:4px;min-width:32px}
+.tli-bar-label{font-size:9px;color:var(--g3);white-space:nowrap;font-family:var(--mono)}
+.tli-bar-track{flex:1;width:4px;background:var(--bg3);border-radius:2px;position:relative;min-height:40px;overflow:hidden}
+.tli-bar-fill{position:absolute;bottom:0;left:0;width:100%;height:0;background:linear-gradient(to top,var(--accent),var(--g3));border-radius:2px;transition:height 1.2s cubic-bezier(.4,0,.2,1)}
 .tl-d{font-size:10px;color:var(--g3);margin-bottom:3px}
 .tl-t{font-size:14px;font-weight:600;color:var(--w);margin-bottom:2px;font-family:var(--sans)}
 .tl-o{font-size:12px;color:var(--g2);margin-bottom:7px}
@@ -393,7 +398,8 @@ body.light .sctop{background:rgba(220,216,208,.6)}
       <div class="h-role">Vision & Data-Efficient Learning</div>
       <div class="h-mission">"Advancing perception with less — efficient models for a data-constrained world."</div>
       <div class="h-typ"><span id="typT"></span><span class="cur"></span></div>
-      <p class="h-desc">수원대학교 AI·데이터과학부 4학년 학부연구생으로, <strong style="color:var(--w)">Computer Vision</strong>과 <strong style="color:var(--w)">Data-Efficient Learning</strong> 분야를 연구합니다.<br>제한된 레이블 환경에서 강건하고 일반화 가능한 시각 모델을 설계하는 것에 연구 관심을 두고 있으며, 국내 AI 대학원 진학을 목표로 합니다.</p>
+      <p class="h-desc">수원대학교 AI·데이터과학부 4학년 학부연구생으로,<br><strong style="color:var(--w)">Computer Vision</strong>과 <strong style="color:var(--w)">Data-Efficient Learning</strong> 분야를 연구합니다.</p>
+      <p class="h-desc" style="margin-top:-14px">제한된 레이블 환경에서 강건하고 일반화 가능한 시각 모델을 설계하는 것에<br>연구 관심을 두고 있으며, 국내 AI 대학원 진학을 목표로 합니다.</p>
       <div class="h-btns">
         <a href="#research-exp" class="btn btn-w">Research</a>
         <a href="#publications" class="btn">Publications</a>
@@ -524,10 +530,10 @@ body.light .sctop{background:rgba(220,216,208,.6)}
   <div class="sec-l">career timeline</div>
   <h2 class="sec-t">Career</h2>
   <div class="tl">
-    <div class="tli"><div class="tl-d">2021.03 — Present</div><div class="tl-t">AI·데이터과학부 학부생</div><div class="tl-o">수원대학교</div><div class="tl-ds">Computer Vision, ML 분야 연구. 대학원 진학 준비 중.</div></div>
-    <div class="tli"><div class="tl-d">2023.08 — 2024.02</div><div class="tl-t">자율주행 센터 인턴</div><div class="tl-o">AIMMO</div><div class="tl-ds">자율주행용 데이터 수집 및 정제 업무 담당. 라이다/카메라 센서 데이터 품질 관리 및 레이블링 파이프라인 운영.</div></div>
-    <div class="tli"><div class="tl-d">2025.07 — Present</div><div class="tl-t">학부연구생 (지도교수: 안홍렬 교수님)</div><div class="tl-o">수원대학교</div><div class="tl-ds">지도교수 안홍렬 교수님 연구실 소속 학부연구생. 연구 프로젝트 참여 및 논문 작업.</div></div>
-    <div class="tli"><div class="tl-d">2025.08 — 2025.11</div><div class="tl-t">연구 인턴</div><div class="tl-o">성균관대학교 × 하드사이언스</div><div class="tl-ds">데이터 관리부 소속. 연구 데이터 수집·정제·관리 업무.</div></div>
+    <div class="tli"><div class="tli-main"><div class="tl-d">2021.03 — Present</div><div class="tl-t">AI·데이터과학부 학부생</div><div class="tl-o">수원대학교</div><div class="tl-ds">Computer Vision, ML 분야 연구. 대학원 진학 준비 중.</div></div><div class="tli-bar"><div class="tli-bar-label">~48mo</div><div class="tli-bar-track"><div class="tli-bar-fill" data-months="48"></div></div></div></div>
+    <div class="tli"><div class="tli-main"><div class="tl-d">2023.08 — 2024.02</div><div class="tl-t">자율주행 부서</div><div class="tl-o">AIMMO</div><div class="tl-ds">자율주행용 데이터 수집 및 정제 업무 담당. 라이다/카메라 센서 데이터 품질 관리 및 레이블링 파이프라인 운영.</div></div><div class="tli-bar"><div class="tli-bar-label">6mo</div><div class="tli-bar-track"><div class="tli-bar-fill" data-months="6"></div></div></div></div>
+    <div class="tli"><div class="tli-main"><div class="tl-d">2025.07 — Present</div><div class="tl-t">학부연구생 (지도교수: 안홍렬 교수님)</div><div class="tl-o">수원대학교</div><div class="tl-ds">지도교수 안홍렬 교수님 연구실 소속 학부연구생. 연구 프로젝트 참여 및 논문 작업.</div></div><div class="tli-bar"><div class="tli-bar-label">~8mo</div><div class="tli-bar-track"><div class="tli-bar-fill" data-months="8"></div></div></div></div>
+    <div class="tli"><div class="tli-main"><div class="tl-d">2025.08 — 2025.11</div><div class="tl-t">연구 인턴</div><div class="tl-o">성균관대학교 × 하드사이언스</div><div class="tl-ds">데이터 관리부 소속. 연구 데이터 수집·정제·관리 업무.</div></div><div class="tli-bar"><div class="tli-bar-label">3mo</div><div class="tli-bar-track"><div class="tli-bar-fill" data-months="3"></div></div></div></div>
   </div>
 </section>
 
@@ -801,7 +807,11 @@ document.addEventListener('keydown',function(e){if(e.key==='Escape')closeReader(
 (function(){
   var tlObs=new IntersectionObserver(function(es){es.forEach(function(e){
     if(e.isIntersecting){
-      e.target.querySelectorAll('.tli').forEach(function(item,i){setTimeout(function(){item.classList.add('vis')},i*180)});
+      e.target.querySelectorAll('.tli').forEach(function(item,i){setTimeout(function(){
+        item.classList.add('vis');
+        var bar=item.querySelector('.tli-bar-fill');
+        if(bar){var m=+bar.dataset.months;bar.style.height=Math.min(m/12*100,100)+'%'}
+      },i*180)});
       tlObs.unobserve(e.target);
     }
   })},{threshold:.1});
@@ -858,36 +868,28 @@ var threeScene;
   addEventListener('resize',function(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
 })();
 
-// Single Gradient Descent Ball (uses Three.js terrain)
+// Single Gradient Descent Ball (mathematical surface)
 (function(){
   var c=document.getElementById('ballCanvas'),ctx=c.getContext('2d'),w,h;
   function resize(){w=c.width=innerWidth;h=c.height=innerHeight}
   resize();addEventListener('resize',resize);
-  function getTerrainZ(sx,sy){
-    if(!threeScene||!threeScene.origZ)return sy;
-    var nx=(sx/w-.5)*80,ny=(sy/h-.5)*80;
-    var best=null,bestDist=Infinity;
-    for(var i=0;i<threeScene.origZ.length;i+=4){
-      var o=threeScene.origZ[i];
-      var dx=o.x-nx,dy=o.y-ny,d=dx*dx+dy*dy;
-      if(d<bestDist){bestDist=d;best=o}
-    }
-    return best?-best.z*30:0;
+  function sf(x,y){
+    var nx=x/(w||1)*6-3,ny=y/(h||1)*6-3;
+    return Math.sin(nx*1.5)*Math.cos(ny*1.2)*2+Math.sin(nx*.7+ny*.5)*1.5+ny*1.8+Math.cos(nx*2.1-ny*.8)*.6;
   }
-  function sf(x,y){return getTerrainZ(x,y)+y*.6}
-  function gd(x,y){var e=3;return{dx:(sf(x+e,y)-sf(x-e,y))/(2*e),dy:(sf(x,y+e)-sf(x,y-e))/(2*e)}}
-  var ball={x:100,y:30,vx:0,vy:0,r:8,trail:[]};
-  function reset(){ball.x=Math.random()*(w||800)*.6+(w||800)*.2;ball.y=30+Math.random()*60;ball.vx=(Math.random()-.5)*.3;ball.vy=0;ball.trail=[]}
+  function gd(x,y){var e=1.5;return{dx:(sf(x+e,y)-sf(x-e,y))/(2*e),dy:(sf(x,y+e)-sf(x,y-e))/(2*e)}}
+  var ball={x:100,y:50,vx:0,vy:0,r:7,trail:[]};
+  function reset(){ball.x=Math.random()*(w||800)*.5+(w||800)*.25;ball.y=20+Math.random()*80;ball.vx=(Math.random()-.5)*.5;ball.vy=.2;ball.trail=[]}
   function draw(){
     ctx.clearRect(0,0,w,h);
     if(!w||!h||isNaN(ball.x)||isNaN(ball.y)){reset();requestAnimationFrame(draw);return}
     var g=gd(ball.x,ball.y);
-    ball.vx=ball.vx*.993+g.dx*.004;ball.vy=ball.vy*.993+g.dy*.004;
+    ball.vx=ball.vx*.98+g.dx*.08;ball.vy=ball.vy*.98+g.dy*.08;
     var spd=Math.sqrt(ball.vx*ball.vx+ball.vy*ball.vy);
-    if(spd>0.8){var sc=0.8/spd;ball.vx*=sc;ball.vy*=sc}
+    if(spd>2.5){var sc=2.5/spd;ball.vx*=sc;ball.vy*=sc}
     ball.x+=ball.vx;ball.y+=ball.vy;
     ball.trail.push({x:ball.x,y:ball.y});
-    if(ball.trail.length>60)ball.trail.shift();
+    if(ball.trail.length>80)ball.trail.shift();
     var cr,cg,cb,ca;
     if(isLight){cr=200;cg=160;cb=20;ca='rgba(200,160,20,';}
     else{cr=255;cg=255;cb=255;ca='rgba(255,255,255,';}
