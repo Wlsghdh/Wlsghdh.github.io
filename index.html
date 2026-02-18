@@ -3,570 +3,645 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Data Scientist Portfolio">
-<title>Your Name | Data Scientist</title>
-<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<title>Ju Jinho | AI Researcher</title>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Inter:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <style>
-:root {
-  --bg:#0a0a0a;--bg2:#111;--bg3:#181818;--bg4:#1e1e1e;
-  --white:#fff;--gray1:#e0e0e0;--gray2:#aaa;--gray3:#666;--gray4:#333;
-  --accent:#61DAFB;--accent2:#7C3AED;--green:#10B981;
-  --border:#252525;
-  --mono:'Fira Code','Consolas',monospace;--sans:'Noto Sans KR',sans-serif;
-  --tr:all .3s ease;--sidebar:48px;
-}
+:root{--bg:#090909;--bg2:#111;--bg3:#181818;--border:#222;--w:#fff;--g1:#e8e8e8;--g2:#aaa;--g3:#666;--g4:#333;--mono:'Fira Code',monospace;--sans:'Inter','Noto Sans KR',sans-serif;--tr:all .3s ease;--sb:48px}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:#333 #0a0a0a}
-body{font-family:var(--mono);background:var(--bg);color:var(--white);line-height:1.7;overflow-x:hidden}
-::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:#333;border-radius:3px}
-a{color:var(--gray2);text-decoration:none;transition:var(--tr)}a:hover{color:var(--white)}
+html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:#333 #090909}
+body{font-family:var(--mono);background:var(--bg);color:var(--w);line-height:1.7;overflow-x:hidden}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:#333;border-radius:3px}
+a{color:var(--g2);text-decoration:none;transition:var(--tr)}a:hover{color:var(--w)}
+::selection{background:rgba(255,255,255,.15)}
 
-/* ===== TITLE BAR ===== */
-.titlebar{height:32px;background:#0e0e0e;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--gray3);position:fixed;top:0;left:0;right:0;z-index:1000}
-.dots{position:absolute;left:12px;display:flex;gap:7px}
-.dot{width:11px;height:11px;border-radius:50%}.dr{background:#ff5f57}.dy{background:#febc2e}.dg{background:#28c840}
+/* 3D BG */
+#three-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.12}
 
-/* ===== SIDEBAR (고정, 항상 따라다님) ===== */
-.sidebar{width:var(--sidebar);background:#0e0e0e;border-right:1px solid var(--border);display:flex;flex-direction:column;align-items:center;padding-top:12px;position:fixed;top:32px;left:0;bottom:24px;z-index:900;gap:4px}
-.nav-icon{width:44px;height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--gray3);transition:var(--tr);position:relative;font-size:16px;border-radius:6px}
-.nav-icon:hover{color:var(--gray1);background:var(--bg3)}
-.nav-icon.active{color:var(--white)}
-.nav-icon.active::after{content:'';position:absolute;left:0;top:8px;bottom:8px;width:2px;background:var(--white);border-radius:0 2px 2px 0}
-.sidebar .spacer{flex:1}
+/* Layout */
+.titlebar{height:30px;background:#0c0c0c;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--g3);position:fixed;top:0;left:0;right:0;z-index:1000}
+.dots{position:absolute;left:12px;display:flex;gap:6px}.dot{width:10px;height:10px;border-radius:50%}.dr{background:#ff5f57}.dy{background:#febc2e}.dg{background:#28c840}
+.sidebar{width:var(--sb);background:#0c0c0c;border-right:1px solid var(--border);display:flex;flex-direction:column;align-items:center;padding-top:10px;position:fixed;top:30px;left:0;bottom:22px;z-index:900;gap:2px}
+.ni{width:42px;height:42px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--g3);transition:var(--tr);font-size:15px;border-radius:4px;position:relative}
+.ni:hover{color:var(--g1);background:rgba(255,255,255,.04)}.ni.active{color:var(--w)}.ni.active::after{content:'';position:absolute;left:0;top:8px;bottom:8px;width:2px;background:var(--w)}
+.sp{flex:1}
+.tabs{height:36px;background:#0e0e0e;border-bottom:1px solid var(--border);display:flex;overflow-x:auto;position:sticky;top:30px;z-index:800}
+.tab{padding:0 14px;display:flex;align-items:center;gap:6px;font-size:11px;color:var(--g3);border-right:1px solid var(--border);cursor:pointer;transition:var(--tr);white-space:nowrap;background:#0e0e0e}
+.tab:hover{color:var(--g2)}.tab.active{color:var(--w);background:var(--bg);border-bottom:1px solid var(--bg);margin-bottom:-1px}
+.fd{width:7px;height:7px;border-radius:2px;display:inline-block}
+.main{display:flex;margin-top:30px}.editor{margin-left:var(--sb);flex:1;min-height:calc(100vh - 52px)}
+.sbar{height:22px;background:#0e0e0e;border-top:1px solid var(--border);display:flex;align-items:center;padding:0 12px;font-size:10px;color:var(--g3);position:fixed;bottom:0;left:0;right:0;z-index:1000;gap:14px}.sbar .sp{flex:1}
 
-/* ===== TAB BAR ===== */
-.tabs{height:38px;background:var(--bg2);border-bottom:1px solid var(--border);display:flex;overflow-x:auto;position:sticky;top:32px;z-index:800}
-.tab{padding:0 16px;display:flex;align-items:center;gap:7px;font-size:12px;color:var(--gray3);border-right:1px solid var(--border);cursor:pointer;transition:var(--tr);white-space:nowrap;background:var(--bg2)}
-.tab:hover{color:var(--gray2);background:var(--bg3)}
-.tab.active{color:var(--white);background:var(--bg);border-bottom:1px solid var(--bg);margin-bottom:-1px}
-.fdot{width:8px;height:8px;border-radius:2px;display:inline-block}
+/* Sections */
+.sec{min-height:100vh;padding:80px 56px 80px 72px;opacity:0;transform:translateY(20px);transition:opacity .7s,transform .7s}.sec.vis{opacity:1;transform:translateY(0)}
+.sec-l{color:var(--g4);font-size:10px;margin-bottom:4px;letter-spacing:2px;text-transform:uppercase}
+.sec-t{font-size:clamp(20px,2.8vw,30px);font-weight:600;margin-bottom:36px;color:var(--w);font-family:var(--sans)}
 
-/* ===== MAIN ===== */
-.main{display:flex;margin-top:32px}
-.editor{margin-left:var(--sidebar);flex:1;min-height:calc(100vh - 56px)}
+/* Hero */
+#hero{display:flex;align-items:center;min-height:calc(100vh - 60px)}
+.hw{display:flex;align-items:center;gap:56px;width:100%}
+.pf{width:180px;height:180px;border-radius:50%;border:1px solid var(--g4);overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--bg2);flex-shrink:0}
+.pf img{width:100%;height:100%;object-fit:cover}.pf-ph{color:var(--g3);font-size:11px;text-align:center}
+.ht{flex:1}.h-hi{font-size:12px;color:var(--g3);margin-bottom:6px;letter-spacing:1px}
+.h-name{font-size:clamp(28px,4.5vw,48px);font-weight:700;color:var(--w);line-height:1.1;margin-bottom:6px;font-family:var(--sans)}
+.h-role{font-size:clamp(14px,1.8vw,18px);color:var(--g2);margin-bottom:4px;font-weight:300;font-family:var(--sans)}
+.h-typ{font-size:clamp(13px,1.3vw,15px);color:var(--g3);margin-bottom:20px;min-height:24px}
+.cur{display:inline-block;width:2px;height:1em;background:var(--w);animation:bl 1s infinite;vertical-align:text-bottom}
+@keyframes bl{0%,100%{opacity:1}50%{opacity:0}}
+.h-desc{color:var(--g2);font-size:13px;line-height:1.9;max-width:500px;margin-bottom:24px;font-family:var(--sans)}
+.h-btns{display:flex;gap:10px;flex-wrap:wrap}
+.btn{padding:9px 20px;border:1px solid var(--g4);border-radius:3px;font-family:var(--mono);font-size:11px;cursor:pointer;transition:var(--tr);color:var(--g2);background:transparent}
+.btn:hover{border-color:var(--w);color:var(--w)}.btn-w{background:var(--w);color:#000;border-color:var(--w);font-weight:600}.btn-w:hover{background:transparent;color:var(--w)}
 
-/* ===== STATUS BAR ===== */
-.statusbar{height:24px;background:var(--bg3);border-top:1px solid var(--border);display:flex;align-items:center;padding:0 12px;font-size:11px;color:var(--gray3);position:fixed;bottom:0;left:0;right:0;z-index:1000;gap:16px}
-.statusbar .sp{flex:1}
+/* Terminal */
+.term{background:var(--bg2);border:1px solid var(--border);border-radius:5px;overflow:hidden;max-width:580px}
+.th{background:#0c0c0c;padding:7px 12px;display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--border)}
+.th .td{display:flex;gap:5px}.th .td span{width:8px;height:8px;border-radius:50%}
+.th .tn{font-size:10px;color:var(--g3);margin-left:6px}
+.tb{padding:16px;font-size:11px;line-height:2.2;color:var(--g2)}
+.tp{color:#4ade80}.tk{color:var(--w)}.tv{color:var(--g2)}.ts{color:var(--g1)}
 
-/* ===== SECTIONS ===== */
-.sec{min-height:100vh;padding:80px 64px 80px 80px;opacity:0;transform:translateY(24px);transition:opacity .7s ease,transform .7s ease}
-.sec.vis{opacity:1;transform:translateY(0)}
-.sec-label{color:var(--gray3);font-size:12px;margin-bottom:6px;letter-spacing:1px;text-transform:uppercase}
-.sec-title{font-size:clamp(22px,3vw,34px);font-weight:600;margin-bottom:40px;color:var(--white);letter-spacing:-.5px}
-.sec-title .dim{color:var(--gray3);font-weight:400}
+/* Skills */
+.sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.sk{background:var(--bg2);border:1px solid var(--border);border-radius:5px;padding:20px;transition:var(--tr)}.sk:hover{border-color:var(--g3)}
+.sk h4{font-size:12px;font-weight:600;color:var(--w);margin-bottom:12px;font-family:var(--sans)}
+.sk-t{display:flex;flex-wrap:wrap;gap:5px}.st{padding:3px 9px;border:1px solid var(--border);border-radius:3px;font-size:10px;color:var(--g2);transition:var(--tr)}.st:hover{border-color:var(--g2);color:var(--w)}
 
-/* ===== HERO ===== */
-#hero{display:flex;align-items:center;min-height:calc(100vh - 72px)}
-.hero-wrap{display:flex;align-items:center;gap:60px;width:100%}
-.hero-photo{flex-shrink:0}
-.photo-frame{width:200px;height:200px;border-radius:50%;border:2px solid var(--gray4);overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--bg2);position:relative}
-.photo-frame::after{content:'';position:absolute;inset:0;border-radius:50%;border:1px solid rgba(255,255,255,.05)}
-.photo-placeholder{color:var(--gray3);font-size:13px;text-align:center;line-height:1.5}
-.photo-frame img{width:100%;height:100%;object-fit:cover}
-.hero-text{flex:1}
-.hero-greeting{font-size:14px;color:var(--gray3);margin-bottom:8px}
-.hero-name{font-size:clamp(32px,5vw,56px);font-weight:700;color:var(--white);line-height:1.15;margin-bottom:8px;letter-spacing:-1px}
-.hero-role{font-size:clamp(16px,2vw,22px);color:var(--gray2);margin-bottom:6px;font-weight:300}
-.hero-typing{font-size:clamp(14px,1.5vw,18px);color:var(--gray3);margin-bottom:24px;min-height:28px}
-.cursor{display:inline-block;width:2px;height:1em;background:var(--white);animation:blink 1s infinite;vertical-align:text-bottom;margin-left:1px}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
-.hero-desc{color:var(--gray2);font-size:14px;line-height:1.8;max-width:520px;margin-bottom:28px;font-family:var(--sans)}
-.hero-btns{display:flex;gap:12px;flex-wrap:wrap}
-.btn{padding:10px 22px;border:1px solid var(--gray4);border-radius:4px;font-family:var(--mono);font-size:12px;cursor:pointer;transition:var(--tr);color:var(--gray2);background:transparent}
-.btn:hover{border-color:var(--white);color:var(--white);transform:translateY(-1px)}
-.btn-w{background:var(--white);color:var(--bg);border-color:var(--white);font-weight:600}
-.btn-w:hover{background:transparent;color:var(--white)}
+/* Projects */
+.pg{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+.pc{background:var(--bg2);border:1px solid var(--border);border-radius:5px;overflow:hidden;transition:var(--tr)}.pc:hover{border-color:var(--g3);transform:translateY(-3px)}
+.pc-i{height:170px;background:var(--bg3);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.pc-i img{width:100%;height:100%;object-fit:cover}.pc-ph{color:var(--g3);font-size:11px}
+.pc-b{padding:16px}.pc-tt{font-size:14px;font-weight:600;color:var(--w);margin-bottom:5px;font-family:var(--sans)}
+.pc-d{font-size:11px;font-family:var(--sans);color:var(--g2);line-height:1.7;margin-bottom:10px}
+.pc-tg{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px}.pt{padding:2px 7px;background:var(--bg3);border-radius:2px;font-size:9px;color:var(--g2)}
+.pc-l{display:flex;gap:8px}.pl{font-size:10px;color:var(--g3);border:1px solid var(--border);padding:3px 10px;border-radius:2px;transition:var(--tr)}.pl:hover{color:var(--w);border-color:var(--g3)}
 
-/* ===== ABOUT (Terminal) ===== */
-.term{background:var(--bg2);border:1px solid var(--border);border-radius:6px;overflow:hidden;max-width:640px}
-.term-h{background:#0e0e0e;padding:8px 14px;display:flex;align-items:center;gap:7px;border-bottom:1px solid var(--border)}
-.term-h .tdots{display:flex;gap:5px}.term-h .tdots span{width:9px;height:9px;border-radius:50%}
-.term-h .tname{font-size:11px;color:var(--gray3);margin-left:8px}
-.term-b{padding:18px;font-size:12px;line-height:2.1;color:var(--gray2)}
-.tp{color:var(--green)}.tk{color:var(--white)}.tv{color:var(--gray2)}.ts{color:var(--gray1)}
+/* Publications */
+.pub-l{display:flex;flex-direction:column;gap:14px;max-width:720px}
+.pub{padding:18px;background:var(--bg2);border:1px solid var(--border);border-radius:5px;transition:var(--tr)}.pub:hover{border-color:var(--g3);transform:translateX(3px)}
+.pub-v{font-size:10px;color:var(--g3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
+.pub-tt{font-size:13px;font-weight:600;color:var(--w);margin-bottom:3px;font-family:var(--sans)}
+.pub-a{font-size:11px;color:var(--g2);font-family:var(--sans);margin-bottom:5px}
 
-/* ===== SKILLS ===== */
-.skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
-.sk-card{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:22px;transition:var(--tr)}
-.sk-card:hover{border-color:var(--gray3);transform:translateY(-2px)}
-.sk-card h4{font-size:13px;font-weight:600;color:var(--white);margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.sk-tags{display:flex;flex-wrap:wrap;gap:6px}
-.sk-tag{padding:3px 10px;border:1px solid var(--border);border-radius:3px;font-size:11px;color:var(--gray2);transition:var(--tr)}
-.sk-tag:hover{border-color:var(--gray2);color:var(--white)}
+/* Awards */
+.aw-l{display:flex;flex-direction:column;gap:12px;max-width:640px}
+.aw{display:flex;gap:14px;padding:16px;background:var(--bg2);border:1px solid var(--border);border-radius:5px;transition:var(--tr)}.aw:hover{border-color:var(--g3);transform:translateX(3px)}
+.aw-y{font-size:11px;color:var(--g3);min-width:42px;font-weight:500}.aw-b h4{font-size:13px;font-weight:600;color:var(--w);margin-bottom:2px;font-family:var(--sans)}.aw-b p{font-size:11px;color:var(--g2);font-family:var(--sans)}
 
-/* ===== PROJECTS ===== */
-.proj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:20px}
-.proj-card{background:var(--bg2);border:1px solid var(--border);border-radius:6px;overflow:hidden;transition:var(--tr);cursor:pointer}
-.proj-card:hover{border-color:var(--gray3);transform:translateY(-3px)}
-.proj-img{height:180px;background:var(--bg3);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden}
-.proj-img img{width:100%;height:100%;object-fit:cover}
-.proj-img .placeholder{color:var(--gray3);font-size:12px}
-.proj-body{padding:18px}
-.proj-title{font-size:15px;font-weight:600;color:var(--white);margin-bottom:6px}
-.proj-desc{font-size:12px;font-family:var(--sans);color:var(--gray2);line-height:1.7;margin-bottom:12px}
-.proj-tags{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
-.proj-t{padding:2px 8px;background:var(--bg3);border-radius:3px;font-size:10px;color:var(--gray2)}
-.proj-links{display:flex;gap:8px}
-.proj-link{font-size:11px;color:var(--gray3);border:1px solid var(--border);padding:4px 12px;border-radius:3px;transition:var(--tr)}
-.proj-link:hover{color:var(--white);border-color:var(--gray3)}
+/* Review Cards */
+.rv-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.rv{background:var(--bg2);border:1px solid var(--border);border-radius:5px;padding:20px;cursor:pointer;transition:all .4s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden}
+.rv::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#fff,transparent);opacity:0;transition:var(--tr)}
+.rv:hover{border-color:var(--g3);transform:translateY(-4px) scale(1.01);box-shadow:0 12px 40px rgba(0,0,0,.5)}.rv:hover::before{opacity:.4}
+.rv-tg{font-size:9px;color:var(--g3);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+.rv-tt{font-size:14px;font-weight:600;color:var(--w);margin-bottom:4px;font-family:var(--sans);line-height:1.4}
+.rv-ve{font-size:10px;color:var(--g3);margin-bottom:8px}
+.rv-sm{font-size:11px;color:var(--g2);font-family:var(--sans);line-height:1.6;margin-bottom:10px}
+.rv-lk{font-size:10px;color:var(--g3);transition:var(--tr)}.rv-lk:hover{color:var(--w)}
 
-/* ===== PUBLICATIONS ===== */
-.pub-list{display:flex;flex-direction:column;gap:16px;max-width:800px}
-.pub-item{padding:20px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;transition:var(--tr)}
-.pub-item:hover{border-color:var(--gray3);transform:translateX(4px)}
-.pub-venue{font-size:11px;color:var(--gray3);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px}
-.pub-title{font-size:14px;font-weight:600;color:var(--white);margin-bottom:4px}
-.pub-authors{font-size:12px;color:var(--gray2);font-family:var(--sans);margin-bottom:6px}
-.pub-meta{display:flex;gap:12px;font-size:11px;color:var(--gray3)}
-.pub-link{color:var(--gray2);transition:var(--tr)}.pub-link:hover{color:var(--white)}
+/* ===== PAPER READER (전체화면 새 페이지 스타일) ===== */
+#reader{display:none;position:fixed;inset:0;z-index:5000;background:var(--bg);overflow-y:auto}
+#reader.open{display:block}
+.rd-nav{position:fixed;top:0;left:0;right:0;height:48px;background:rgba(9,9,9,.95);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;z-index:5001;backdrop-filter:blur(10px)}
+.rd-back{font-size:12px;color:var(--g2);cursor:pointer;display:flex;align-items:center;gap:6px;transition:var(--tr);background:none;border:1px solid var(--border);padding:6px 14px;border-radius:3px;font-family:var(--mono)}.rd-back:hover{color:var(--w);border-color:var(--g3)}
+.rd-file{font-size:11px;color:var(--g3);margin-left:16px}
+.rd-body{max-width:700px;margin:0 auto;padding:80px 24px 120px}
+.rd-tag{font-size:10px;color:var(--g3);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:12px}
+.rd-title{font-size:clamp(22px,3vw,32px);font-weight:700;color:var(--w);line-height:1.3;margin-bottom:8px;font-family:var(--sans)}
+.rd-meta{font-size:12px;color:var(--g3);margin-bottom:40px;padding-bottom:24px;border-bottom:1px solid var(--border);font-family:var(--sans)}
+.rd-section{margin-bottom:40px;opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.rd-section.vis{opacity:1;transform:translateY(0)}
+.rd-section h3{font-size:16px;font-weight:600;color:var(--w);margin-bottom:12px;font-family:var(--sans);padding-bottom:8px;border-bottom:1px solid var(--border)}
+.rd-section p{font-size:13px;color:var(--g2);font-family:var(--sans);line-height:2;margin-bottom:8px}
+.rd-section ul{padding-left:20px;margin-bottom:8px}.rd-section li{font-size:13px;color:var(--g2);font-family:var(--sans);line-height:2;margin-bottom:4px}
+.rd-section strong{color:var(--w)}
+.rd-img{width:100%;border-radius:6px;border:1px solid var(--border);margin:16px 0;display:block}
+.rd-img-cap{font-size:10px;color:var(--g3);text-align:center;margin:-8px 0 16px;font-family:var(--sans)}
+.rd-code{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:14px;font-size:11px;color:var(--g2);overflow-x:auto;margin:12px 0;line-height:1.8}
+.rd-quote{border-left:2px solid var(--g4);padding:8px 16px;margin:12px 0;color:var(--g3);font-style:italic;font-size:12px;font-family:var(--sans)}
+.rd-divider{width:40px;height:1px;background:var(--g4);margin:40px auto}
 
-/* ===== AWARDS ===== */
-.award-list{display:flex;flex-direction:column;gap:14px;max-width:700px}
-.award-item{display:flex;gap:16px;padding:18px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;transition:var(--tr);align-items:flex-start}
-.award-item:hover{border-color:var(--gray3);transform:translateX(4px)}
-.award-year{font-size:12px;color:var(--gray3);min-width:48px;padding-top:2px;font-weight:500}
-.award-body h4{font-size:14px;font-weight:600;color:var(--white);margin-bottom:2px}
-.award-body p{font-size:12px;color:var(--gray2);font-family:var(--sans)}
+/* Progress bar */
+.rd-progress{position:fixed;top:48px;left:0;height:2px;background:var(--w);z-index:5002;transition:width .1s;width:0}
 
-/* ===== CAREER (Timeline) ===== */
-.timeline{position:relative;padding-left:32px;max-width:700px}
-.timeline::before{content:'';position:absolute;left:11px;top:0;bottom:0;width:1px;background:var(--gray4)}
-.tl-item{position:relative;margin-bottom:36px;padding:20px;background:var(--bg2);border:1px solid var(--border);border-radius:6px;transition:var(--tr)}
-.tl-item:hover{border-color:var(--gray3);transform:translateX(4px)}
-.tl-item::before{content:'';position:absolute;left:-27px;top:24px;width:8px;height:8px;border-radius:50%;background:var(--white);border:2px solid var(--bg);z-index:1}
-.tl-date{font-size:11px;color:var(--gray3);margin-bottom:4px}
-.tl-title{font-size:15px;font-weight:600;color:var(--white);margin-bottom:2px}
-.tl-org{font-size:13px;color:var(--gray2);margin-bottom:8px}
-.tl-desc{font-family:var(--sans);font-size:12px;color:var(--gray2);line-height:1.8}
+/* Career */
+.tl{position:relative;padding-left:28px;max-width:640px}.tl::before{content:'';position:absolute;left:9px;top:0;bottom:0;width:1px;background:var(--g4)}
+.tli{position:relative;margin-bottom:32px;padding:18px;background:var(--bg2);border:1px solid var(--border);border-radius:5px;transition:var(--tr)}.tli:hover{border-color:var(--g3);transform:translateX(3px)}
+.tli::before{content:'';position:absolute;left:-24px;top:22px;width:7px;height:7px;border-radius:50%;background:var(--w);border:2px solid var(--bg)}
+.tl-d{font-size:10px;color:var(--g3);margin-bottom:3px}.tl-t{font-size:14px;font-weight:600;color:var(--w);margin-bottom:2px;font-family:var(--sans)}
+.tl-o{font-size:12px;color:var(--g2);margin-bottom:7px}.tl-ds{font-family:var(--sans);font-size:11px;color:var(--g2);line-height:1.8}
 
-/* ===== CONTACT ===== */
-.contact-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:20px}
-.c-link{padding:10px 20px;background:var(--bg2);border:1px solid var(--border);border-radius:4px;font-size:12px;color:var(--gray2);transition:var(--tr);display:flex;align-items:center;gap:8px}
-.c-link:hover{border-color:var(--white);color:var(--white);transform:translateY(-2px)}
+/* Contact */
+.c-l{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
+.cl{padding:9px 18px;background:var(--bg2);border:1px solid var(--border);border-radius:3px;font-size:11px;color:var(--g2);transition:var(--tr);display:flex;align-items:center;gap:7px}.cl:hover{border-color:var(--w);color:var(--w);transform:translateY(-1px)}
+.footer{padding:28px 56px 40px 72px;text-align:center;font-size:10px;color:var(--g4)}
+/* Music toggle */
+.music-btn{position:fixed;bottom:34px;right:52px;width:30px;height:30px;background:var(--bg3);border:1px solid var(--border);border-radius:3px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--g3);font-size:12px;transition:var(--tr);z-index:500}
+.music-btn:hover{border-color:var(--w);color:var(--w)}.music-btn.on{color:var(--w);border-color:var(--g3)}
+.music-bars{display:flex;gap:2px;align-items:flex-end;height:12px}
+.music-bars span{width:2px;background:currentColor;border-radius:1px;transition:height .3s}
+.music-btn.on .music-bars span{animation:bars .8s ease infinite alternate}
+.music-btn.on .music-bars span:nth-child(2){animation-delay:.15s}
+.music-btn.on .music-bars span:nth-child(3){animation-delay:.3s}
+.music-btn.on .music-bars span:nth-child(4){animation-delay:.45s}
+@keyframes bars{0%{height:3px}100%{height:12px}}
 
-/* ===== FOOTER ===== */
-.footer{padding:32px 64px 48px 80px;text-align:center;font-size:11px;color:var(--gray4);min-height:auto}
-
-/* ===== SCROLL TOP ===== */
-.scroll-top{position:fixed;bottom:36px;right:16px;width:32px;height:32px;background:var(--bg3);border:1px solid var(--border);border-radius:4px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--gray3);font-size:14px;opacity:0;transition:var(--tr);z-index:500}
-.scroll-top.show{opacity:1}.scroll-top:hover{border-color:var(--white);color:var(--white)}
-
-/* ===== MOBILE ===== */
-.mob-nav{display:none}
+.sctop{position:fixed;bottom:34px;right:14px;width:30px;height:30px;background:var(--bg3);border:1px solid var(--border);border-radius:3px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--g3);font-size:13px;opacity:0;transition:var(--tr);z-index:500}.sctop.show{opacity:1}.sctop:hover{border-color:var(--w);color:var(--w)}
+.mnav{display:none}
 @media(max-width:768px){
   .sidebar{display:none}.editor{margin-left:0}.tabs{display:none}
-  .sec{padding:32px 16px}.footer{padding:24px 16px 48px}
-  .hero-wrap{flex-direction:column;gap:28px;text-align:center}
-  .photo-frame{width:160px;height:160px}
-  .hero-desc{margin:0 auto 24px}.hero-btns{justify-content:center}
-  .skills-grid{grid-template-columns:1fr}.proj-grid{grid-template-columns:1fr}
-  .mob-nav{display:flex!important;position:fixed;bottom:24px;left:0;right:0;background:#0e0e0e;border-top:1px solid var(--border);z-index:999;justify-content:space-around;padding:5px 0}
-  .mob-nav a{color:var(--gray3);font-size:8px;text-align:center;padding:4px;display:flex;flex-direction:column;align-items:center;gap:1px}
-  .mob-nav a .mi{font-size:14px}.mob-nav a.active{color:var(--white)}
+  .sec{padding:28px 14px}.footer{padding:20px 14px 44px}
+  .hw{flex-direction:column;gap:24px;text-align:center}.pf{width:140px;height:140px}
+  .h-desc{margin:0 auto 20px}.h-btns{justify-content:center}
+  .sg,.pg,.rv-g{grid-template-columns:1fr}
+  .mnav{display:flex!important;position:fixed;bottom:22px;left:0;right:0;background:#0c0c0c;border-top:1px solid var(--border);z-index:999;justify-content:space-around;padding:4px 0}
+  .mnav a{color:var(--g3);font-size:7px;text-align:center;padding:3px;display:flex;flex-direction:column;align-items:center;gap:1px}.mnav a .mi{font-size:13px}.mnav a.active{color:var(--w)}
+  .rd-body{padding:64px 16px 80px}
 }
-
-#particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
-.sec,.titlebar,.sidebar,.tabs,.statusbar,.scroll-top,.mob-nav,.footer{position:relative;z-index:2}
+.sec,.titlebar,.sidebar,.tabs,.sbar,.sctop,.mnav,.footer{position:relative;z-index:2}
 </style>
 </head>
 <body>
-<canvas id="particles"></canvas>
 
-<div>
-  <!-- Title Bar -->
+<!-- 3D Background -->
+<div id="three-bg"></div>
+
+<!-- Paper Reader (전체화면) -->
+<div id="reader">
+  <div class="rd-progress" id="rdProgress"></div>
+  <div class="rd-nav">
+    <button class="rd-back" onclick="closeReader()">← Back to Portfolio</button>
+    <span class="rd-file" id="rdFile">review.md</span>
+  </div>
+  <div class="rd-body" id="rdBody"></div>
+</div>
+
+<div id="portfolio">
   <div class="titlebar">
     <div class="dots"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div></div>
-    <span>portfolio — Your Name</span>
+    <span>portfolio — Ju Jinho</span>
   </div>
-
   <div class="main">
-    <!-- Sidebar (고정, 스크롤 따라다님) -->
-    <nav class="sidebar" id="sidebar">
-      <div class="nav-icon active" data-s="hero" title="Home">⌂</div>
-      <div class="nav-icon" data-s="about" title="About">◐</div>
-      <div class="nav-icon" data-s="skills" title="Skills">◈</div>
-      <div class="nav-icon" data-s="projects" title="Projects">▦</div>
-      <div class="nav-icon" data-s="publications" title="Publications">◉</div>
-      <div class="nav-icon" data-s="awards" title="Awards">★</div>
-      <div class="nav-icon" data-s="career" title="Career">▬</div>
-      <div class="nav-icon" data-s="contact" title="Contact">✉</div>
-      <div class="spacer"></div>
+    <nav class="sidebar">
+      <div class="ni active" data-s="hero" title="Home">⌂</div>
+      <div class="ni" data-s="about" title="About">◐</div>
+      <div class="ni" data-s="skills" title="Skills">◈</div>
+      <div class="ni" data-s="projects" title="Projects">▦</div>
+      <div class="ni" data-s="publications" title="Papers">◉</div>
+      <div class="ni" data-s="awards" title="Awards">★</div>
+      <div class="ni" data-s="reviews" title="Reviews">◇</div>
+      <div class="ni" data-s="career" title="Career">▬</div>
+      <div class="ni" data-s="contact" title="Contact">✉</div>
+      <div class="sp"></div>
     </nav>
-
-    <!-- Editor -->
     <div class="editor">
-      <!-- Tabs -->
       <div class="tabs" id="tabBar">
-        <div class="tab active" data-s="hero"><span class="fdot" style="background:#fff"></span>home.py</div>
-        <div class="tab" data-s="about"><span class="fdot" style="background:#aaa"></span>about.yaml</div>
-        <div class="tab" data-s="skills"><span class="fdot" style="background:#666"></span>skills.py</div>
-        <div class="tab" data-s="projects"><span class="fdot" style="background:#fff"></span>projects.ipynb</div>
-        <div class="tab" data-s="publications"><span class="fdot" style="background:#aaa"></span>papers.bib</div>
-        <div class="tab" data-s="awards"><span class="fdot" style="background:#666"></span>awards.md</div>
-        <div class="tab" data-s="career"><span class="fdot" style="background:#fff"></span>career.md</div>
-        <div class="tab" data-s="contact"><span class="fdot" style="background:#aaa"></span>contact.sh</div>
+        <div class="tab active" data-s="hero"><span class="fd" style="background:#fff"></span>home.py</div>
+        <div class="tab" data-s="about"><span class="fd" style="background:#999"></span>about.yaml</div>
+        <div class="tab" data-s="skills"><span class="fd" style="background:#666"></span>skills.py</div>
+        <div class="tab" data-s="projects"><span class="fd" style="background:#fff"></span>projects.ipynb</div>
+        <div class="tab" data-s="publications"><span class="fd" style="background:#999"></span>papers.bib</div>
+        <div class="tab" data-s="awards"><span class="fd" style="background:#666"></span>awards.md</div>
+        <div class="tab" data-s="reviews"><span class="fd" style="background:#fff"></span>reviews.md</div>
+        <div class="tab" data-s="career"><span class="fd" style="background:#999"></span>career.md</div>
+        <div class="tab" data-s="contact"><span class="fd" style="background:#666"></span>contact.sh</div>
       </div>
 
-      <!-- ==================== HERO ==================== -->
+      <!-- HERO -->
       <section class="sec vis" id="hero">
-        <div class="hero-wrap">
-          <div class="hero-photo">
-            <div class="photo-frame">
-              <!-- 사진 넣을 때: <img src="your-photo.jpg" alt="Your Name"> -->
-              <div class="photo-placeholder">your<br>photo<br>here</div>
-            </div>
+        <div class="hw">
+          <div class="pf">
+            <img src="images/profile.png" alt="Ju Jinho" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+            <div class="pf-ph" style="display:none">photo</div>
           </div>
-          <div class="hero-text">
-            <div class="hero-greeting">// hello world</div>
-            <div class="hero-name">Your Name</div>
-            <div class="hero-role">Data Scientist & ML Engineer</div>
-            <div class="hero-typing">
-              <span id="typingText"></span><span class="cursor"></span>
-            </div>
-            <p class="hero-desc">
-              데이터에서 인사이트를 발견하고, 모델을 통해 가치를 만듭니다. 복잡한 문제를 간결한 해법으로 풀어내는 과정을 좋아합니다.
-            </p>
-            <div class="hero-btns">
+          <div class="ht">
+            <div class="h-hi">// hello, world</div>
+            <div class="h-name">주진호</div>
+            <div class="h-role">AI Researcher · Vision & Modeling</div>
+            <div class="h-typ"><span id="typT"></span><span class="cur"></span></div>
+            <p class="h-desc">Computer Vision 분야에서 데이터 양질의 한계를 넘어서는 고성능 모델을 연구합니다. 배움을 멈추지 않는 연구자로서, 대학원 진학을 목표로 매일 성장하고 있습니다.</p>
+            <div class="h-btns">
               <a href="#projects" class="btn btn-w">Projects</a>
               <a href="#publications" class="btn">Publications</a>
-              <a href="https://github.com/yourusername" target="_blank" class="btn">GitHub</a>
-              <a href="#contact" class="btn">Contact</a>
+              <a href="#reviews" class="btn">Paper Reviews</a>
+              <a href="https://github.com/Wlsghdh" target="_blank" class="btn">GitHub</a>
             </div>
           </div>
         </div>
       </section>
 
-      <!-- ==================== ABOUT ==================== -->
+      <!-- ABOUT -->
       <section class="sec" id="about">
-        <div class="sec-label">about</div>
-        <h2 class="sec-title">About Me</h2>
+        <div class="sec-l">about</div>
+        <h2 class="sec-t">About Me</h2>
         <div class="term">
-          <div class="term-h"><div class="tdots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="tname">about.yaml</span></div>
-          <div class="term-b">
+          <div class="th"><div class="td"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="tn">about.yaml</span></div>
+          <div class="tb">
             <div><span class="tp">$</span> cat about.yaml</div><br>
-            <div><span class="tk">name</span>: <span class="ts">Your Name</span></div>
-            <div><span class="tk">role</span>: <span class="ts">Data Scientist</span></div>
-            <div><span class="tk">location</span>: <span class="ts">Seoul, Korea</span></div>
+            <div><span class="tk">name</span>: <span class="ts">주진호 (Ju Jinho)</span></div>
+            <div><span class="tk">role</span>: <span class="ts">AI Researcher · Vision & Modeling</span></div>
+            <div><span class="tk">status</span>: <span class="ts">대학원 진학을 위해 연구에 몰두하는 4학년</span></div>
             <div><span class="tk">education</span>:</div>
-            <div>&nbsp;&nbsp;- <span class="ts">M.S. in Data Science @ University</span></div>
-            <div>&nbsp;&nbsp;- <span class="ts">B.S. in Statistics @ University</span></div>
+            <div>&nbsp;&nbsp;- <span class="ts">수원대학교 AI·데이터과학부 4학년</span></div>
             <div><span class="tk">research_interests</span>:</div>
-            <div>&nbsp;&nbsp;- <span class="tv">Machine Learning</span></div>
-            <div>&nbsp;&nbsp;- <span class="tv">Deep Learning</span></div>
-            <div>&nbsp;&nbsp;- <span class="tv">Statistical Modeling</span></div>
-            <div>&nbsp;&nbsp;- <span class="tv">NLP / Computer Vision</span></div>
-            <div><span class="tk">status</span>: <span style="color:var(--green)">open_to_opportunities</span></div>
+            <div>&nbsp;&nbsp;- <span class="tv">Computer Vision</span></div>
+            <div>&nbsp;&nbsp;- <span class="tv">Data-Efficient Learning</span></div>
+            <div>&nbsp;&nbsp;- <span class="tv">Multimodal Learning</span></div>
+            <div><span class="tk">philosophy</span>: <span style="color:#4ade80">"죽을 때까지 배우고, 끝없이 연구한다"</span></div>
           </div>
         </div>
       </section>
 
-      <!-- ==================== SKILLS ==================== -->
+      <!-- SKILLS -->
       <section class="sec" id="skills">
-        <div class="sec-label">skills</div>
-        <h2 class="sec-title">Technical Skills</h2>
-        <div class="skills-grid">
-          <div class="sk-card">
-            <h4>◈ ML / DL</h4>
-            <div class="sk-tags">
-              <span class="sk-tag">PyTorch</span><span class="sk-tag">TensorFlow</span><span class="sk-tag">scikit-learn</span>
-              <span class="sk-tag">XGBoost</span><span class="sk-tag">LightGBM</span><span class="sk-tag">Hugging Face</span>
-            </div>
-          </div>
-          <div class="sk-card">
-            <h4>◈ Data & Analytics</h4>
-            <div class="sk-tags">
-              <span class="sk-tag">Python</span><span class="sk-tag">R</span><span class="sk-tag">SQL</span>
-              <span class="sk-tag">Pandas</span><span class="sk-tag">NumPy</span><span class="sk-tag">Spark</span>
-            </div>
-          </div>
-          <div class="sk-card">
-            <h4>◈ Visualization</h4>
-            <div class="sk-tags">
-              <span class="sk-tag">Matplotlib</span><span class="sk-tag">Seaborn</span><span class="sk-tag">Plotly</span>
-              <span class="sk-tag">Tableau</span><span class="sk-tag">D3.js</span>
-            </div>
-          </div>
-          <div class="sk-card">
-            <h4>◈ MLOps & Infra</h4>
-            <div class="sk-tags">
-              <span class="sk-tag">Docker</span><span class="sk-tag">AWS</span><span class="sk-tag">MLflow</span>
-              <span class="sk-tag">Airflow</span><span class="sk-tag">Git</span><span class="sk-tag">Linux</span>
-            </div>
-          </div>
+        <div class="sec-l">skills</div>
+        <h2 class="sec-t">Technical Skills</h2>
+        <div class="sg">
+          <div class="sk"><h4>ML / Deep Learning</h4><div class="sk-t"><span class="st">PyTorch</span><span class="st">TensorFlow</span><span class="st">scikit-learn</span><span class="st">XGBoost</span><span class="st">LightGBM</span><span class="st">OpenCV</span><span class="st">YOLO</span><span class="st">Hugging Face</span></div></div>
+          <div class="sk"><h4>Data & Analytics</h4><div class="sk-t"><span class="st">Python</span><span class="st">R</span><span class="st">SQL</span><span class="st">Pandas</span><span class="st">NumPy</span><span class="st">Scipy</span></div></div>
+          <div class="sk"><h4>Visualization</h4><div class="sk-t"><span class="st">Matplotlib</span><span class="st">Seaborn</span><span class="st">Plotly</span><span class="st">Tableau</span></div></div>
+          <div class="sk"><h4>Tools & Infra</h4><div class="sk-t"><span class="st">Git</span><span class="st">AWS</span><span class="st">Docker</span><span class="st">Linux</span><span class="st">Selenium</span><span class="st">FastAPI</span></div></div>
         </div>
       </section>
 
-      <!-- ==================== PROJECTS ==================== -->
+      <!-- PROJECTS -->
       <section class="sec" id="projects">
-        <div class="sec-label">projects</div>
-        <h2 class="sec-title">Projects</h2>
-        <div class="proj-grid">
-
-          <div class="proj-card">
-            <div class="proj-img">
-              <!-- <img src="project1.png" alt="Project 1"> -->
-              <span class="placeholder">project image</span>
-            </div>
-            <div class="proj-body">
-              <div class="proj-title">Predictive Modeling Pipeline</div>
-              <p class="proj-desc">고객 이탈 예측을 위한 end-to-end ML 파이프라인. Feature engineering부터 모델 배포까지 전 과정을 자동화.</p>
-              <div class="proj-tags"><span class="proj-t">Python</span><span class="proj-t">XGBoost</span><span class="proj-t">MLflow</span><span class="proj-t">Docker</span></div>
-              <div class="proj-links"><a href="#" class="proj-link">GitHub</a><a href="#" class="proj-link">Paper</a></div>
-            </div>
-          </div>
-
-          <div class="proj-card">
-            <div class="proj-img">
-              <span class="placeholder">project image</span>
-            </div>
-            <div class="proj-body">
-              <div class="proj-title">NLP Sentiment Analyzer</div>
-              <p class="proj-desc">BERT 기반 감성 분석 모델. 한국어 리뷰 데이터 100만 건 학습. F1-score 0.94 달성.</p>
-              <div class="proj-tags"><span class="proj-t">PyTorch</span><span class="proj-t">BERT</span><span class="proj-t">FastAPI</span><span class="proj-t">AWS</span></div>
-              <div class="proj-links"><a href="#" class="proj-link">GitHub</a><a href="#" class="proj-link">Demo</a></div>
-            </div>
-          </div>
-
-          <div class="proj-card">
-            <div class="proj-img">
-              <span class="placeholder">project image</span>
-            </div>
-            <div class="proj-body">
-              <div class="proj-title">Time-Series Forecasting</div>
-              <p class="proj-desc">매출 예측을 위한 시계열 분석. ARIMA, Prophet, LSTM 비교 실험 및 앙상블 모델 구축.</p>
-              <div class="proj-tags"><span class="proj-t">Python</span><span class="proj-t">Prophet</span><span class="proj-t">LSTM</span><span class="proj-t">Plotly</span></div>
-              <div class="proj-links"><a href="#" class="proj-link">GitHub</a><a href="#" class="proj-link">Report</a></div>
-            </div>
-          </div>
-
+        <div class="sec-l">projects</div>
+        <h2 class="sec-t">Projects</h2>
+        <div class="pg">
+          <div class="pc"><div class="pc-i"><img src="images/trading.png" onerror="this.outerHTML='<span class=pc-ph>trading.png</span>'"></div><div class="pc-b"><div class="pc-tt">TradingView Auto Crawler</div><p class="pc-d">주가 예측을 위해 TradingView 실시간 데이터를 Selenium 기반으로 자동 수집하는 파이프라인.</p><div class="pc-tg"><span class="pt">Python</span><span class="pt">Selenium</span><span class="pt">WebDriver</span><span class="pt">Automation</span></div><div class="pc-l"><a href="https://github.com/Wlsghdh/tradingview-stream-crawler" target="_blank" class="pl">GitHub</a></div></div></div>
+          <div class="pc"><div class="pc-i"><img src="images/personal-color.png" onerror="this.outerHTML='<span class=pc-ph>personal-color.png</span>'"></div><div class="pc-b"><div class="pc-tt">AI Personal Color Diagnosis</div><p class="pc-d">얼굴 사진 분석으로 퍼스널 컬러 진단 후 맞춤 배경 영상 생성. AI-Develops 우수상.</p><div class="pc-tg"><span class="pt">Python</span><span class="pt">OpenCV</span><span class="pt">Deep Learning</span><span class="pt">Color Analysis</span></div><div class="pc-l"><span class="pl" style="color:var(--g4)">준비중</span></div></div></div>
+          <div class="pc"><div class="pc-i"><img src="images/gas-detection.png" onerror="this.outerHTML='<span class=pc-ph>gas-detection.png</span>'"></div><div class="pc-b"><div class="pc-tt">Multimodal Gas Leak Detection</div><p class="pc-d">가스 센서 데이터의 오류 문제 해결을 위해 통합 전처리 파이프라인 구축. 멀티모달 접근으로 기존 모델 대비 성능 향상.</p><div class="pc-tg"><span class="pt">PyTorch</span><span class="pt">Multimodal</span><span class="pt">DCT</span><span class="pt">DWT</span><span class="pt">MTF</span></div><div class="pc-l"><a href="https://github.com/Wlsghdh/GasLeakage-MultiModal-MTF" target="_blank" class="pl">GitHub</a></div></div></div>
+          <div class="pc"><div class="pc-i"><img src="images/cable-detection.png" onerror="this.outerHTML='<span class=pc-ph>cable-detection.png</span>'"></div><div class="pc-b"><div class="pc-tt">Industrial Cable Defect Detection</div><p class="pc-d">산업 환경 케이블 결함 자동 탐지 비전 모델. 다양한 아키텍처 비교 실험으로 최적 성능 도출.</p><div class="pc-tg"><span class="pt">PyTorch</span><span class="pt">Computer Vision</span><span class="pt">Object Detection</span></div><div class="pc-l"><span class="pl" style="color:var(--g4)">준비중</span></div></div></div>
         </div>
       </section>
 
-      <!-- ==================== PUBLICATIONS ==================== -->
+      <!-- PUBLICATIONS -->
       <section class="sec" id="publications">
-        <div class="sec-label">publications</div>
-        <h2 class="sec-title">Publications</h2>
-        <div class="pub-list">
-
-          <div class="pub-item">
-            <div class="pub-venue">NeurIPS 2024 (예시)</div>
-            <div class="pub-title">Your Paper Title: A Novel Approach to Something Important</div>
-            <div class="pub-authors"><strong>Your Name</strong>, Co-author A, Co-author B</div>
-            <div class="pub-meta">
-              <a href="#" class="pub-link">[PDF]</a>
-              <a href="#" class="pub-link">[Code]</a>
-              <a href="#" class="pub-link">[BibTeX]</a>
-            </div>
-          </div>
-
-          <div class="pub-item">
-            <div class="pub-venue">ICML 2023 (예시)</div>
-            <div class="pub-title">Another Research Paper About Deep Learning Methods</div>
-            <div class="pub-authors"><strong>Your Name</strong>, Co-author C</div>
-            <div class="pub-meta">
-              <a href="#" class="pub-link">[PDF]</a>
-              <a href="#" class="pub-link">[Code]</a>
-              <a href="#" class="pub-link">[BibTeX]</a>
-            </div>
-          </div>
-
-          <div class="pub-item">
-            <div class="pub-venue">KDD 2023 (예시)</div>
-            <div class="pub-title">Applied ML Research in Real-World Scenarios</div>
-            <div class="pub-authors">Co-author D, <strong>Your Name</strong>, Co-author E</div>
-            <div class="pub-meta">
-              <a href="#" class="pub-link">[PDF]</a>
-              <a href="#" class="pub-link">[Code]</a>
-            </div>
-          </div>
-
+        <div class="sec-l">publications</div>
+        <h2 class="sec-t">Publications</h2>
+        <div class="pub-l">
+          <div class="pub"><div class="pub-v">한국정보과학회</div><div class="pub-tt">통합 전처리 파이프라인을 활용한 멀티모달 가스 센서 데이터셋에서의 모델 성능 비교</div><div class="pub-a">맹영민, <strong>주진호</strong>, 윤재훈, 정우창</div></div>
         </div>
       </section>
 
-      <!-- ==================== AWARDS ==================== -->
+      <!-- AWARDS -->
       <section class="sec" id="awards">
-        <div class="sec-label">awards</div>
-        <h2 class="sec-title">Awards & Honors</h2>
-        <div class="award-list">
-
-          <div class="award-item">
-            <div class="award-year">2024</div>
-            <div class="award-body">
-              <h4>Kaggle Competition — Gold Medal</h4>
-              <p>대회명 / 상위 1% 달성 (예시)</p>
-            </div>
-          </div>
-
-          <div class="award-item">
-            <div class="award-year">2023</div>
-            <div class="award-body">
-              <h4>Best Paper Award</h4>
-              <p>학회명 / 논문 제목 (예시)</p>
-            </div>
-          </div>
-
-          <div class="award-item">
-            <div class="award-year">2023</div>
-            <div class="award-body">
-              <h4>데이터 분석 경진대회 대상</h4>
-              <p>주최기관 / 설명 (예시)</p>
-            </div>
-          </div>
-
-          <div class="award-item">
-            <div class="award-year">2022</div>
-            <div class="award-body">
-              <h4>우수 졸업 논문상</h4>
-              <p>대학교명 / 논문 제목 (예시)</p>
-            </div>
-          </div>
-
+        <div class="sec-l">awards</div>
+        <h2 class="sec-t">Awards & Honors</h2>
+        <div class="aw-l">
+          <div class="aw"><div class="aw-y">2024</div><div class="aw-b"><h4>AI-Develops 공모전 우수상</h4><p>AI 퍼스널 컬러 진단 모델</p></div></div>
         </div>
       </section>
 
-      <!-- ==================== CAREER ==================== -->
+      <!-- PAPER REVIEWS -->
+      <section class="sec" id="reviews">
+        <div class="sec-l">paper reviews</div>
+        <h2 class="sec-t">Paper Reviews</h2>
+        <p style="font-size:12px;color:var(--g2);font-family:var(--sans);margin-bottom:24px;max-width:580px;line-height:1.8">읽고 정리한 논문 리뷰입니다. 클릭하면 전체 리뷰를 읽을 수 있습니다.</p>
+        <div class="rv-g" id="rvGrid"></div>
+      </section>
+
+      <!-- CAREER -->
       <section class="sec" id="career">
-        <div class="sec-label">career</div>
-        <h2 class="sec-title">Career</h2>
-        <div class="timeline">
-          <div class="tl-item">
-            <div class="tl-date">2023.03 — Present</div>
-            <div class="tl-title">Data Scientist</div>
-            <div class="tl-org">@ Company Name</div>
-            <div class="tl-desc">추천 시스템 모델링, A/B 테스트 설계, 실시간 데이터 파이프라인 구축. CTR 15% 향상 기여.</div>
-          </div>
-          <div class="tl-item">
-            <div class="tl-date">2021.09 — 2023.02</div>
-            <div class="tl-title">ML Engineer (Intern → Full-time)</div>
-            <div class="tl-org">@ Company Name</div>
-            <div class="tl-desc">NLP 모델 개발 및 서빙. 한국어 텍스트 분류 모델 배포, 추론 속도 3배 최적화.</div>
-          </div>
-          <div class="tl-item">
-            <div class="tl-date">2019.03 — 2021.08</div>
-            <div class="tl-title">Research Assistant</div>
-            <div class="tl-org">@ University Lab</div>
-            <div class="tl-desc">딥러닝 기반 연구 수행. 논문 2편 퍼블리시, 학회 발표 다수.</div>
-          </div>
+        <div class="sec-l">career</div>
+        <h2 class="sec-t">Career</h2>
+        <div class="tl">
+          <div class="tli"><div class="tl-d">2021.03 — Present</div><div class="tl-t">AI·데이터과학부 학부생</div><div class="tl-o">수원대학교</div><div class="tl-ds">Computer Vision, ML 분야 연구. 다수 프로젝트 및 공모전 참여. 대학원 진학 준비 중.</div></div>
         </div>
       </section>
 
-      <!-- ==================== CONTACT ==================== -->
+      <!-- CONTACT -->
       <section class="sec" id="contact">
-        <div class="sec-label">contact</div>
-        <h2 class="sec-title">Contact</h2>
-        <div class="term" style="max-width:480px">
-          <div class="term-h"><div class="tdots"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="tname">contact.sh</span></div>
-          <div class="term-b">
+        <div class="sec-l">contact</div>
+        <h2 class="sec-t">Contact</h2>
+        <div class="term" style="max-width:440px">
+          <div class="th"><div class="td"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="tn">contact.sh</span></div>
+          <div class="tb">
             <div><span class="tp">$</span> cat contact.yaml</div><br>
-            <div><span class="tk">email</span>: <span class="ts">your@email.com</span></div>
-            <div><span class="tk">github</span>: <span class="ts">github.com/you</span></div>
-            <div><span class="tk">scholar</span>: <span class="ts">scholar.google.com/...</span></div>
-            <div><span class="tk">linkedin</span>: <span class="ts">linkedin.com/in/you</span></div>
+            <div><span class="tk">email</span>: <span class="ts">wlsgh20728@suwon.ac.kr</span></div>
+            <div><span class="tk">github</span>: <span class="ts">github.com/Wlsghdh</span></div>
           </div>
         </div>
-        <div class="contact-links">
-          <a href="mailto:your@email.com" class="c-link">✉ Email</a>
-          <a href="#" class="c-link">GitHub</a>
-          <a href="#" class="c-link">Google Scholar</a>
-          <a href="#" class="c-link">LinkedIn</a>
+        <div class="c-l">
+          <a href="mailto:wlsgh20728@suwon.ac.kr" class="cl">✉ Email</a>
+          <a href="https://github.com/Wlsghdh" target="_blank" class="cl">GitHub</a>
         </div>
       </section>
 
-      <!-- Footer -->
-      <div class="footer">
-        <p style="color:var(--gray4)">© 2024 Your Name — Built with HTML, CSS, JS</p>
-      </div>
+      <div class="footer"><p>© 2024 Ju Jinho</p></div>
     </div>
   </div>
-
-  <!-- Status Bar -->
-  <div class="statusbar">
-    <span>⎇ main</span><span id="statusFile">home.py</span>
-    <span class="sp"></span>
-    <span>Python</span><span>UTF-8</span>
-  </div>
-
-  <!-- Mobile Nav -->
-  <nav class="mob-nav">
+  <div class="sbar"><span>⎇ main</span><span id="sf">home.py</span><span class="sp"></span><span>Python 3.11</span><span>UTF-8</span></div>
+  <nav class="mnav">
     <a href="#hero" class="active" data-s="hero"><span class="mi">⌂</span>Home</a>
     <a href="#about" data-s="about"><span class="mi">◐</span>About</a>
-    <a href="#skills" data-s="skills"><span class="mi">◈</span>Skills</a>
     <a href="#projects" data-s="projects"><span class="mi">▦</span>Proj</a>
-    <a href="#publications" data-s="publications"><span class="mi">◉</span>Papers</a>
-    <a href="#awards" data-s="awards"><span class="mi">★</span>Awards</a>
+    <a href="#reviews" data-s="reviews"><span class="mi">◇</span>Reviews</a>
     <a href="#contact" data-s="contact"><span class="mi">✉</span>Contact</a>
   </nav>
-
-  <div class="scroll-top" id="scrollTop">↑</div>
+  <div class="sctop" id="sctop">↑</div>
+  <div class="music-btn" id="musicBtn" title="Background Music">
+    <div class="music-bars"><span style="height:4px"></span><span style="height:8px"></span><span style="height:5px"></span><span style="height:10px"></span></div>
+  </div>
 </div>
 
 <script>
-/* === Particles (심플 버전, 흰색 톤) === */
+/* ============================================
+   THREE.JS 3D BACKGROUND
+   시그모이드 표면 + Loss landscape + 파티클
+   ============================================ */
 !function(){
-  const c=document.getElementById('particles'),x=c.getContext('2d');
-  let w,h,pts=[];
-  function resize(){w=c.width=innerWidth;h=c.height=innerHeight}
-  function mk(){return{x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*1.2+.5}}
-  function init(){resize();pts=[];for(let i=0;i<35;i++)pts.push(mk())}
-  function draw(){
-    x.clearRect(0,0,w,h);
-    for(let i=0;i<pts.length;i++){
-      const p=pts[i];p.x+=p.vx;p.y+=p.vy;
-      if(p.x<0||p.x>w)p.vx*=-1;if(p.y<0||p.y>h)p.vy*=-1;
-      x.beginPath();x.arc(p.x,p.y,p.r,0,Math.PI*2);x.fillStyle='#fff';x.globalAlpha=.15;x.fill();
-      for(let j=i+1;j<pts.length;j++){
-        const q=pts[j],dx=p.x-q.x,dy=p.y-q.y,d=Math.sqrt(dx*dx+dy*dy);
-        if(d<140){x.beginPath();x.moveTo(p.x,p.y);x.lineTo(q.x,q.y);x.strokeStyle='#fff';x.globalAlpha=.04*(1-d/140);x.lineWidth=.6;x.stroke()}
-      }
+  const container=document.getElementById('three-bg');
+  const scene=new THREE.Scene();
+  const camera=new THREE.PerspectiveCamera(60,innerWidth/innerHeight,.1,1000);
+  camera.position.set(0,3,6);camera.lookAt(0,0,0);
+  const renderer=new THREE.WebGLRenderer({alpha:true,antialias:true});
+  renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+  container.appendChild(renderer.domElement);
+  Object.assign(container.style,{position:'fixed',top:'0',left:'0',width:'100%',height:'100%',zIndex:'0',pointerEvents:'none',opacity:'.1'});
+
+  // Sigmoid surface mesh
+  const geoSize=40,segments=80;
+  const geo=new THREE.PlaneGeometry(geoSize,geoSize,segments,segments);
+  const pos=geo.attributes.position;
+  for(let i=0;i<pos.count;i++){
+    const x=pos.getX(i),y=pos.getY(i);
+    const sx=x*.3,sy=y*.3;
+    const z=2.0/(1+Math.exp(-(sx+sy)))-1+Math.sin(sx*.5)*Math.cos(sy*.5)*.4;
+    pos.setZ(i,z);
+  }
+  geo.computeVertexNormals();
+  const mat=new THREE.MeshBasicMaterial({color:0xffffff,wireframe:true,transparent:true,opacity:.35});
+  const mesh=new THREE.Mesh(geo,mat);
+  mesh.rotation.x=-Math.PI*.45;
+  scene.add(mesh);
+
+  // Loss landscape (smaller, offset)
+  const g2=new THREE.PlaneGeometry(15,15,40,40);
+  const p2=g2.attributes.position;
+  for(let i=0;i<p2.count;i++){
+    const x=p2.getX(i)*.2,y=p2.getY(i)*.2;
+    const z=Math.sin(x*2)*Math.cos(y*2)*Math.exp(-(x*x+y*y)*.15)*2;
+    p2.setZ(i,z);
+  }
+  g2.computeVertexNormals();
+  const m2=new THREE.MeshBasicMaterial({color:0xffffff,wireframe:true,transparent:true,opacity:.2});
+  const mesh2=new THREE.Mesh(g2,m2);
+  mesh2.position.set(12,-3,0);mesh2.rotation.x=-Math.PI*.4;
+  scene.add(mesh2);
+
+  // Floating particles
+  const ptGeo=new THREE.BufferGeometry();
+  const ptCount=120;
+  const ptPos=new Float32Array(ptCount*3);
+  for(let i=0;i<ptCount;i++){ptPos[i*3]=(Math.random()-.5)*30;ptPos[i*3+1]=(Math.random()-.5)*20;ptPos[i*3+2]=(Math.random()-.5)*15}
+  ptGeo.setAttribute('position',new THREE.BufferAttribute(ptPos,3));
+  const ptMat=new THREE.PointsMaterial({color:0xffffff,size:.08,transparent:true,opacity:.6});
+  const pts=new THREE.Points(ptGeo,ptMat);
+  scene.add(pts);
+
+  // === GRADIENT DESCENT BALL ===
+  // Loss surface function for ball to follow
+  function lossSurface(x,y){return Math.sin(x*2)*Math.cos(y*2)*Math.exp(-(x*x+y*y)*.15)*2}
+  function lossGradient(x,y){
+    const h=.01;
+    const dx=(lossSurface(x+h,y)-lossSurface(x-h,y))/(2*h);
+    const dy=(lossSurface(x,y+h)-lossSurface(x,y-h))/(2*h);
+    return{dx,dy};
+  }
+  // GD Ball
+  const ballGeo=new THREE.SphereGeometry(.3,16,16);
+  const ballMat=new THREE.MeshBasicMaterial({color:0xffffff,transparent:true,opacity:.9});
+  const ball=new THREE.Mesh(ballGeo,ballMat);
+  scene.add(ball);
+  // Trail (path the ball has taken)
+  const trailMax=80;
+  const trailGeo=new THREE.BufferGeometry();
+  const trailPos=new Float32Array(trailMax*3);
+  trailGeo.setAttribute('position',new THREE.BufferAttribute(trailPos,3));
+  const trailMat=new THREE.PointsMaterial({color:0xffffff,size:.06,transparent:true,opacity:.4});
+  const trail=new THREE.Points(trailGeo,trailMat);
+  scene.add(trail);
+  let ballX=2.5,ballY=2.5,trailIdx=0,lr=.015;
+  // Reset ball to random start when it converges
+  function resetBall(){ballX=(Math.random()-.5)*5;ballY=(Math.random()-.5)*5;trailIdx=0;for(let i=0;i<trailMax*3;i++)trailPos[i]=0}
+
+  function animate(){
+    requestAnimationFrame(animate);
+    mesh.rotation.z+=.0008;
+    mesh2.rotation.z-=.001;
+    pts.rotation.y+=.0003;
+    const t=Date.now()*.0005;
+    // Sigmoid surface animation
+    const p=geo.attributes.position;
+    for(let i=0;i<p.count;i++){
+      const x=p.getX(i),y=p.getY(i);
+      const sx=x*.3,sy=y*.3;
+      const z=2.0/(1+Math.exp(-(sx+sy+Math.sin(t)*.3)))-1+Math.sin(sx*.5+t)*Math.cos(sy*.5)*.3;
+      p.setZ(i,z);
     }
-    x.globalAlpha=1;requestAnimationFrame(draw);
+    p.needsUpdate=true;
+    // === GD Ball movement ===
+    const grad=lossGradient(ballX,ballY);
+    ballX-=grad.dx*lr+((Math.random()-.5)*.005);
+    ballY-=grad.dy*lr+((Math.random()-.5)*.005);
+    const bz=lossSurface(ballX,ballY);
+    // Map ball to mesh2's local space
+    ball.position.set(12+ballX*1.5,-3+bz*1.5+.3,ballY*1.5);
+    // Trail
+    const ti=trailIdx%trailMax;
+    trailPos[ti*3]=ball.position.x;trailPos[ti*3+1]=ball.position.y;trailPos[ti*3+2]=ball.position.z;
+    trailGeo.attributes.position.needsUpdate=true;
+    trailIdx++;
+    // Reset if converged or out of bounds
+    if((Math.abs(grad.dx)<.001&&Math.abs(grad.dy)<.001)||Math.abs(ballX)>5||Math.abs(ballY)>5){setTimeout(resetBall,800)}
+    renderer.render(scene,camera);
   }
-  init();draw();addEventListener('resize',()=>{resize();pts.forEach(p=>{if(p.x>w)p.x=w*.5;if(p.y>h)p.y=h*.5})});
+  animate();
+  addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
 }();
 
-/* === Typing Effect (데이터과학 맞춤) === */
+/* ============================================
+   PAPER REVIEWS DATA
+   여기에 리뷰를 추가하면 자동으로 카드 생성됨
+   images 경로도 여기서 지정
+   ============================================ */
+const reviews=[
+  {
+    tag:'Computer Vision',
+    title:'Deep Residual Learning for Image Recognition',
+    venue:'CVPR 2016 · He et al.',
+    summary:'Skip connection으로 깊은 네트워크의 학습 문제 해결.',
+    file:'resnet-review',
+    sections:[
+      {type:'text',h:'핵심 아이디어',content:'네트워크가 깊어질수록 학습이 어려워지는 <strong>degradation 문제</strong>를 해결하기 위해 Residual Learning 프레임워크를 제안했다. Skip connection(shortcut)을 통해 입력을 출력에 직접 더해주는 구조로, identity mapping을 학습의 기본으로 삼는다.'},
+      {type:'img',src:'images/reviews/resnet-architecture.png',cap:'ResNet의 Residual Block 구조'},
+      {type:'text',h:'방법론',content:'<ul><li><strong>H(x) = F(x) + x</strong> 형태의 residual mapping</li><li>Identity shortcut은 파라미터 추가 없이 구현</li><li>Bottleneck 구조 (1×1 → 3×3 → 1×1)로 연산량 절감</li><li>모든 conv layer 뒤에 Batch Normalization 적용</li></ul>'},
+      {type:'text',h:'실험 결과',content:'<ul><li>ImageNet: 152층 ResNet으로 <strong>top-5 error 3.57%</strong> 달성</li><li>CIFAR-10: 1000층 이상에서도 안정적 학습 확인</li><li>COCO detection/segmentation에서도 당시 SOTA 달성</li></ul>'},
+      {type:'img',src:'images/reviews/resnet-result.png',cap:'Plain Network vs ResNet 성능 비교'},
+      {type:'text',h:'내 생각',content:'Skip connection이라는 단순하면서도 강력한 아이디어가 딥러닝의 패러다임을 완전히 바꿨다. 이후 DenseNet, U-Net, Transformer 등 거의 모든 아키텍처에 영향을 미쳤다. Gradient vanishing 문제에 대한 가장 근본적이고 우아한 해결책이라고 생각한다.'}
+    ]
+  },
+  {
+    tag:'Transformer',
+    title:'An Image is Worth 16x16 Words (ViT)',
+    venue:'ICLR 2021 · Dosovitskiy et al.',
+    summary:'NLP의 Transformer를 Vision에 직접 적용. 패치 기반 접근.',
+    file:'vit-review',
+    sections:[
+      {type:'text',h:'핵심 아이디어',content:'이미지를 <strong>16×16 패치</strong>로 나누어 시퀀스로 변환한 후, NLP의 Transformer Encoder를 거의 수정 없이 적용. CNN의 inductive bias 없이도 대규모 데이터에서 뛰어난 성능을 보인다.'},
+      {type:'img',src:'images/reviews/vit-architecture.png',cap:'Vision Transformer 전체 아키텍처'},
+      {type:'text',h:'방법론',content:'<ul><li>이미지를 고정 크기 패치로 분할 → Linear embedding</li><li>[CLS] 토큰 + Learnable position embedding 추가</li><li>Standard Transformer Encoder 사용 (Multi-Head Attention + MLP)</li><li>JFT-300M 등 대규모 데이터에서 pre-training 후 downstream task fine-tuning</li></ul>'},
+      {type:'text',h:'실험 결과',content:'<ul><li>JFT-300M pre-training: ImageNet <strong>88.55% top-1 accuracy</strong></li><li>대규모 데이터에서 CNN 대비 연산 효율 우수</li><li>소규모 데이터에서는 CNN에 밀리는 한계 존재</li></ul>'},
+      {type:'text',h:'내 생각',content:'Vision 분야에서 Transformer 시대를 개막한 논문이다. 데이터 양에 따른 성능 차이가 매우 흥미롭고, 이후 DeiT, Swin Transformer 등 수많은 후속 연구로 이어졌다. <strong>Inductive bias vs 데이터 스케일</strong>의 trade-off를 명확하게 보여준 중요한 연구.'}
+    ]
+  }
+];
+
+/* ============================================
+   REVIEW CARD RENDERING
+   ============================================ */
 !function(){
-  const el=document.getElementById('typingText');
-  const words=['model.fit(X_train, y_train)','data.describe()','predict(new_data)','optimize(loss_fn)','deploy(model)'];
-  let wi=0,ci=0,del=false;
-  function type(){
-    const w=words[wi];
-    if(!del){el.textContent=w.slice(0,++ci);if(ci===w.length){del=true;setTimeout(type,2000);return}}
-    else{el.textContent=w.slice(0,--ci);if(ci===0){del=false;wi=(wi+1)%words.length;setTimeout(type,400);return}}
-    setTimeout(type,del?35:70);
-  }
-  type();
+  const grid=document.getElementById('rvGrid');
+  reviews.forEach((r,i)=>{
+    grid.innerHTML+=`<div class="rv" onclick="openReader(${i})"><div class="rv-tg">${r.tag}</div><div class="rv-tt">${r.title}</div><div class="rv-ve">${r.venue}</div><div class="rv-sm">${r.summary}</div><span class="rv-lk">읽기 →</span></div>`;
+  });
+  // Coming soon card
+  grid.innerHTML+=`<div class="rv" style="border-style:dashed;cursor:default;opacity:.3"><div class="rv-tg">coming soon</div><div class="rv-tt">다음 리뷰가 추가될 예정입니다</div></div>`;
 }();
 
-/* === Scroll Observer === */
-const secs=document.querySelectorAll('.sec');
-const obs=new IntersectionObserver(entries=>{
-  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');updateNav(e.target.id)}});
-},{threshold:.12});
-secs.forEach(s=>obs.observe(s));
-
-/* === Nav Sync === */
-const fileMap={hero:'home.py',about:'about.yaml',skills:'skills.py',projects:'projects.ipynb',publications:'papers.bib',awards:'awards.md',career:'career.md',contact:'contact.sh'};
-function updateNav(id){
-  document.querySelectorAll('.nav-icon[data-s]').forEach(i=>i.classList.toggle('active',i.dataset.s===id));
-  document.querySelectorAll('.tab[data-s]').forEach(t=>t.classList.toggle('active',t.dataset.s===id));
-  document.querySelectorAll('.mob-nav a[data-s]').forEach(a=>a.classList.toggle('active',a.dataset.s===id));
-  const sf=document.getElementById('statusFile');if(sf&&fileMap[id])sf.textContent=fileMap[id];
-}
-
-/* === Click Nav === */
-document.querySelectorAll('[data-s]').forEach(el=>{
-  el.addEventListener('click',e=>{
-    const t=document.getElementById(el.dataset.s);
-    if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}
+/* ============================================
+   PAPER READER (전체화면 논문 읽기 뷰)
+   ============================================ */
+function openReader(i){
+  const r=reviews[i],rd=document.getElementById('reader'),body=document.getElementById('rdBody');
+  document.getElementById('rdFile').textContent=r.file+'.md';
+  let html=`<div class="rd-tag">${r.tag}</div><h1 class="rd-title">${r.title}</h1><div class="rd-meta">${r.venue}</div>`;
+  r.sections.forEach((s,idx)=>{
+    if(s.type==='img'){
+      html+=`<div class="rd-section" style="transition-delay:${idx*.1}s"><img class="rd-img" src="${s.src}" alt="${s.cap||''}" onerror="this.outerHTML='<div style=\\'padding:40px;text-align:center;border:1px dashed #333;border-radius:6px;color:#444;font-size:12px\\'>📷 ${s.cap||"image"}<br><span style=\\'font-size:10px;color:#333\\'>${s.src}</span></div>'"><div class="rd-img-cap">${s.cap||''}</div></div>`;
+    } else {
+      html+=`<div class="rd-section" style="transition-delay:${idx*.1}s"><h3>${s.h}</h3>${s.content.startsWith('<')?s.content:'<p>'+s.content+'</p>'}</div>`;
+    }
   });
-});
+  html+=`<div class="rd-divider"></div><p style="text-align:center;font-size:11px;color:#444;margin-top:24px">— End of Review —</p>`;
+  body.innerHTML=html;
+  rd.classList.add('open');
+  document.getElementById('portfolio').style.display='none';
+  rd.scrollTop=0;
+  // Animate sections
+  setTimeout(()=>{document.querySelectorAll('.rd-section').forEach(s=>s.classList.add('vis'))},150);
+  // Progress bar
+  rd.onscroll=function(){
+    const p=this.scrollTop/(this.scrollHeight-this.clientHeight)*100;
+    document.getElementById('rdProgress').style.width=Math.min(p,100)+'%';
+  };
+}
+function closeReader(){
+  document.getElementById('reader').classList.remove('open');
+  document.getElementById('portfolio').style.display='';
+}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeReader()});
 
-/* === Scroll Top === */
-const sb=document.getElementById('scrollTop');
-addEventListener('scroll',()=>sb.classList.toggle('show',scrollY>400));
-sb.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
+/* ============================================
+   TYPING EFFECT
+   ============================================ */
+!function(){
+  const el=document.getElementById('typT');
+  const ws=['model.fit(data, labels)','torch.optim.SGD(lr=0.01)','cv2.imread("vision.png")','loss.backward()','research.never_stop()'];
+  let wi=0,ci=0,del=false;
+  function t(){
+    const w=ws[wi];
+    if(!del){el.textContent=w.slice(0,++ci);if(ci===w.length){del=true;setTimeout(t,2200);return}}
+    else{el.textContent=w.slice(0,--ci);if(ci===0){del=false;wi=(wi+1)%ws.length;setTimeout(t,400);return}}
+    setTimeout(t,del?30:65);
+  }
+  t();
+}();
+
+/* ============================================
+   SCROLL & NAV
+   ============================================ */
+const secs=document.querySelectorAll('.sec');
+const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');uN(e.target.id)}})},{threshold:.1});
+secs.forEach(s=>obs.observe(s));
+const fm={hero:'home.py',about:'about.yaml',skills:'skills.py',projects:'projects.ipynb',publications:'papers.bib',awards:'awards.md',reviews:'reviews.md',career:'career.md',contact:'contact.sh'};
+function uN(id){
+  document.querySelectorAll('.ni[data-s]').forEach(i=>i.classList.toggle('active',i.dataset.s===id));
+  document.querySelectorAll('.tab[data-s]').forEach(t=>t.classList.toggle('active',t.dataset.s===id));
+  document.querySelectorAll('.mnav a[data-s]').forEach(a=>a.classList.toggle('active',a.dataset.s===id));
+  const sf=document.getElementById('sf');if(sf&&fm[id])sf.textContent=fm[id];
+}
+document.querySelectorAll('[data-s]').forEach(el=>{el.addEventListener('click',e=>{const t=document.getElementById(el.dataset.s);if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}})});
+const sb=document.getElementById('sctop');addEventListener('scroll',()=>sb.classList.toggle('show',scrollY>400));sb.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
+
+/* ============================================
+   AMBIENT BACKGROUND MUSIC (Web Audio API)
+   부드러운 ambient 사운드 생성
+   ============================================ */
+!function(){
+  const btn=document.getElementById('musicBtn');
+  let ctx,playing=false,nodes=[];
+
+  function createAmbient(){
+    ctx=new(window.AudioContext||window.webkitAudioContext)();
+    const master=ctx.createGain();master.gain.value=0;master.connect(ctx.destination);
+
+    // Pad chord: C major 7th (C3, E3, G3, B3) in soft sine waves
+    const freqs=[130.81,164.81,196.00,246.94,261.63];
+    freqs.forEach((f,i)=>{
+      const osc=ctx.createOscillator();
+      const gain=ctx.createGain();
+      osc.type='sine';osc.frequency.value=f;
+      // Subtle detuning for warmth
+      osc.detune.value=(Math.random()-.5)*8;
+      gain.gain.value=.04;
+      osc.connect(gain);gain.connect(master);
+      osc.start();
+      nodes.push(osc);
+    });
+
+    // Slow LFO for movement
+    const lfo=ctx.createOscillator();
+    const lfoGain=ctx.createGain();
+    lfo.frequency.value=.08;lfoGain.gain.value=3;
+    lfo.connect(lfoGain);
+    // Connect LFO to first osc detune
+    nodes[0]&&lfoGain.connect(nodes[0].detune);
+    lfo.start();nodes.push(lfo);
+
+    // Very soft noise layer
+    const bufSize=2*ctx.sampleRate;
+    const buf=ctx.createBuffer(1,bufSize,ctx.sampleRate);
+    const data=buf.getChannelData(0);
+    for(let i=0;i<bufSize;i++)data[i]=(Math.random()*2-1)*.005;
+    const noise=ctx.createBufferSource();
+    noise.buffer=buf;noise.loop=true;
+    const noiseGain=ctx.createGain();noiseGain.gain.value=.3;
+    const noiseFilter=ctx.createBiquadFilter();
+    noiseFilter.type='lowpass';noiseFilter.frequency.value=400;
+    noise.connect(noiseFilter);noiseFilter.connect(noiseGain);noiseGain.connect(master);
+    noise.start();
+
+    // Fade in
+    master.gain.linearRampToValueAtTime(.6,ctx.currentTime+2);
+    return master;
+  }
+
+  let master;
+  btn.addEventListener('click',()=>{
+    if(!playing){
+      if(!ctx)master=createAmbient();
+      else master.gain.linearRampToValueAtTime(.6,ctx.currentTime+1);
+      btn.classList.add('on');playing=true;
+    }else{
+      if(master)master.gain.linearRampToValueAtTime(0,ctx.currentTime+1);
+      btn.classList.remove('on');playing=false;
+    }
+  });
+}();
 </script>
 </body>
 </html>
