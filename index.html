@@ -927,8 +927,8 @@ var threeScene;
     var i=0;
     for(var y=0;y<h;y+=2){for(var x=0;x<w;x+=2){
       var t=(vals[i++]-min)/(max-min||1);
-      var a=isLight?t*.12:t*.06;
-      var r=isLight?80:255,g=isLight?60:255,b=isLight?30:255;
+      var a=isLight?t*.25:t*.06;
+      var r=isLight?60:255,g=isLight?90:255,b=isLight?50:255;
       for(var dy=0;dy<2&&y+dy<h;dy++){for(var dx=0;dx<2&&x+dx<w;dx++){
         var p=((y+dy)*w+(x+dx))*4;
         d[p]=r;d[p+1]=g;d[p+2]=b;d[p+3]=Math.floor(a*255);
@@ -964,25 +964,25 @@ var threeScene;
     if(surfCache)ctx.putImageData(surfCache,0,0);
     surfFrame++;
     var g=grad(ball.x,ball.y);
-    ball.vx=ball.vx*.97+g.dx*.4;
-    ball.vy=ball.vy*.97+g.dy*.4;
+    ball.vx=ball.vx*.97+g.dx*.8;
+    ball.vy=ball.vy*.97+g.dy*.8;
     var spd=Math.sqrt(ball.vx*ball.vx+ball.vy*ball.vy);
-    if(spd>10){var s=10/spd;ball.vx*=s;ball.vy*=s}
+    if(spd>16){var s=16/spd;ball.vx*=s;ball.vy*=s}
     ball.x+=ball.vx;ball.y+=ball.vy;
     if(ball.x<10)ball.x=10;if(ball.x>w-10)ball.x=w-10;
     if(ball.y<10)ball.y=10;if(ball.y>h-10)ball.y=h-10;
     var now=performance.now();
     pathHistory.push({x:ball.x,y:ball.y,t:now});
-    while(pathHistory.length>1&&now-pathHistory[0].t>15000)pathHistory.shift();
+    while(pathHistory.length>1&&now-pathHistory[0].t>20000)pathHistory.shift();
     ball.trail.push({x:ball.x,y:ball.y});
     if(ball.trail.length>20)ball.trail.shift();
     var ca=isLight?'rgba(200,60,20,':'rgba(74,222,128,';
     for(var j=1;j<pathHistory.length;j++){
-      var age=(now-pathHistory[j].t)/15000;
-      var a=Math.max(0,(1-age)*.25);
+      var age=(now-pathHistory[j].t)/20000;
+      var a=Math.max(0,(1-age)*.5);
       ctx.beginPath();ctx.moveTo(pathHistory[j-1].x,pathHistory[j-1].y);
       ctx.lineTo(pathHistory[j].x,pathHistory[j].y);
-      ctx.strokeStyle=ca+a+')';ctx.lineWidth=1.5*(1-age);ctx.stroke();
+      ctx.strokeStyle=ca+a+')';ctx.lineWidth=3*(1-age)+1;ctx.stroke();
     }
     for(var j=1;j<ball.trail.length;j++){
       var a=Math.pow(j/ball.trail.length,2)*.5;
