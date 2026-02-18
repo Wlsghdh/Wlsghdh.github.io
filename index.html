@@ -24,8 +24,8 @@ body.light{
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:#333 #090909}
 body{font-family:var(--mono);background:var(--bg);color:var(--w);line-height:1.7;overflow-x:hidden;transition:background .4s,color .4s}
-.splash-overlay{position:fixed;inset:0;z-index:99999;background:rgba(9,9,9,.75);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;transition:opacity .6s}
-body.light .splash-overlay{background:rgba(240,237,230,.75)}
+.splash-overlay{position:fixed;inset:0;z-index:99999;background:rgba(9,9,9,.45);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;transition:opacity .6s}
+body.light .splash-overlay{background:rgba(240,237,230,.45)}
 .splash-overlay.hiding{opacity:0;pointer-events:none}
 .splash-title{font-family:var(--sans);font-size:clamp(18px,3vw,28px);font-weight:600;color:var(--w);letter-spacing:1px}
 .splash-sub{font-size:12px;color:var(--g3);font-family:var(--mono)}
@@ -364,8 +364,6 @@ body.light .sctop{background:rgba(220,216,208,.6)}
       </div>
     </div>
     <div class="splash-row"><label>BGM Volume</label><input type="range" id="splashBgmVol" min="0" max="1" step="0.05" value="0.15"></div>
-    <div class="splash-row"><label>Click Volume</label><input type="range" id="splashClickVol" min="0" max="1" step="0.05" value="0.05"></div>
-    <div class="splash-row"><label>Scroll Volume</label><input type="range" id="splashScrollVol" min="0" max="1" step="0.05" value="0.05"></div>
   </div>
   <button class="splash-btn" id="splashBtn">ENTER</button>
   <div class="splash-hint">All settings can be changed inside the portfolio.</div>
@@ -622,7 +620,7 @@ body.light .sctop{background:rgba(220,216,208,.6)}
   <div class="settings-row"><label>BGM Volume</label><input type="range" id="bgmVol" min="0" max="1" step="0.05" value="0.15"></div>
   <div class="settings-row"><label>Click Volume</label><input type="range" id="clickVol" min="0" max="1" step="0.05" value="0.05"></div>
   <div class="settings-row"><label>Scroll Volume</label><input type="range" id="scrollVol" min="0" max="1" step="0.05" value="0.05"></div>
-  <div class="settings-row"><label>Click Type</label><select id="clickType"><option value="clean">Clean Click</option><option value="pop">Soft Pop</option><option value="mech">Mechanical</option></select></div>
+  <div class="settings-row"><label>Click Type</label><select id="clickType"><option value="clean">Clean Click</option><option value="pop" selected>Soft Pop</option><option value="mech">Mechanical</option></select></div>
 </div>
 </div>
 
@@ -954,9 +952,11 @@ var threeScene;
     return{x:bx,y:by};
   }
   var ball={x:0,y:0,vx:0,vy:0,trail:[]};
-  function init(){var m=findMax();ball.x=m.x;ball.y=m.y;ball.vx=0;ball.vy=0;ball.trail=[]}
+  var pathHistory=[];
+  function init(){var m=findMax();ball.x=m.x;ball.y=m.y;ball.vx=0;ball.vy=0;ball.trail=[];pathHistory=[]}
   init();
   var surfFrame=0,surfCache=null;
+  window.invalidateSurf=function(){surfCache=null;surfFrame=0};
   function draw(){
     if(!w||!h){requestAnimationFrame(draw);return}
     time+=0.0002;
@@ -972,9 +972,19 @@ var threeScene;
     ball.x+=ball.vx;ball.y+=ball.vy;
     if(ball.x<10)ball.x=10;if(ball.x>w-10)ball.x=w-10;
     if(ball.y<10)ball.y=10;if(ball.y>h-10)ball.y=h-10;
+    var now=performance.now();
+    pathHistory.push({x:ball.x,y:ball.y,t:now});
+    while(pathHistory.length>1&&now-pathHistory[0].t>5000)pathHistory.shift();
     ball.trail.push({x:ball.x,y:ball.y});
-    if(ball.trail.length>25)ball.trail.shift();
+    if(ball.trail.length>20)ball.trail.shift();
     var ca=isLight?'rgba(200,60,20,':'rgba(74,222,128,';
+    for(var j=1;j<pathHistory.length;j++){
+      var age=(now-pathHistory[j].t)/5000;
+      var a=Math.max(0,(1-age)*.25);
+      ctx.beginPath();ctx.moveTo(pathHistory[j-1].x,pathHistory[j-1].y);
+      ctx.lineTo(pathHistory[j].x,pathHistory[j].y);
+      ctx.strokeStyle=ca+a+')';ctx.lineWidth=1.5*(1-age);ctx.stroke();
+    }
     for(var j=1;j<ball.trail.length;j++){
       var a=Math.pow(j/ball.trail.length,2)*.5;
       ctx.beginPath();ctx.moveTo(ball.trail[j-1].x,ball.trail[j-1].y);
@@ -1059,7 +1069,7 @@ var threeScene;
 // Audio Engine (fixed IIFE)
 var audioEngine=(function(){
   var actx=null,masterGain=null,playing=false,currentMode=null,nodes=[];
-  var clickVolume=.05,scrollVolume=.05,clickType='clean',bgmVolume=.15;
+  var clickVolume=.05,scrollVolume=.05,clickType='pop',bgmVolume=.15;
   function ensureCtx(){
     if(!actx)actx=new(window.AudioContext||window.webkitAudioContext)();
     if(actx.state==='suspended')actx.resume();
@@ -1158,22 +1168,18 @@ document.getElementById('splashDark').addEventListener('click',function(){
   document.getElementById('splashDark').classList.add('active');
   document.getElementById('splashLight').classList.remove('active');
   document.body.classList.remove('light');isLight=false;
+  if(window.invalidateSurf)window.invalidateSurf();
 });
 document.getElementById('splashLight').addEventListener('click',function(){
   document.getElementById('splashLight').classList.add('active');
   document.getElementById('splashDark').classList.remove('active');
   document.body.classList.add('light');isLight=true;
+  if(window.invalidateSurf)window.invalidateSurf();
 });
 document.getElementById('splashBtn').addEventListener('click',function(){
   var bgmV=+document.getElementById('splashBgmVol').value;
-  var clickV=+document.getElementById('splashClickVol').value;
-  var scrollV=+document.getElementById('splashScrollVol').value;
   document.getElementById('bgmVol').value=bgmV;
-  document.getElementById('clickVol').value=clickV;
-  document.getElementById('scrollVol').value=scrollV;
   audioEngine.setBgmVol(bgmV);
-  audioEngine.setClickVol(clickV);
-  audioEngine.setScrollVol(scrollV);
   document.body.classList.add('loaded');
   document.getElementById('splash').classList.add('hiding');
   setTimeout(function(){document.getElementById('splash').style.display='none'},700);
@@ -1215,6 +1221,7 @@ addEventListener('scroll',function(){var now=Date.now();if(now-lastScrollSound>2
 document.getElementById('themeBtn').addEventListener('click',function(){
   isLight=!isLight;
   document.body.classList.toggle('light',isLight);
+  if(window.invalidateSurf)window.invalidateSurf();
   document.getElementById('iconSun').style.display=isLight?'none':'block';
   document.getElementById('iconMoon').style.display=isLight?'block':'none';
   document.getElementById('sbarMode').textContent=isLight?'● LIGHT':'● DARK';
