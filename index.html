@@ -5,26 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ju Jinho | AI Researcher</title>
 <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Inter:wght@300;400;500;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <style>
 :root{--bg:#090909;--bg2:#111;--bg3:#181818;--border:#222;--w:#fff;--g1:#e8e8e8;--g2:#aaa;--g3:#666;--g4:#333;--mono:'Fira Code',monospace;--sans:'Inter','Noto Sans KR',sans-serif;--tr:all .3s ease;--sb:48px}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:#333 #090909}
+html,body{margin:0;padding:0;scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:#333 #090909}
 body{font-family:var(--mono);background:var(--bg);color:var(--w);line-height:1.7;overflow-x:hidden}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:#333;border-radius:3px}
 a{color:var(--g2);text-decoration:none;transition:var(--tr)}a:hover{color:var(--w)}
 ::selection{background:rgba(255,255,255,.15)}
-
-/* 3D BG */
 #three-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.12}
-/* Falling balls overlay */
 #ballCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:1;pointer-events:none}
-
-/* Layout */
-.titlebar{height:30px;background:#0c0c0c;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--g3);position:fixed;top:0;left:0;right:0;z-index:1000;margin:0;padding:0}
+.titlebar{height:30px;background:#0c0c0c;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--g3);position:fixed;top:0;left:0;right:0;z-index:1000}
 .dots{position:absolute;left:12px;display:flex;gap:6px}.dot{width:10px;height:10px;border-radius:50%}.dr{background:#ff5f57}.dy{background:#febc2e}.dg{background:#28c840}
 .sidebar{width:var(--sb);background:#0c0c0c;border-right:1px solid var(--border);display:flex;flex-direction:column;align-items:center;padding-top:10px;position:fixed;top:30px;left:0;bottom:22px;z-index:900;gap:2px}
-html,body{margin:0;padding:0}
 .ni{width:42px;height:42px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--g3);transition:var(--tr);font-size:15px;border-radius:4px;position:relative}
 .ni:hover{color:var(--g1);background:rgba(255,255,255,.04)}.ni.active{color:var(--w)}.ni.active::after{content:'';position:absolute;left:0;top:8px;bottom:8px;width:2px;background:var(--w)}
 .sp{flex:1}
@@ -34,13 +31,9 @@ html,body{margin:0;padding:0}
 .fd{width:7px;height:7px;border-radius:2px;display:inline-block}
 .main{display:flex;margin-top:30px}.editor{margin-left:var(--sb);flex:1;min-height:calc(100vh - 52px)}
 .sbar{height:22px;background:#0e0e0e;border-top:1px solid var(--border);display:flex;align-items:center;padding:0 12px;font-size:10px;color:var(--g3);position:fixed;bottom:0;left:0;right:0;z-index:1000;gap:14px}.sbar .sp{flex:1}
-
-/* Sections */
 .sec{min-height:100vh;padding:80px 56px 80px 72px;opacity:0;transform:translateY(20px);transition:opacity .7s,transform .7s}.sec.vis{opacity:1;transform:translateY(0)}
 .sec-l{color:var(--g4);font-size:10px;margin-bottom:4px;letter-spacing:2px;text-transform:uppercase}
 .sec-t{font-size:clamp(20px,2.8vw,30px);font-weight:600;margin-bottom:36px;color:var(--w);font-family:var(--sans)}
-
-/* Hero */
 #hero{display:flex;align-items:center;min-height:calc(100vh - 60px)}
 .hw{display:flex;align-items:center;gap:56px;width:100%}
 .pf{width:180px;height:180px;border-radius:50%;border:1px solid var(--g4);overflow:hidden;display:flex;align-items:center;justify-content:center;background:var(--bg2);flex-shrink:0}
@@ -55,22 +48,16 @@ html,body{margin:0;padding:0}
 .h-btns{display:flex;gap:10px;flex-wrap:wrap}
 .btn{padding:9px 20px;border:1px solid var(--g4);border-radius:3px;font-family:var(--mono);font-size:11px;cursor:pointer;transition:var(--tr);color:var(--g2);background:transparent}
 .btn:hover{border-color:var(--w);color:var(--w)}.btn-w{background:var(--w);color:#000;border-color:var(--w);font-weight:600}.btn-w:hover{background:transparent;color:var(--w)}
-
-/* Terminal */
 .term{background:var(--bg2);border:1px solid var(--border);border-radius:5px;overflow:hidden;max-width:580px}
 .th{background:#0c0c0c;padding:7px 12px;display:flex;align-items:center;gap:6px;border-bottom:1px solid var(--border)}
 .th .td{display:flex;gap:5px}.th .td span{width:8px;height:8px;border-radius:50%}
 .th .tn{font-size:10px;color:var(--g3);margin-left:6px}
 .tb{padding:16px;font-size:11px;line-height:2.2;color:var(--g2)}
 .tp{color:#4ade80}.tk{color:var(--w)}.tv{color:var(--g2)}.ts{color:var(--g1)}
-
-/* Skills */
 .sg{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
 .sk{background:var(--bg2);border:1px solid var(--border);border-radius:5px;padding:20px;transition:var(--tr)}.sk:hover{border-color:var(--g3)}
 .sk h4{font-size:12px;font-weight:600;color:var(--w);margin-bottom:12px;font-family:var(--sans)}
 .sk-t{display:flex;flex-wrap:wrap;gap:5px}.st{padding:3px 9px;border:1px solid var(--border);border-radius:3px;font-size:10px;color:var(--g2);transition:var(--tr)}.st:hover{border-color:var(--g2);color:var(--w)}
-
-/* Projects */
 .pg{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
 .pc{background:var(--bg2);border:1px solid var(--border);border-radius:5px;overflow:hidden;transition:var(--tr)}.pc:hover{border-color:var(--g3);transform:translateY(-3px)}
 .pc-i{height:170px;background:var(--bg3);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:center;overflow:hidden}
@@ -79,20 +66,14 @@ html,body{margin:0;padding:0}
 .pc-d{font-size:11px;font-family:var(--sans);color:var(--g2);line-height:1.7;margin-bottom:10px}
 .pc-tg{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:10px}.pt{padding:2px 7px;background:var(--bg3);border-radius:2px;font-size:9px;color:var(--g2)}
 .pc-l{display:flex;gap:8px}.pl{font-size:10px;color:var(--g3);border:1px solid var(--border);padding:3px 10px;border-radius:2px;transition:var(--tr)}.pl:hover{color:var(--w);border-color:var(--g3)}
-
-/* Publications */
 .pub-l{display:flex;flex-direction:column;gap:14px;max-width:720px}
 .pub{padding:18px;background:var(--bg2);border:1px solid var(--border);border-radius:5px;transition:var(--tr)}.pub:hover{border-color:var(--g3);transform:translateX(3px)}
 .pub-v{font-size:10px;color:var(--g3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
 .pub-tt{font-size:13px;font-weight:600;color:var(--w);margin-bottom:3px;font-family:var(--sans)}
 .pub-a{font-size:11px;color:var(--g2);font-family:var(--sans);margin-bottom:5px}
-
-/* Awards */
 .aw-l{display:flex;flex-direction:column;gap:12px;max-width:640px}
 .aw{display:flex;gap:14px;padding:16px;background:var(--bg2);border:1px solid var(--border);border-radius:5px;transition:var(--tr)}.aw:hover{border-color:var(--g3);transform:translateX(3px)}
 .aw-y{font-size:11px;color:var(--g3);min-width:42px;font-weight:500}.aw-b h4{font-size:13px;font-weight:600;color:var(--w);margin-bottom:2px;font-family:var(--sans)}.aw-b p{font-size:11px;color:var(--g2);font-family:var(--sans)}
-
-/* Review Cards */
 .rv-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
 .rv{background:var(--bg2);border:1px solid var(--border);border-radius:5px;padding:20px;cursor:pointer;transition:all .4s cubic-bezier(.4,0,.2,1);position:relative;overflow:hidden}
 .rv::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#fff,transparent);opacity:0;transition:var(--tr)}
@@ -101,9 +82,7 @@ html,body{margin:0;padding:0}
 .rv-tt{font-size:14px;font-weight:600;color:var(--w);margin-bottom:4px;font-family:var(--sans);line-height:1.4}
 .rv-ve{font-size:10px;color:var(--g3);margin-bottom:8px}
 .rv-sm{font-size:11px;color:var(--g2);font-family:var(--sans);line-height:1.6;margin-bottom:10px}
-.rv-lk{font-size:10px;color:var(--g3);transition:var(--tr)}.rv-lk:hover{color:var(--w)}
-
-/* ===== PAPER READER (전체화면 새 페이지 스타일) ===== */
+.rv-lk{font-size:10px;color:var(--g3)}
 #reader{display:none;position:fixed;inset:0;z-index:5000;background:var(--bg);overflow-y:auto}
 #reader.open{display:block}
 .rd-nav{position:fixed;top:0;left:0;right:0;height:48px;background:rgba(9,9,9,.95);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;z-index:5001;backdrop-filter:blur(10px)}
@@ -121,25 +100,16 @@ html,body{margin:0;padding:0}
 .rd-section strong{color:var(--w)}
 .rd-img{width:100%;border-radius:6px;border:1px solid var(--border);margin:16px 0;display:block}
 .rd-img-cap{font-size:10px;color:var(--g3);text-align:center;margin:-8px 0 16px;font-family:var(--sans)}
-.rd-code{background:var(--bg2);border:1px solid var(--border);border-radius:4px;padding:14px;font-size:11px;color:var(--g2);overflow-x:auto;margin:12px 0;line-height:1.8}
-.rd-quote{border-left:2px solid var(--g4);padding:8px 16px;margin:12px 0;color:var(--g3);font-style:italic;font-size:12px;font-family:var(--sans)}
 .rd-divider{width:40px;height:1px;background:var(--g4);margin:40px auto}
-
-/* Progress bar */
 .rd-progress{position:fixed;top:48px;left:0;height:2px;background:var(--w);z-index:5002;transition:width .1s;width:0}
-
-/* Career */
 .tl{position:relative;padding-left:28px;max-width:640px}.tl::before{content:'';position:absolute;left:9px;top:0;bottom:0;width:1px;background:var(--g4)}
 .tli{position:relative;margin-bottom:32px;padding:18px;background:var(--bg2);border:1px solid var(--border);border-radius:5px;transition:var(--tr)}.tli:hover{border-color:var(--g3);transform:translateX(3px)}
 .tli::before{content:'';position:absolute;left:-24px;top:22px;width:7px;height:7px;border-radius:50%;background:var(--w);border:2px solid var(--bg)}
 .tl-d{font-size:10px;color:var(--g3);margin-bottom:3px}.tl-t{font-size:14px;font-weight:600;color:var(--w);margin-bottom:2px;font-family:var(--sans)}
 .tl-o{font-size:12px;color:var(--g2);margin-bottom:7px}.tl-ds{font-family:var(--sans);font-size:11px;color:var(--g2);line-height:1.8}
-
-/* Contact */
 .c-l{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}
 .cl{padding:9px 18px;background:var(--bg2);border:1px solid var(--border);border-radius:3px;font-size:11px;color:var(--g2);transition:var(--tr);display:flex;align-items:center;gap:7px}.cl:hover{border-color:var(--w);color:var(--w);transform:translateY(-1px)}
 .footer{padding:28px 56px 40px 72px;text-align:center;font-size:10px;color:var(--g4)}
-/* Music toggle */
 .music-btn{position:fixed;bottom:34px;right:52px;width:30px;height:30px;background:var(--bg3);border:1px solid var(--border);border-radius:3px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--g3);font-size:12px;transition:var(--tr);z-index:500}
 .music-btn:hover{border-color:var(--w);color:var(--w)}.music-btn.on{color:var(--w);border-color:var(--g3)}
 .music-bars{display:flex;gap:2px;align-items:flex-end;height:12px}
@@ -149,541 +119,285 @@ html,body{margin:0;padding:0}
 .music-btn.on .music-bars span:nth-child(3){animation-delay:.3s}
 .music-btn.on .music-bars span:nth-child(4){animation-delay:.45s}
 @keyframes bars{0%{height:3px}100%{height:12px}}
-
 .sctop{position:fixed;bottom:34px;right:14px;width:30px;height:30px;background:var(--bg3);border:1px solid var(--border);border-radius:3px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--g3);font-size:13px;opacity:0;transition:var(--tr);z-index:500}.sctop.show{opacity:1}.sctop:hover{border-color:var(--w);color:var(--w)}
 .mnav{display:none}
 @media(max-width:768px){
-  .sidebar{display:none}.editor{margin-left:0}.tabs{display:none}
-  .sec{padding:28px 14px}.footer{padding:20px 14px 44px}
-  .hw{flex-direction:column;gap:24px;text-align:center}.pf{width:140px;height:140px}
-  .h-desc{margin:0 auto 20px}.h-btns{justify-content:center}
-  .sg,.pg,.rv-g{grid-template-columns:1fr}
-  .mnav{display:flex!important;position:fixed;bottom:22px;left:0;right:0;background:#0c0c0c;border-top:1px solid var(--border);z-index:999;justify-content:space-around;padding:4px 0}
-  .mnav a{color:var(--g3);font-size:7px;text-align:center;padding:3px;display:flex;flex-direction:column;align-items:center;gap:1px}.mnav a .mi{font-size:13px}.mnav a.active{color:var(--w)}
-  .rd-body{padding:64px 16px 80px}
-}
+.sidebar{display:none}.editor{margin-left:0}.tabs{display:none}
+.sec{padding:28px 14px}.footer{padding:20px 14px 44px}
+.hw{flex-direction:column;gap:24px;text-align:center}.pf{width:140px;height:140px}
+.h-desc{margin:0 auto 20px}.h-btns{justify-content:center}
+.sg,.pg,.rv-g{grid-template-columns:1fr}
+.mnav{display:flex!important;position:fixed;bottom:22px;left:0;right:0;background:#0c0c0c;border-top:1px solid var(--border);z-index:999;justify-content:space-around;padding:4px 0}
+.mnav a{color:var(--g3);font-size:7px;text-align:center;padding:3px;display:flex;flex-direction:column;align-items:center;gap:1px}.mnav a .mi{font-size:13px}.mnav a.active{color:var(--w)}
+.rd-body{padding:64px 16px 80px}}
 .sec,.titlebar,.sidebar,.tabs,.sbar,.sctop,.mnav,.footer{position:relative;z-index:2}
 </style>
 </head>
 <body>
-
-<!-- 3D Background -->
 <div id="three-bg"></div>
-<!-- Falling GD Balls -->
 <canvas id="ballCanvas"></canvas>
-
-<!-- Paper Reader (전체화면) -->
 <div id="reader">
-  <div class="rd-progress" id="rdProgress"></div>
-  <div class="rd-nav">
-    <button class="rd-back" onclick="closeReader()">← Back to Portfolio</button>
-    <span class="rd-file" id="rdFile">review.md</span>
-  </div>
-  <div class="rd-body" id="rdBody"></div>
+<div class="rd-progress" id="rdProgress"></div>
+<div class="rd-nav"><button class="rd-back" onclick="closeReader()">Back to Portfolio</button><span class="rd-file" id="rdFile">review.md</span></div>
+<div class="rd-body" id="rdBody"></div>
 </div>
-
 <div id="portfolio">
-  <div class="titlebar">
-    <div class="dots"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div></div>
-    <span>portfolio — Ju Jinho</span>
-  </div>
-  <div class="main">
-    <nav class="sidebar">
-      <div class="ni active" data-s="hero" title="Home">⌂</div>
-      <div class="ni" data-s="about" title="About">◐</div>
-      <div class="ni" data-s="skills" title="Skills">◈</div>
-      <div class="ni" data-s="projects" title="Projects">▦</div>
-      <div class="ni" data-s="publications" title="Papers">◉</div>
-      <div class="ni" data-s="awards" title="Awards">★</div>
-      <div class="ni" data-s="reviews" title="Reviews">◇</div>
-      <div class="ni" data-s="career" title="Career">▬</div>
-      <div class="ni" data-s="contact" title="Contact">✉</div>
-      <div class="sp"></div>
-    </nav>
-    <div class="editor">
-      <div class="tabs" id="tabBar">
-        <div class="tab active" data-s="hero"><span class="fd" style="background:#fff"></span>home.py</div>
-        <div class="tab" data-s="about"><span class="fd" style="background:#999"></span>about.yaml</div>
-        <div class="tab" data-s="skills"><span class="fd" style="background:#666"></span>skills.py</div>
-        <div class="tab" data-s="projects"><span class="fd" style="background:#fff"></span>projects.ipynb</div>
-        <div class="tab" data-s="publications"><span class="fd" style="background:#999"></span>papers.bib</div>
-        <div class="tab" data-s="awards"><span class="fd" style="background:#666"></span>awards.md</div>
-        <div class="tab" data-s="reviews"><span class="fd" style="background:#fff"></span>reviews.md</div>
-        <div class="tab" data-s="career"><span class="fd" style="background:#999"></span>career.md</div>
-        <div class="tab" data-s="contact"><span class="fd" style="background:#666"></span>contact.sh</div>
-      </div>
-
-      <!-- HERO -->
-      <section class="sec vis" id="hero">
-        <div class="hw">
-          <div class="pf">
-            <img src="images/profile.png" alt="Ju Jinho" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-            <div class="pf-ph" style="display:none">photo</div>
-          </div>
-          <div class="ht">
-            <div class="h-hi">// hello, world</div>
-            <div class="h-name">주진호</div>
-            <div class="h-role">AI Researcher · Vision & Modeling</div>
-            <div class="h-typ"><span id="typT"></span><span class="cur"></span></div>
-            <p class="h-desc">Computer Vision 분야에서 데이터 양질의 한계를 넘어서는 고성능 모델을 연구합니다. 배움을 멈추지 않는 연구자로서, 대학원 진학을 목표로 매일 성장하고 있습니다.</p>
-            <div class="h-btns">
-              <a href="#projects" class="btn btn-w">Projects</a>
-              <a href="#publications" class="btn">Publications</a>
-              <a href="#reviews" class="btn">Paper Reviews</a>
-              <a href="https://github.com/Wlsghdh" target="_blank" class="btn">GitHub</a>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- ABOUT -->
-      <section class="sec" id="about">
-        <div class="sec-l">about</div>
-        <h2 class="sec-t">About Me</h2>
-        <div class="term">
-          <div class="th"><div class="td"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="tn">about.yaml</span></div>
-          <div class="tb">
-            <div><span class="tp">$</span> cat about.yaml</div><br>
-            <div><span class="tk">name</span>: <span class="ts">주진호 (Ju Jinho)</span></div>
-            <div><span class="tk">role</span>: <span class="ts">AI Researcher · Vision & Modeling</span></div>
-            <div><span class="tk">status</span>: <span class="ts">대학원 진학을 위해 연구에 몰두하는 4학년</span></div>
-            <div><span class="tk">education</span>:</div>
-            <div>&nbsp;&nbsp;- <span class="ts">수원대학교 AI·데이터과학부 4학년</span></div>
-            <div><span class="tk">research_interests</span>:</div>
-            <div>&nbsp;&nbsp;- <span class="tv">Computer Vision</span></div>
-            <div>&nbsp;&nbsp;- <span class="tv">Data-Efficient Learning</span></div>
-            <div>&nbsp;&nbsp;- <span class="tv">Multimodal Learning</span></div>
-            <div><span class="tk">philosophy</span>: <span style="color:#4ade80">"죽을 때까지 배우고, 끝없이 연구한다"</span></div>
-          </div>
-        </div>
-      </section>
-
-      <!-- SKILLS -->
-      <section class="sec" id="skills">
-        <div class="sec-l">skills</div>
-        <h2 class="sec-t">Technical Skills</h2>
-        <div class="sg">
-          <div class="sk"><h4>ML / Deep Learning</h4><div class="sk-t"><span class="st">PyTorch</span><span class="st">TensorFlow</span><span class="st">scikit-learn</span><span class="st">XGBoost</span><span class="st">LightGBM</span><span class="st">OpenCV</span><span class="st">YOLO</span><span class="st">Hugging Face</span></div></div>
-          <div class="sk"><h4>Data & Analytics</h4><div class="sk-t"><span class="st">Python</span><span class="st">R</span><span class="st">SQL</span><span class="st">Pandas</span><span class="st">NumPy</span><span class="st">Scipy</span></div></div>
-          <div class="sk"><h4>Visualization</h4><div class="sk-t"><span class="st">Matplotlib</span><span class="st">Seaborn</span><span class="st">Plotly</span><span class="st">Tableau</span></div></div>
-          <div class="sk"><h4>Tools & Infra</h4><div class="sk-t"><span class="st">Git</span><span class="st">AWS</span><span class="st">Docker</span><span class="st">Linux</span><span class="st">Selenium</span><span class="st">FastAPI</span></div></div>
-        </div>
-      </section>
-
-      <!-- PROJECTS -->
-      <section class="sec" id="projects">
-        <div class="sec-l">projects</div>
-        <h2 class="sec-t">Projects</h2>
-        <div class="pg">
-          <div class="pc"><div class="pc-i"><img src="images/trading.png" onerror="this.outerHTML='<span class=pc-ph>trading.png</span>'"></div><div class="pc-b"><div class="pc-tt">TradingView Auto Crawler</div><p class="pc-d">주가 예측을 위해 TradingView 실시간 데이터를 Selenium 기반으로 자동 수집하는 파이프라인.</p><div class="pc-tg"><span class="pt">Python</span><span class="pt">Selenium</span><span class="pt">WebDriver</span><span class="pt">Automation</span></div><div class="pc-l"><a href="https://github.com/Wlsghdh/tradingview-stream-crawler" target="_blank" class="pl">GitHub</a></div></div></div>
-          <div class="pc"><div class="pc-i"><img src="images/personal-color.png" onerror="this.outerHTML='<span class=pc-ph>personal-color.png</span>'"></div><div class="pc-b"><div class="pc-tt">AI Personal Color Diagnosis</div><p class="pc-d">얼굴 사진 분석으로 퍼스널 컬러 진단 후 맞춤 배경 영상 생성. AI-Develops 우수상.</p><div class="pc-tg"><span class="pt">Python</span><span class="pt">OpenCV</span><span class="pt">Deep Learning</span><span class="pt">Color Analysis</span></div><div class="pc-l"><span class="pl" style="color:var(--g4)">준비중</span></div></div></div>
-          <div class="pc"><div class="pc-i"><img src="images/gas-detection.png" onerror="this.outerHTML='<span class=pc-ph>gas-detection.png</span>'"></div><div class="pc-b"><div class="pc-tt">Multimodal Gas Leak Detection</div><p class="pc-d">가스 센서 데이터의 오류 문제 해결을 위해 통합 전처리 파이프라인 구축. 멀티모달 접근으로 기존 모델 대비 성능 향상.</p><div class="pc-tg"><span class="pt">PyTorch</span><span class="pt">Multimodal</span><span class="pt">DCT</span><span class="pt">DWT</span><span class="pt">MTF</span></div><div class="pc-l"><a href="https://github.com/Wlsghdh/GasLeakage-MultiModal-MTF" target="_blank" class="pl">GitHub</a></div></div></div>
-          <div class="pc"><div class="pc-i"><img src="images/cable-detection.png" onerror="this.outerHTML='<span class=pc-ph>cable-detection.png</span>'"></div><div class="pc-b"><div class="pc-tt">Industrial Cable Defect Detection</div><p class="pc-d">산업 환경 케이블 결함 자동 탐지 비전 모델. 다양한 아키텍처 비교 실험으로 최적 성능 도출.</p><div class="pc-tg"><span class="pt">PyTorch</span><span class="pt">Computer Vision</span><span class="pt">Object Detection</span></div><div class="pc-l"><span class="pl" style="color:var(--g4)">준비중</span></div></div></div>
-        </div>
-      </section>
-
-      <!-- PUBLICATIONS -->
-      <section class="sec" id="publications">
-        <div class="sec-l">publications</div>
-        <h2 class="sec-t">Publications</h2>
-        <div class="pub-l">
-          <div class="pub"><div class="pub-v">한국정보과학회</div><div class="pub-tt">통합 전처리 파이프라인을 활용한 멀티모달 가스 센서 데이터셋에서의 모델 성능 비교</div><div class="pub-a">맹영민, <strong>주진호</strong>, 윤재훈, 정우창</div></div>
-        </div>
-      </section>
-
-      <!-- AWARDS -->
-      <section class="sec" id="awards">
-        <div class="sec-l">awards</div>
-        <h2 class="sec-t">Awards & Honors</h2>
-        <div class="aw-l">
-          <div class="aw"><div class="aw-y">2024</div><div class="aw-b"><h4>AI-Develops 공모전 우수상</h4><p>AI 퍼스널 컬러 진단 모델</p></div></div>
-        </div>
-      </section>
-
-      <!-- PAPER REVIEWS -->
-      <section class="sec" id="reviews">
-        <div class="sec-l">paper reviews</div>
-        <h2 class="sec-t">Paper Reviews</h2>
-        <p style="font-size:12px;color:var(--g2);font-family:var(--sans);margin-bottom:24px;max-width:580px;line-height:1.8">읽고 정리한 논문 리뷰입니다. 클릭하면 전체 리뷰를 읽을 수 있습니다.</p>
-        <div class="rv-g" id="rvGrid"></div>
-      </section>
-
-      <!-- CAREER -->
-      <section class="sec" id="career">
-        <div class="sec-l">career</div>
-        <h2 class="sec-t">Career</h2>
-        <div class="tl">
-          <div class="tli"><div class="tl-d">2021.03 — Present</div><div class="tl-t">AI·데이터과학부 학부생</div><div class="tl-o">수원대학교</div><div class="tl-ds">Computer Vision, ML 분야 연구. 다수 프로젝트 및 공모전 참여. 대학원 진학 준비 중.</div></div>
-        </div>
-      </section>
-
-      <!-- CONTACT -->
-      <section class="sec" id="contact">
-        <div class="sec-l">contact</div>
-        <h2 class="sec-t">Contact</h2>
-        <div class="term" style="max-width:440px">
-          <div class="th"><div class="td"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="tn">contact.sh</span></div>
-          <div class="tb">
-            <div><span class="tp">$</span> cat contact.yaml</div><br>
-            <div><span class="tk">email</span>: <span class="ts">wlsgh20728@suwon.ac.kr</span></div>
-            <div><span class="tk">github</span>: <span class="ts">github.com/Wlsghdh</span></div>
-          </div>
-        </div>
-        <div class="c-l">
-          <a href="mailto:wlsgh20728@suwon.ac.kr" class="cl">✉ Email</a>
-          <a href="https://github.com/Wlsghdh" target="_blank" class="cl">GitHub</a>
-        </div>
-      </section>
-
-      <div class="footer"><p>© 2024 Ju Jinho</p></div>
-    </div>
-  </div>
-  <div class="sbar"><span>⎇ main</span><span id="sf">home.py</span><span class="sp"></span><span>Python 3.11</span><span>UTF-8</span></div>
-  <nav class="mnav">
-    <a href="#hero" class="active" data-s="hero"><span class="mi">⌂</span>Home</a>
-    <a href="#about" data-s="about"><span class="mi">◐</span>About</a>
-    <a href="#projects" data-s="projects"><span class="mi">▦</span>Proj</a>
-    <a href="#reviews" data-s="reviews"><span class="mi">◇</span>Reviews</a>
-    <a href="#contact" data-s="contact"><span class="mi">✉</span>Contact</a>
-  </nav>
-  <div class="sctop" id="sctop">↑</div>
-  <div class="music-btn" id="musicBtn" title="Background Music">
-    <div class="music-bars"><span style="height:4px"></span><span style="height:8px"></span><span style="height:5px"></span><span style="height:10px"></span></div>
-  </div>
+<div class="titlebar"><div class="dots"><div class="dot dr"></div><div class="dot dy"></div><div class="dot dg"></div></div><span>portfolio — Ju Jinho</span></div>
+<div class="main">
+<nav class="sidebar">
+<div class="ni active" data-s="hero" title="Home">⌂</div>
+<div class="ni" data-s="about" title="About">◐</div>
+<div class="ni" data-s="skills" title="Skills">◈</div>
+<div class="ni" data-s="projects" title="Projects">▦</div>
+<div class="ni" data-s="publications" title="Papers">◉</div>
+<div class="ni" data-s="awards" title="Awards">★</div>
+<div class="ni" data-s="reviews" title="Reviews">◇</div>
+<div class="ni" data-s="career" title="Career">▬</div>
+<div class="ni" data-s="contact" title="Contact">✉</div>
+<div class="sp"></div>
+</nav>
+<div class="editor">
+<div class="tabs" id="tabBar">
+<div class="tab active" data-s="hero"><span class="fd" style="background:#fff"></span>home.py</div>
+<div class="tab" data-s="about"><span class="fd" style="background:#999"></span>about.yaml</div>
+<div class="tab" data-s="skills"><span class="fd" style="background:#666"></span>skills.py</div>
+<div class="tab" data-s="projects"><span class="fd" style="background:#fff"></span>projects.ipynb</div>
+<div class="tab" data-s="publications"><span class="fd" style="background:#999"></span>papers.bib</div>
+<div class="tab" data-s="awards"><span class="fd" style="background:#666"></span>awards.md</div>
+<div class="tab" data-s="reviews"><span class="fd" style="background:#fff"></span>reviews.md</div>
+<div class="tab" data-s="career"><span class="fd" style="background:#999"></span>career.md</div>
+<div class="tab" data-s="contact"><span class="fd" style="background:#666"></span>contact.sh</div>
 </div>
-
+<section class="sec vis" id="hero"><div class="hw"><div class="pf"><img src="images/profile.png" alt="Ju Jinho" onerror="this.style.display='none';this.nextElementSibling.style.display='block'"><div class="pf-ph" style="display:none">photo</div></div><div class="ht"><div class="h-hi">// hello, world</div><div class="h-name">주진호</div><div class="h-role">AI Researcher · Vision &amp; Modeling</div><div class="h-typ"><span id="typT"></span><span class="cur"></span></div><p class="h-desc">Computer Vision 분야에서 데이터 양질의 한계를 넘어서는 고성능 모델을 연구합니다. 배움을 멈추지 않는 연구자로서, 대학원 진학을 목표로 매일 성장하고 있습니다.</p><div class="h-btns"><a href="#projects" class="btn btn-w">Projects</a><a href="#publications" class="btn">Publications</a><a href="#reviews" class="btn">Paper Reviews</a><a href="https://github.com/Wlsghdh" target="_blank" class="btn">GitHub</a></div></div></div></section>
+<section class="sec" id="about"><div class="sec-l">about</div><h2 class="sec-t">About Me</h2><div class="term"><div class="th"><div class="td"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="tn">about.yaml</span></div><div class="tb"><div><span class="tp">$</span> cat about.yaml</div><br><div><span class="tk">name</span>: <span class="ts">주진호 (Ju Jinho)</span></div><div><span class="tk">role</span>: <span class="ts">AI Researcher</span></div><div><span class="tk">status</span>: <span class="ts">대학원 진학을 위해 연구에 몰두하는 4학년</span></div><div><span class="tk">education</span>:</div><div>&nbsp;&nbsp;- <span class="ts">수원대학교 AI·데이터과학부 4학년</span></div><div><span class="tk">research_interests</span>:</div><div>&nbsp;&nbsp;- <span class="tv">Computer Vision</span></div><div>&nbsp;&nbsp;- <span class="tv">Data-Efficient Learning</span></div><div>&nbsp;&nbsp;- <span class="tv">Multimodal Learning</span></div><div><span class="tk">philosophy</span>: <span style="color:#4ade80">"죽을 때까지 배우고, 끝없이 연구한다"</span></div></div></div></section>
+<section class="sec" id="skills"><div class="sec-l">skills</div><h2 class="sec-t">Technical Skills</h2><div class="sg"><div class="sk"><h4>ML / Deep Learning</h4><div class="sk-t"><span class="st">PyTorch</span><span class="st">TensorFlow</span><span class="st">scikit-learn</span><span class="st">XGBoost</span><span class="st">LightGBM</span><span class="st">OpenCV</span><span class="st">YOLO</span><span class="st">Hugging Face</span></div></div><div class="sk"><h4>Data &amp; Analytics</h4><div class="sk-t"><span class="st">Python</span><span class="st">R</span><span class="st">SQL</span><span class="st">Pandas</span><span class="st">NumPy</span><span class="st">Scipy</span></div></div><div class="sk"><h4>Visualization</h4><div class="sk-t"><span class="st">Matplotlib</span><span class="st">Seaborn</span><span class="st">Plotly</span><span class="st">Tableau</span></div></div><div class="sk"><h4>Tools &amp; Infra</h4><div class="sk-t"><span class="st">Git</span><span class="st">AWS</span><span class="st">Docker</span><span class="st">Linux</span><span class="st">Selenium</span><span class="st">FastAPI</span></div></div></div></section>
+<section class="sec" id="projects"><div class="sec-l">projects</div><h2 class="sec-t">Projects</h2><div class="pg"><div class="pc"><div class="pc-i"><img src="images/trading.png" onerror="this.outerHTML='<span class=pc-ph>trading.png</span>'"></div><div class="pc-b"><div class="pc-tt">TradingView Auto Crawler</div><p class="pc-d">주가 예측을 위해 TradingView 실시간 데이터를 Selenium 기반으로 자동 수집하는 파이프라인.</p><div class="pc-tg"><span class="pt">Python</span><span class="pt">Selenium</span><span class="pt">WebDriver</span><span class="pt">Automation</span></div><div class="pc-l"><a href="https://github.com/Wlsghdh/tradingview-stream-crawler" target="_blank" class="pl">GitHub</a></div></div></div><div class="pc"><div class="pc-i"><img src="images/personal-color.png" onerror="this.outerHTML='<span class=pc-ph>personal-color.png</span>'"></div><div class="pc-b"><div class="pc-tt">AI Personal Color Diagnosis</div><p class="pc-d">얼굴 사진 분석으로 퍼스널 컬러 진단 후 맞춤 배경 영상 생성. AI-Develops 우수상.</p><div class="pc-tg"><span class="pt">Python</span><span class="pt">OpenCV</span><span class="pt">Deep Learning</span><span class="pt">Color Analysis</span></div><div class="pc-l"><span class="pl" style="color:var(--g4)">준비중</span></div></div></div><div class="pc"><div class="pc-i"><img src="images/gas-detection.png" onerror="this.outerHTML='<span class=pc-ph>gas-detection.png</span>'"></div><div class="pc-b"><div class="pc-tt">Multimodal Gas Leak Detection</div><p class="pc-d">가스 센서 데이터 통합 전처리 파이프라인 구축. 멀티모달 접근으로 성능 향상.</p><div class="pc-tg"><span class="pt">PyTorch</span><span class="pt">Multimodal</span><span class="pt">DCT</span><span class="pt">DWT</span><span class="pt">MTF</span></div><div class="pc-l"><a href="https://github.com/Wlsghdh/GasLeakage-MultiModal-MTF" target="_blank" class="pl">GitHub</a></div></div></div><div class="pc"><div class="pc-i"><img src="images/cable-detection.png" onerror="this.outerHTML='<span class=pc-ph>cable-detection.png</span>'"></div><div class="pc-b"><div class="pc-tt">Industrial Cable Defect Detection</div><p class="pc-d">산업 환경 케이블 결함 자동 탐지 비전 모델.</p><div class="pc-tg"><span class="pt">PyTorch</span><span class="pt">Computer Vision</span><span class="pt">Object Detection</span></div><div class="pc-l"><span class="pl" style="color:var(--g4)">준비중</span></div></div></div></div></section>
+<section class="sec" id="publications"><div class="sec-l">publications</div><h2 class="sec-t">Publications</h2><div class="pub-l"><div class="pub"><div class="pub-v">한국정보과학회</div><div class="pub-tt">통합 전처리 파이프라인을 활용한 멀티모달 가스 센서 데이터셋에서의 모델 성능 비교</div><div class="pub-a">맹영민, <strong>주진호</strong>, 윤재훈, 정우창</div></div></div></section>
+<section class="sec" id="awards"><div class="sec-l">awards</div><h2 class="sec-t">Awards &amp; Honors</h2><div class="aw-l"><div class="aw"><div class="aw-y">2024</div><div class="aw-b"><h4>AI-Develops 공모전 우수상</h4><p>AI 퍼스널 컬러 진단 모델</p></div></div></div></section>
+<section class="sec" id="reviews"><div class="sec-l">paper reviews</div><h2 class="sec-t">Paper Reviews</h2><p style="font-size:12px;color:var(--g2);font-family:var(--sans);margin-bottom:24px;max-width:580px;line-height:1.8">읽고 정리한 논문 리뷰입니다. 클릭하면 전체 리뷰를 읽을 수 있습니다.</p><div class="rv-g" id="rvGrid"></div></section>
+<section class="sec" id="career"><div class="sec-l">career</div><h2 class="sec-t">Career</h2><div class="tl"><div class="tli"><div class="tl-d">2021.03 — Present</div><div class="tl-t">AI·데이터과학부 학부생</div><div class="tl-o">수원대학교</div><div class="tl-ds">Computer Vision, ML 분야 연구. 대학원 진학 준비 중.</div></div></div></section>
+<section class="sec" id="contact"><div class="sec-l">contact</div><h2 class="sec-t">Contact</h2><div class="term" style="max-width:440px"><div class="th"><div class="td"><span class="dr"></span><span class="dy"></span><span class="dg"></span></div><span class="tn">contact.sh</span></div><div class="tb"><div><span class="tp">$</span> cat contact.yaml</div><br><div><span class="tk">email</span>: <span class="ts">wlsgh20728@suwon.ac.kr</span></div><div><span class="tk">github</span>: <span class="ts">github.com/Wlsghdh</span></div></div></div><div class="c-l"><a href="mailto:wlsgh20728@suwon.ac.kr" class="cl">Email</a><a href="https://github.com/Wlsghdh" target="_blank" class="cl">GitHub</a></div></section>
+<div class="footer"><p>© 2024 Ju Jinho</p></div>
+</div></div>
+<div class="sbar"><span>⎇ main</span><span id="sf">home.py</span><span class="sp"></span><span>Python 3.11</span><span>UTF-8</span></div>
+<nav class="mnav"><a href="#hero" class="active" data-s="hero"><span class="mi">⌂</span>Home</a><a href="#about" data-s="about"><span class="mi">◐</span>About</a><a href="#projects" data-s="projects"><span class="mi">▦</span>Proj</a><a href="#reviews" data-s="reviews"><span class="mi">◇</span>Reviews</a><a href="#contact" data-s="contact"><span class="mi">✉</span>Contact</a></nav>
+<div class="sctop" id="sctop">↑</div>
+<div class="music-btn" id="musicBtn" title="Background Music"><div class="music-bars"><span style="height:4px"></span><span style="height:8px"></span><span style="height:5px"></span><span style="height:10px"></span></div></div>
+</div>
 <script>
-/* ============================================
-   FALLING GRADIENT DESCENT BALLS (2D Canvas)
-   화면 전체에서 잘 보이는 흰색 공들
-   ============================================ */
+// GD Ball
 !function(){
-  const c=document.getElementById('ballCanvas'),ctx=c.getContext('2d');
-  let w,h;
-  function resize(){w=c.width=innerWidth;h=c.height=innerHeight}
-  resize();addEventListener('resize',resize);
-
-  const balls=[];
-  // 내리막인데 좌우로 왔다갔다하는 경사면
-  function surface(x,y){
-    const nx=x/w,ny=y/h;
-    // 아래로 내려가되, 좌우로 골짜기가 번갈아 나옴
-    return ny*h*0.8 + Math.sin(nx*12+ny*4)*60 + Math.cos(ny*8)*40;
-  }
-  function grad(x,y){
-    const e=2;
-    return{
-      dx:(surface(x+e,y)-surface(x-e,y))/(2*e),
-      dy:(surface(x,y+e)-surface(x,y-e))/(2*e)
-    };
-  }
-
-  let ball={x:w*.5,y:30,vx:0,vy:0,r:8,trail:[]};
-  function resetBall(){
-    ball.x=Math.random()*w*.6+w*.2; // 화면 중앙부에서 시작
-    ball.y=-10;
-    ball.vx=0;ball.vy=0;
-    ball.trail=[];
-  }
-
-  function draw(){
-    ctx.clearRect(0,0,w,h);
-
-    // 경사 따라 이동 (실제 gradient descent)
-    const g=grad(ball.x,ball.y);
-    const lr=.03;
-    ball.vx=ball.vx*.97+g.dx*lr; // momentum
-    ball.vy=ball.vy*.97+g.dy*lr;
-    ball.x+=ball.vx;
-    ball.y+=ball.vy;
-
-    // 궤적
-    ball.trail.push({x:ball.x,y:ball.y});
-    if(ball.trail.length>60)ball.trail.shift();
-
-    // 궤적 그리기
-    if(ball.trail.length>1){
-      for(let j=1;j<ball.trail.length;j++){
-        const a=(j/ball.trail.length)*.25;
-        ctx.beginPath();
-        ctx.moveTo(ball.trail[j-1].x,ball.trail[j-1].y);
-        ctx.lineTo(ball.trail[j].x,ball.trail[j].y);
-        ctx.strokeStyle=`rgba(255,255,255,${a})`;
-        ctx.lineWidth=ball.r*.5*(j/ball.trail.length);
-        ctx.stroke();
-      }
-    }
-
-    // 글로우
-    const grd=ctx.createRadialGradient(ball.x,ball.y,0,ball.x,ball.y,ball.r*3);
-    grd.addColorStop(0,'rgba(255,255,255,.25)');
-    grd.addColorStop(1,'rgba(255,255,255,0)');
-    ctx.fillStyle=grd;
-    ctx.beginPath();ctx.arc(ball.x,ball.y,ball.r*3,0,Math.PI*2);ctx.fill();
-
-    // 공 본체
-    ctx.beginPath();ctx.arc(ball.x,ball.y,ball.r,0,Math.PI*2);
-    ctx.fillStyle='rgba(255,255,255,.7)';ctx.fill();
-
-    // 하이라이트
-    ctx.beginPath();ctx.arc(ball.x-ball.r*.3,ball.y-ball.r*.3,ball.r*.35,0,Math.PI*2);
-    ctx.fillStyle='rgba(255,255,255,.4)';ctx.fill();
-
-    // 화면 밖이면 리셋
-    if(ball.y>h+30||ball.x>w+30||ball.x<-30)resetBall();
-
-    requestAnimationFrame(draw);
-  }
-  draw();
+var c=document.getElementById('ballCanvas'),ctx=c.getContext('2d'),w,h;
+function resize(){w=c.width=innerWidth;h=c.height=innerHeight}
+resize();addEventListener('resize',resize);
+function sf(x,y){var nx=x/w,ny=y/h;return ny*h*0.8+Math.sin(nx*12+ny*4)*60+Math.cos(ny*8)*40}
+function gd(x,y){var e=2;return{dx:(sf(x+e,y)-sf(x-e,y))/(2*e),dy:(sf(x,y+e)-sf(x,y-e))/(2*e)}}
+var ball={x:100,y:30,vx:0,vy:0,r:8,trail:[]};
+function reset(){ball.x=Math.random()*(w||800)*.6+(w||800)*.2;ball.y=-10;ball.vx=0;ball.vy=0;ball.trail=[]}
+function draw(){
+ctx.clearRect(0,0,w,h);
+if(!w||!h||isNaN(ball.x)||isNaN(ball.y)){reset();requestAnimationFrame(draw);return}
+var g=gd(ball.x,ball.y);
+ball.vx=ball.vx*.97+g.dx*.03;
+ball.vy=ball.vy*.97+g.dy*.03;
+ball.x+=ball.vx;ball.y+=ball.vy;
+ball.trail.push({x:ball.x,y:ball.y});
+if(ball.trail.length>60)ball.trail.shift();
+for(var j=1;j<ball.trail.length;j++){
+var a=(j/ball.trail.length)*.25;
+ctx.beginPath();ctx.moveTo(ball.trail[j-1].x,ball.trail[j-1].y);
+ctx.lineTo(ball.trail[j].x,ball.trail[j].y);
+ctx.strokeStyle='rgba(255,255,255,'+a+')';
+ctx.lineWidth=ball.r*.5*(j/ball.trail.length);ctx.stroke();
+}
+var grd=ctx.createRadialGradient(ball.x,ball.y,0,ball.x,ball.y,ball.r*3);
+grd.addColorStop(0,'rgba(255,255,255,.25)');grd.addColorStop(1,'rgba(255,255,255,0)');
+ctx.fillStyle=grd;ctx.beginPath();ctx.arc(ball.x,ball.y,ball.r*3,0,Math.PI*2);ctx.fill();
+ctx.beginPath();ctx.arc(ball.x,ball.y,ball.r,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,.7)';ctx.fill();
+ctx.beginPath();ctx.arc(ball.x-ball.r*.3,ball.y-ball.r*.3,ball.r*.35,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,.4)';ctx.fill();
+if(ball.y>h+30||ball.x>w+30||ball.x<-30)reset();
+requestAnimationFrame(draw);
+}
+draw();
 }();
 
-/* ============================================
-   THREE.JS 3D BACKGROUND
-   시그모이드 표면 + Loss landscape + 파티클
-   ============================================ */
+// Three.js 3D BG
 !function(){
-  const container=document.getElementById('three-bg');
-  const scene=new THREE.Scene();
-  const camera=new THREE.PerspectiveCamera(60,innerWidth/innerHeight,.1,1000);
-  camera.position.set(0,3,6);camera.lookAt(0,0,0);
-  const renderer=new THREE.WebGLRenderer({alpha:true,antialias:true});
-  renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,2));
-  container.appendChild(renderer.domElement);
-  Object.assign(container.style,{position:'fixed',top:'0',left:'0',width:'100%',height:'100%',zIndex:'0',pointerEvents:'none',opacity:'.1'});
-
-  // Sigmoid surface mesh
-  const geoSize=40,segments=80;
-  const geo=new THREE.PlaneGeometry(geoSize,geoSize,segments,segments);
-  const pos=geo.attributes.position;
-  for(let i=0;i<pos.count;i++){
-    const x=pos.getX(i),y=pos.getY(i);
-    const sx=x*.3,sy=y*.3;
-    const z=2.0/(1+Math.exp(-(sx+sy)))-1+Math.sin(sx*.5)*Math.cos(sy*.5)*.4;
-    pos.setZ(i,z);
-  }
-  geo.computeVertexNormals();
-  const mat=new THREE.MeshBasicMaterial({color:0xffffff,wireframe:true,transparent:true,opacity:.35});
-  const mesh=new THREE.Mesh(geo,mat);
-  mesh.rotation.x=-Math.PI*.45;
-  scene.add(mesh);
-
-  // (Loss landscape removed)
-
-  // Floating particles
-  const ptGeo=new THREE.BufferGeometry();
-  const ptCount=120;
-  const ptPos=new Float32Array(ptCount*3);
-  for(let i=0;i<ptCount;i++){ptPos[i*3]=(Math.random()-.5)*30;ptPos[i*3+1]=(Math.random()-.5)*20;ptPos[i*3+2]=(Math.random()-.5)*15}
-  ptGeo.setAttribute('position',new THREE.BufferAttribute(ptPos,3));
-  const ptMat=new THREE.PointsMaterial({color:0xffffff,size:.08,transparent:true,opacity:.6});
-  const pts=new THREE.Points(ptGeo,ptMat);
-  scene.add(pts);
-
-  function animate(){
-    requestAnimationFrame(animate);
-    mesh.rotation.z+=.0008;
-    pts.rotation.y+=.0003;
-    const t=Date.now()*.0005;
-    const p=geo.attributes.position;
-    for(let i=0;i<p.count;i++){
-      const x=p.getX(i),y=p.getY(i);
-      const sx=x*.3,sy=y*.3;
-      const z=2.0/(1+Math.exp(-(sx+sy+Math.sin(t)*.3)))-1+Math.sin(sx*.5+t)*Math.cos(sy*.5)*.3;
-      p.setZ(i,z);
-    }
-    p.needsUpdate=true;
-    renderer.render(scene,camera);
-  }
-  animate();
-  addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
+var container=document.getElementById('three-bg');
+var scene=new THREE.Scene();
+var camera=new THREE.PerspectiveCamera(60,innerWidth/innerHeight,.1,1000);
+camera.position.set(0,3,6);camera.lookAt(0,0,0);
+var renderer=new THREE.WebGLRenderer({alpha:true,antialias:true});
+renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,2));
+container.appendChild(renderer.domElement);
+var geo=new THREE.PlaneGeometry(40,40,80,80);
+var pos=geo.attributes.position;
+for(var i=0;i<pos.count;i++){var x=pos.getX(i),y=pos.getY(i),sx=x*.3,sy=y*.3;pos.setZ(i,2/(1+Math.exp(-(sx+sy)))-1+Math.sin(sx*.5)*Math.cos(sy*.5)*.4)}
+geo.computeVertexNormals();
+var mat=new THREE.MeshBasicMaterial({color:0xffffff,wireframe:true,transparent:true,opacity:.35});
+var mesh=new THREE.Mesh(geo,mat);mesh.rotation.x=-Math.PI*.45;scene.add(mesh);
+var ptGeo=new THREE.BufferGeometry();var ptPos=new Float32Array(360);
+for(var i=0;i<120;i++){ptPos[i*3]=(Math.random()-.5)*30;ptPos[i*3+1]=(Math.random()-.5)*20;ptPos[i*3+2]=(Math.random()-.5)*15}
+ptGeo.setAttribute('position',new THREE.BufferAttribute(ptPos,3));
+var pts=new THREE.Points(ptGeo,new THREE.PointsMaterial({color:0xffffff,size:.08,transparent:true,opacity:.6}));
+scene.add(pts);
+function animate(){
+requestAnimationFrame(animate);mesh.rotation.z+=.0008;pts.rotation.y+=.0003;
+var t=Date.now()*.0005,p=geo.attributes.position;
+for(var i=0;i<p.count;i++){var x=p.getX(i),y=p.getY(i),sx=x*.3,sy=y*.3;p.setZ(i,2/(1+Math.exp(-(sx+sy+Math.sin(t)*.3)))-1+Math.sin(sx*.5+t)*Math.cos(sy*.5)*.3)}
+p.needsUpdate=true;renderer.render(scene,camera);
+}
+animate();
+addEventListener('resize',function(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
 }();
 
-/* ============================================
-   PAPER REVIEWS DATA
-   여기에 리뷰를 추가하면 자동으로 카드 생성됨
-   images 경로도 여기서 지정
-   ============================================ */
-const reviews=[
-  {
-    tag:'Computer Vision',
-    title:'Deep Residual Learning for Image Recognition',
-    venue:'CVPR 2016 · He et al.',
-    summary:'Skip connection으로 깊은 네트워크의 학습 문제 해결.',
-    file:'resnet-review',
-    sections:[
-      {type:'text',h:'핵심 아이디어',content:'네트워크가 깊어질수록 학습이 어려워지는 <strong>degradation 문제</strong>를 해결하기 위해 Residual Learning 프레임워크를 제안했다. Skip connection(shortcut)을 통해 입력을 출력에 직접 더해주는 구조로, identity mapping을 학습의 기본으로 삼는다.'},
-      {type:'img',src:'images/reviews/resnet-architecture.png',cap:'ResNet의 Residual Block 구조'},
-      {type:'text',h:'방법론',content:'<ul><li><strong>H(x) = F(x) + x</strong> 형태의 residual mapping</li><li>Identity shortcut은 파라미터 추가 없이 구현</li><li>Bottleneck 구조 (1×1 → 3×3 → 1×1)로 연산량 절감</li><li>모든 conv layer 뒤에 Batch Normalization 적용</li></ul>'},
-      {type:'text',h:'실험 결과',content:'<ul><li>ImageNet: 152층 ResNet으로 <strong>top-5 error 3.57%</strong> 달성</li><li>CIFAR-10: 1000층 이상에서도 안정적 학습 확인</li><li>COCO detection/segmentation에서도 당시 SOTA 달성</li></ul>'},
-      {type:'img',src:'images/reviews/resnet-result.png',cap:'Plain Network vs ResNet 성능 비교'},
-      {type:'text',h:'내 생각',content:'Skip connection이라는 단순하면서도 강력한 아이디어가 딥러닝의 패러다임을 완전히 바꿨다. 이후 DenseNet, U-Net, Transformer 등 거의 모든 아키텍처에 영향을 미쳤다. Gradient vanishing 문제에 대한 가장 근본적이고 우아한 해결책이라고 생각한다.'}
-    ]
-  },
-  {
-    tag:'Transformer',
-    title:'An Image is Worth 16x16 Words (ViT)',
-    venue:'ICLR 2021 · Dosovitskiy et al.',
-    summary:'NLP의 Transformer를 Vision에 직접 적용. 패치 기반 접근.',
-    file:'vit-review',
-    sections:[
-      {type:'text',h:'핵심 아이디어',content:'이미지를 <strong>16×16 패치</strong>로 나누어 시퀀스로 변환한 후, NLP의 Transformer Encoder를 거의 수정 없이 적용. CNN의 inductive bias 없이도 대규모 데이터에서 뛰어난 성능을 보인다.'},
-      {type:'img',src:'images/reviews/vit-architecture.png',cap:'Vision Transformer 전체 아키텍처'},
-      {type:'text',h:'방법론',content:'<ul><li>이미지를 고정 크기 패치로 분할 → Linear embedding</li><li>[CLS] 토큰 + Learnable position embedding 추가</li><li>Standard Transformer Encoder 사용 (Multi-Head Attention + MLP)</li><li>JFT-300M 등 대규모 데이터에서 pre-training 후 downstream task fine-tuning</li></ul>'},
-      {type:'text',h:'실험 결과',content:'<ul><li>JFT-300M pre-training: ImageNet <strong>88.55% top-1 accuracy</strong></li><li>대규모 데이터에서 CNN 대비 연산 효율 우수</li><li>소규모 데이터에서는 CNN에 밀리는 한계 존재</li></ul>'},
-      {type:'text',h:'내 생각',content:'Vision 분야에서 Transformer 시대를 개막한 논문이다. 데이터 양에 따른 성능 차이가 매우 흥미롭고, 이후 DeiT, Swin Transformer 등 수많은 후속 연구로 이어졌다. <strong>Inductive bias vs 데이터 스케일</strong>의 trade-off를 명확하게 보여준 중요한 연구.'}
-    ]
-  }
+// Reviews data
+var reviews=[
+{tag:'Contrastive Learning',title:'SimCLR: A Simple Framework for Contrastive Learning',venue:'ICML 2020 - Chen, Kornblith, Norouzi, Hinton (Google Brain)',summary:'레이블 없이 시각적 표현을 학습하는 단순하고 강력한 대조 학습 프레임워크.',file:'simclr-review',
+sections:[
+{type:'text',h:'1. 연구 배경 및 동기',content:'<p>레이블 없이 시각적 표현을 학습하는 것은 오랜 난제였다. 생성 모델 기반 접근법은 픽셀 수준의 복원을 목표로 하지만 계산 비용이 크다. 대조 학습 기반 판별 접근법은 유망하지만 대부분 특수한 아키텍처나 메모리 뱅크를 필요로 했다.</p><p>SimCLR은 이러한 복잡성을 제거하고 단순하고 통합된 프레임워크를 제안한다.</p>'},
+{type:'text',h:'2.1 Data Augmentation Module',content:'<p>하나의 이미지 <span class="math-inline">x</span>로부터 두 개의 서로 다른 augmented view를 생성한다. Random cropping + resize, random color distortion, random Gaussian blur를 순차 적용한다.</p>'},
+{type:'text',h:'2.2 Base Encoder',content:'<p>ResNet을 기본 인코더로 사용하며, average pooling 이후의 출력 <span class="math-inline">h_i = f(\\tilde{x}_i) \\in \\mathbb{R}^d</span>를 representation으로 사용한다.</p>'},
+{type:'text',h:'2.3 Projection Head',content:'<p>representation h를 contrastive loss 공간으로 매핑하는 MLP이다.</p><div class="math-block">z_i = g(h_i) = W^{(2)}\\sigma(W^{(1)}h_i)</div><p>학습 완료 후 downstream task에서는 제거하고 h만 사용한다.</p>'},
+{type:'img',src:'images/reviews/simclr-architecture.png',cap:'SimCLR 전체 프레임워크 구조'},
+{type:'text',h:'2.4 Contrastive Loss (NT-Xent)',content:'<p>Normalized Temperature-scaled Cross Entropy Loss를 사용한다.</p><div class="math-block">\\mathcal{L}_{i,j} = -\\log \\frac{\\exp(\\text{sim}(z_i, z_j) / \\tau)}{\\sum_{k=1}^{2N} \\mathbb{1}_{[k \\neq i]} \\exp(\\text{sim}(z_i, z_k) / \\tau)}</div><p>여기서 <span class="math-inline">\\text{sim}(u,v) = u^\\top v / (\\|u\\|\\|v\\|)</span>은 cosine similarity이며, <span class="math-inline">\\tau</span>는 temperature parameter다.</p>'},
+{type:'text',h:'3.1 Data Augmentation의 조합',content:'<p>단일 augmentation은 좋은 표현을 학습하지 못한다. Random cropping과 color distortion의 조합이 특히 중요하다. Cropping만 사용할 경우 모델이 color histogram shortcut에 의존하게 된다.</p>'},
+{type:'text',h:'3.2 Nonlinear Projection Head',content:'<p>Projection head를 사용하지 않는 경우 대비 10% 이상 향상. 흥미롭게도 projection head 이전 레이어 h가 이후 z보다 더 좋은 표현을 학습한다.</p>'},
+{type:'text',h:'3.3 Batch Size와 학습 시간',content:'<p>큰 batch size는 더 많은 negative sample을 제공한다. Contrastive learning에서 larger batch는 negative sample 다양성 확보라는 구조적 이점을 갖는다.</p>'},
+{type:'text',h:'4. 실험 결과',content:'<p>ResNet-50 기준 69.3% top-1 accuracy로 이전 최고 성능(CPCv2, 63.8%) 대비 큰 향상. ResNet-50(4x) 기준 76.5% 달성으로 supervised ResNet-50과 동등.</p><p>1% label만 사용 시 85.8% top-5 accuracy 달성.</p>'},
+{type:'text',h:'5. 한계 및 의의',content:'<p>매우 큰 batch size(4096~8192)가 필요하다는 실용적 한계가 있다. 이후 MoCo v2, BYOL 등이 메모리 효율적 대안을 제시했다. False negative 문제에 대한 명시적 대응이 없다는 점도 과제로 남는다.</p><p>전체적으로 SimCLR은 self-supervised visual representation learning의 중요한 기준점이 되었다.</p>'}
+]},
+{tag:'Computer Vision',title:'Deep Residual Learning for Image Recognition',venue:'CVPR 2016 - He, Zhang, Ren, Sun',summary:'Skip connection으로 깊은 네트워크의 학습 문제 해결.',file:'resnet-review',
+sections:[
+{type:'text',h:'핵심 아이디어',content:'<p>Degradation 문제를 해결하기 위해 Residual Learning 프레임워크를 제안. Skip connection을 통해 입력을 출력에 직접 더한다.</p>'},
+{type:'img',src:'images/reviews/resnet-architecture.png',cap:'ResNet Residual Block 구조'},
+{type:'text',h:'방법론',content:'<ul><li><span class="math-inline">H(x) = F(x) + x</span> 형태의 residual mapping</li><li>Identity shortcut은 파라미터 추가 없음</li><li>Bottleneck 구조로 연산량 절감</li><li>Batch Normalization 적용</li></ul>'},
+{type:'text',h:'실험 결과',content:'<ul><li>ImageNet: 152층 ResNet으로 top-5 error 3.57%</li><li>CIFAR-10: 1000층 이상에서도 학습 가능</li></ul>'},
+{type:'text',h:'내 생각',content:'<p>Skip connection이라는 단순한 아이디어가 딥러닝 패러다임을 바꿨다. 이후 거의 모든 아키텍처에 영향.</p>'}
+]},
+{tag:'Transformer',title:'An Image is Worth 16x16 Words (ViT)',venue:'ICLR 2021 - Dosovitskiy et al.',summary:'NLP의 Transformer를 Vision에 직접 적용.',file:'vit-review',
+sections:[
+{type:'text',h:'핵심 아이디어',content:'<p>이미지를 <span class="math-inline">16 \\times 16</span> 패치로 나누어 Transformer Encoder에 입력. CNN 없이도 대규모 데이터에서 뛰어난 성능.</p>'},
+{type:'img',src:'images/reviews/vit-architecture.png',cap:'Vision Transformer 아키텍처'},
+{type:'text',h:'방법론',content:'<ul><li>이미지를 패치로 분할 후 Linear embedding</li><li>[CLS] 토큰 + Position embedding</li><li>Standard Transformer Encoder</li><li>대규모 데이터 pre-training 후 fine-tuning</li></ul>'},
+{type:'text',h:'실험 결과',content:'<ul><li>ImageNet 88.55% top-1 accuracy</li><li>대규모 데이터에서 CNN 대비 효율적</li><li>소규모 데이터에서는 한계</li></ul>'},
+{type:'text',h:'내 생각',content:'<p>Vision Transformer 시대를 개막한 논문. Inductive bias vs Data scale trade-off를 잘 보여준다.</p>'}
+]}
 ];
 
-/* ============================================
-   REVIEW CARD RENDERING
-   ============================================ */
+// Render review cards
 !function(){
-  const grid=document.getElementById('rvGrid');
-  reviews.forEach((r,i)=>{
-    grid.innerHTML+=`<div class="rv" onclick="openReader(${i})"><div class="rv-tg">${r.tag}</div><div class="rv-tt">${r.title}</div><div class="rv-ve">${r.venue}</div><div class="rv-sm">${r.summary}</div><span class="rv-lk">읽기 →</span></div>`;
-  });
-  // Coming soon card
-  grid.innerHTML+=`<div class="rv" style="border-style:dashed;cursor:default;opacity:.3"><div class="rv-tg">coming soon</div><div class="rv-tt">다음 리뷰가 추가될 예정입니다</div></div>`;
+var grid=document.getElementById('rvGrid');
+for(var i=0;i<reviews.length;i++){
+grid.innerHTML+='<div class="rv" onclick="openReader('+i+')"><div class="rv-tg">'+reviews[i].tag+'</div><div class="rv-tt">'+reviews[i].title+'</div><div class="rv-ve">'+reviews[i].venue+'</div><div class="rv-sm">'+reviews[i].summary+'</div><span class="rv-lk">읽기 →</span></div>';
+}
+grid.innerHTML+='<div class="rv" style="border-style:dashed;cursor:default;opacity:.3"><div class="rv-tg">coming soon</div><div class="rv-tt">다음 리뷰가 추가될 예정입니다</div></div>';
 }();
 
-/* ============================================
-   PAPER READER (전체화면 논문 읽기 뷰)
-   ============================================ */
+// Paper Reader
 function openReader(i){
-  const r=reviews[i],rd=document.getElementById('reader'),body=document.getElementById('rdBody');
-  document.getElementById('rdFile').textContent=r.file+'.md';
-  let html=`<div class="rd-tag">${r.tag}</div><h1 class="rd-title">${r.title}</h1><div class="rd-meta">${r.venue}</div>`;
-  r.sections.forEach((s,idx)=>{
-    if(s.type==='img'){
-      html+=`<div class="rd-section" style="transition-delay:${idx*.1}s"><img class="rd-img" src="${s.src}" alt="${s.cap||''}" onerror="this.outerHTML='<div style=\\'padding:40px;text-align:center;border:1px dashed #333;border-radius:6px;color:#444;font-size:12px\\'>📷 ${s.cap||"image"}<br><span style=\\'font-size:10px;color:#333\\'>${s.src}</span></div>'"><div class="rd-img-cap">${s.cap||''}</div></div>`;
-    } else {
-      html+=`<div class="rd-section" style="transition-delay:${idx*.1}s"><h3>${s.h}</h3>${s.content.startsWith('<')?s.content:'<p>'+s.content+'</p>'}</div>`;
-    }
-  });
-  html+=`<div class="rd-divider"></div><p style="text-align:center;font-size:11px;color:#444;margin-top:24px">— End of Review —</p>`;
-  body.innerHTML=html;
-  rd.classList.add('open');
-  document.getElementById('portfolio').style.display='none';
-  rd.scrollTop=0;
-  // Animate sections
-  setTimeout(()=>{document.querySelectorAll('.rd-section').forEach(s=>s.classList.add('vis'))},150);
-  // Progress bar
-  rd.onscroll=function(){
-    const p=this.scrollTop/(this.scrollHeight-this.clientHeight)*100;
-    document.getElementById('rdProgress').style.width=Math.min(p,100)+'%';
-  };
+var r=reviews[i],rd=document.getElementById('reader'),body=document.getElementById('rdBody');
+document.getElementById('rdFile').textContent=r.file+'.md';
+var html='<div class="rd-tag">'+r.tag+'</div><h1 class="rd-title">'+r.title+'</h1><div class="rd-meta">'+r.venue+'</div>';
+for(var j=0;j<r.sections.length;j++){
+var s=r.sections[j],delay=j*0.1;
+if(s.type==='img'){
+html+='<div class="rd-section" style="transition-delay:'+delay+'s"><img class="rd-img" src="'+s.src+'" alt="'+(s.cap||'')+'" onerror="this.style.display=\'none\'"><div class="rd-img-cap">'+(s.cap||'')+'</div></div>';
+}else{
+var content=s.content;
+html+='<div class="rd-section" style="transition-delay:'+delay+'s"><h3>'+s.h+'</h3>'+content+'</div>';
+}
+}
+html+='<div class="rd-divider"></div><p style="text-align:center;font-size:11px;color:#444;margin-top:24px">— End of Review —</p>';
+body.innerHTML=html;
+rd.classList.add('open');
+document.getElementById('portfolio').style.display='none';
+rd.scrollTop=0;
+setTimeout(function(){
+var sects=document.querySelectorAll('.rd-section');
+for(var k=0;k<sects.length;k++)sects[k].classList.add('vis');
+// KaTeX inline
+var inlines=document.querySelectorAll('.math-inline');
+for(var k=0;k<inlines.length;k++){
+try{katex.render(inlines[k].textContent,inlines[k],{throwOnError:false})}catch(e){}
+}
+// KaTeX block
+var blocks=document.querySelectorAll('.math-block');
+for(var k=0;k<blocks.length;k++){
+try{katex.render(blocks[k].textContent,blocks[k],{displayMode:true,throwOnError:false})}catch(e){}
+}
+},150);
+rd.onscroll=function(){
+var p=this.scrollTop/(this.scrollHeight-this.clientHeight)*100;
+document.getElementById('rdProgress').style.width=Math.min(p,100)+'%';
+};
 }
 function closeReader(){
-  document.getElementById('reader').classList.remove('open');
-  document.getElementById('portfolio').style.display='';
+document.getElementById('reader').classList.remove('open');
+document.getElementById('portfolio').style.display='';
 }
-document.addEventListener('keydown',e=>{if(e.key==='Escape')closeReader()});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeReader()});
 
-/* ============================================
-   TYPING EFFECT
-   ============================================ */
+// Typing
 !function(){
-  const el=document.getElementById('typT');
-  const ws=['model.fit(data, labels)','torch.optim.SGD(lr=0.01)','cv2.imread("vision.png")','loss.backward()','research.never_stop()'];
-  let wi=0,ci=0,del=false;
-  function t(){
-    const w=ws[wi];
-    if(!del){el.textContent=w.slice(0,++ci);if(ci===w.length){del=true;setTimeout(t,2200);return}}
-    else{el.textContent=w.slice(0,--ci);if(ci===0){del=false;wi=(wi+1)%ws.length;setTimeout(t,400);return}}
-    setTimeout(t,del?30:65);
-  }
-  t();
+var el=document.getElementById('typT');
+var ws=['model.fit(data, labels)','torch.optim.SGD(lr=0.01)','cv2.imread("vision.png")','loss.backward()','research.never_stop()'];
+var wi=0,ci=0,del=false;
+function t(){
+var w=ws[wi];
+if(!del){el.textContent=w.slice(0,++ci);if(ci===w.length){del=true;setTimeout(t,2200);return}}
+else{el.textContent=w.slice(0,--ci);if(ci===0){del=false;wi=(wi+1)%ws.length;setTimeout(t,400);return}}
+setTimeout(t,del?30:65);
+}
+t();
 }();
 
-/* ============================================
-   SCROLL & NAV
-   ============================================ */
-const secs=document.querySelectorAll('.sec');
-const obs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');uN(e.target.id)}})},{threshold:.1});
-secs.forEach(s=>obs.observe(s));
-const fm={hero:'home.py',about:'about.yaml',skills:'skills.py',projects:'projects.ipynb',publications:'papers.bib',awards:'awards.md',reviews:'reviews.md',career:'career.md',contact:'contact.sh'};
+// Nav
+var secs=document.querySelectorAll('.sec');
+var obs=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('vis');uN(e.target.id)}})},{threshold:.1});
+secs.forEach(function(s){obs.observe(s)});
+var fm={hero:'home.py',about:'about.yaml',skills:'skills.py',projects:'projects.ipynb',publications:'papers.bib',awards:'awards.md',reviews:'reviews.md',career:'career.md',contact:'contact.sh'};
 function uN(id){
-  document.querySelectorAll('.ni[data-s]').forEach(i=>i.classList.toggle('active',i.dataset.s===id));
-  document.querySelectorAll('.tab[data-s]').forEach(t=>t.classList.toggle('active',t.dataset.s===id));
-  document.querySelectorAll('.mnav a[data-s]').forEach(a=>a.classList.toggle('active',a.dataset.s===id));
-  const sf=document.getElementById('sf');if(sf&&fm[id])sf.textContent=fm[id];
+document.querySelectorAll('.ni[data-s]').forEach(function(i){i.classList.toggle('active',i.dataset.s===id)});
+document.querySelectorAll('.tab[data-s]').forEach(function(t){t.classList.toggle('active',t.dataset.s===id)});
+document.querySelectorAll('.mnav a[data-s]').forEach(function(a){a.classList.toggle('active',a.dataset.s===id)});
+var sf=document.getElementById('sf');if(sf&&fm[id])sf.textContent=fm[id];
 }
-document.querySelectorAll('[data-s]').forEach(el=>{el.addEventListener('click',e=>{const t=document.getElementById(el.dataset.s);if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}})});
-const sb=document.getElementById('sctop');addEventListener('scroll',()=>sb.classList.toggle('show',scrollY>400));sb.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
+document.querySelectorAll('[data-s]').forEach(function(el){el.addEventListener('click',function(e){var t=document.getElementById(el.dataset.s);if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth'})}})});
+var sb=document.getElementById('sctop');
+addEventListener('scroll',function(){sb.classList.toggle('show',scrollY>400)});
+sb.addEventListener('click',function(){scrollTo({top:0,behavior:'smooth'})});
 
-/* ============================================
-   AMBIENT BACKGROUND MUSIC (Web Audio API)
-   부드러운 ambient 사운드 생성
-   ============================================ */
+// Music
 !function(){
-  const btn=document.getElementById('musicBtn');
-  let ctx,playing=false,nodes=[];
-
-  function createAmbient(){
-    ctx=new(window.AudioContext||window.webkitAudioContext)();
-    const master=ctx.createGain();master.gain.value=0;master.connect(ctx.destination);
-
-    // Pad chord: C major 7th (C3, E3, G3, B3) in soft sine waves
-    const freqs=[130.81,164.81,196.00,246.94,261.63];
-    freqs.forEach((f,i)=>{
-      const osc=ctx.createOscillator();
-      const gain=ctx.createGain();
-      osc.type='sine';osc.frequency.value=f;
-      // Subtle detuning for warmth
-      osc.detune.value=(Math.random()-.5)*8;
-      gain.gain.value=.04;
-      osc.connect(gain);gain.connect(master);
-      osc.start();
-      nodes.push(osc);
-    });
-
-    // Slow LFO for movement
-    const lfo=ctx.createOscillator();
-    const lfoGain=ctx.createGain();
-    lfo.frequency.value=.08;lfoGain.gain.value=3;
-    lfo.connect(lfoGain);
-    // Connect LFO to first osc detune
-    nodes[0]&&lfoGain.connect(nodes[0].detune);
-    lfo.start();nodes.push(lfo);
-
-    // Very soft noise layer
-    const bufSize=2*ctx.sampleRate;
-    const buf=ctx.createBuffer(1,bufSize,ctx.sampleRate);
-    const data=buf.getChannelData(0);
-    for(let i=0;i<bufSize;i++)data[i]=(Math.random()*2-1)*.005;
-    const noise=ctx.createBufferSource();
-    noise.buffer=buf;noise.loop=true;
-    const noiseGain=ctx.createGain();noiseGain.gain.value=.3;
-    const noiseFilter=ctx.createBiquadFilter();
-    noiseFilter.type='lowpass';noiseFilter.frequency.value=400;
-    noise.connect(noiseFilter);noiseFilter.connect(noiseGain);noiseGain.connect(master);
-    noise.start();
-
-    // Fade in
-    master.gain.linearRampToValueAtTime(.6,ctx.currentTime+2);
-    return master;
-  }
-
-  let master;
-  function startMusic(){
-    if(!ctx){master=createAmbient();btn.classList.add('on');playing=true}
-  }
-  btn.addEventListener('click',()=>{
-    if(!playing){
-      if(!ctx)master=createAmbient();
-      else master.gain.linearRampToValueAtTime(.6,ctx.currentTime+1);
-      btn.classList.add('on');playing=true;
-    }else{
-      if(master)master.gain.linearRampToValueAtTime(0,ctx.currentTime+1);
-      btn.classList.remove('on');playing=false;
-    }
-  });
-  // Auto-play on first user interaction (브라우저 정책상 클릭/스크롤 필요)
-  function autoStart(){startMusic();document.removeEventListener('click',autoStart);document.removeEventListener('scroll',autoStart);document.removeEventListener('touchstart',autoStart)}
-  document.addEventListener('click',autoStart);
-  document.addEventListener('scroll',autoStart);
-  document.addEventListener('touchstart',autoStart);
+var btn=document.getElementById('musicBtn'),ctx,playing=false,nodes=[],master;
+function createAmbient(){
+ctx=new(window.AudioContext||window.webkitAudioContext)();
+master=ctx.createGain();master.gain.value=0;master.connect(ctx.destination);
+var freqs=[130.81,164.81,196.00,246.94,261.63];
+for(var i=0;i<freqs.length;i++){
+var osc=ctx.createOscillator(),gain=ctx.createGain();
+osc.type='sine';osc.frequency.value=freqs[i];osc.detune.value=(Math.random()-.5)*8;
+gain.gain.value=.04;osc.connect(gain);gain.connect(master);osc.start();nodes.push(osc);
+}
+var lfo=ctx.createOscillator(),lfoG=ctx.createGain();
+lfo.frequency.value=.08;lfoG.gain.value=3;lfo.connect(lfoG);
+if(nodes[0])lfoG.connect(nodes[0].detune);lfo.start();
+var bufSize=2*ctx.sampleRate,buf=ctx.createBuffer(1,bufSize,ctx.sampleRate),data=buf.getChannelData(0);
+for(var i=0;i<bufSize;i++)data[i]=(Math.random()*2-1)*.005;
+var noise=ctx.createBufferSource();noise.buffer=buf;noise.loop=true;
+var nG=ctx.createGain();nG.gain.value=.3;
+var nF=ctx.createBiquadFilter();nF.type='lowpass';nF.frequency.value=400;
+noise.connect(nF);nF.connect(nG);nG.connect(master);noise.start();
+master.gain.linearRampToValueAtTime(.6,ctx.currentTime+2);
+}
+function startMusic(){if(!ctx){createAmbient();btn.classList.add('on');playing=true}}
+btn.addEventListener('click',function(){
+if(!playing){if(!ctx)createAmbient();else master.gain.linearRampToValueAtTime(.6,ctx.currentTime+1);btn.classList.add('on');playing=true}
+else{if(master)master.gain.linearRampToValueAtTime(0,ctx.currentTime+1);btn.classList.remove('on');playing=false}
+});
+function autoStart(){startMusic();document.removeEventListener('click',autoStart);document.removeEventListener('scroll',autoStart);document.removeEventListener('touchstart',autoStart)}
+document.addEventListener('click',autoStart);document.addEventListener('scroll',autoStart);document.addEventListener('touchstart',autoStart);
 }();
 </script>
 </body>
