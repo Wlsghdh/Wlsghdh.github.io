@@ -879,38 +879,92 @@ var threeScene;
   addEventListener('resize',function(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
 })();
 
-// Background Grid (always visible at half opacity)
+// Gradient Descent Visualization
 (function(){
   var c=document.getElementById('ballCanvas'),ctx=c.getContext('2d'),w,h;
-  function resize(){w=c.width=innerWidth;h=c.height=innerHeight;drawGrid()}
+  function resize(){w=c.width=innerWidth;h=c.height=innerHeight;surfImg=null}
   resize();addEventListener('resize',resize);
-  var step=30;
   function sf(x,y){
-    var nx=(x/(w||1))*4*Math.PI,ny=(y/(h||1))*4*Math.PI;
-    return Math.sin(nx*.5)*Math.cos(ny*.4)*3+Math.cos(nx*.3-ny*.2)*2+Math.sin(nx*.8+ny*.6)*1.5;
+    var nx=x/(w||1)*6-3,ny=y/(h||1)*6-3;
+    return -(nx*nx+ny*ny)+4*Math.cos(nx*1.5)*Math.cos(ny*1.2)+2*Math.sin(nx+ny*.5);
   }
-  function drawGrid(){
+  function grad(x,y){var e=2;return{dx:(sf(x+e,y)-sf(x-e,y))/(2*e),dy:(sf(x,y+e)-sf(x,y-e))/(2*e)}}
+  var surfImg=null;
+  function drawSurf(){
+    var id=ctx.createImageData(w,h),d=id.data;
+    var vals=[],min=Infinity,max=-Infinity;
+    for(var y=0;y<h;y+=2){for(var x=0;x<w;x+=2){
+      var v=sf(x,y);vals.push(v);
+      if(v<min)min=v;if(v>max)max=v;
+    }}
+    var cols=Math.ceil(w/2),i=0;
+    for(var y=0;y<h;y+=2){for(var x=0;x<w;x+=2){
+      var t=(vals[i++]-min)/(max-min||1);
+      var a=isLight?t*.04:t*.06;
+      var r=isLight?40:255,g=isLight?30:255,b=isLight?10:255;
+      for(var dy=0;dy<2&&y+dy<h;dy++){for(var dx=0;dx<2&&x+dx<w;dx++){
+        var p=((y+dy)*w+(x+dx))*4;
+        d[p]=r;d[p+1]=g;d[p+2]=b;d[p+3]=Math.floor(a*255);
+      }}
+    }}
+    ctx.putImageData(id,0,0);
+    surfImg=ctx.getImageData(0,0,w,h);
+  }
+  var ball={x:0,y:0,vx:0,vy:0,trail:[],stopped:false,timer:0};
+  function findMax(){
+    var bx=w/2,by=h/2,bv=-Infinity;
+    for(var x=20;x<w;x+=30){for(var y=20;y<h;y+=30){
+      var v=sf(x,y);if(v>bv){bv=v;bx=x;by=y}
+    }}
+    return{x:bx,y:by};
+  }
+  function reset(){
+    var m=findMax();
+    ball.x=m.x+(Math.random()-.5)*30;
+    ball.y=m.y+(Math.random()-.5)*30;
+    ball.vx=0;ball.vy=0;ball.trail=[];ball.stopped=false;ball.timer=0;
+  }
+  reset();
+  var cc=0;
+  function draw(){
+    if(!w||!h){requestAnimationFrame(draw);return}
     ctx.clearRect(0,0,w,h);
-    var lc=isLight?'rgba(60,50,30,':'rgba(255,255,255,';
-    for(var gx=0;gx<w;gx+=step){
-      ctx.beginPath();
-      for(var gy=0;gy<h;gy+=4){
-        var z=sf(gx,gy);
-        if(gy===0)ctx.moveTo(gx+z*2.5,gy);else ctx.lineTo(gx+z*2.5,gy);
-      }
-      ctx.strokeStyle=lc+'0.12)';ctx.lineWidth=.5;ctx.stroke();
+    if(!surfImg)drawSurf();
+    ctx.putImageData(surfImg,0,0);
+    if(!ball.stopped){
+      var g=grad(ball.x,ball.y);
+      ball.vx=ball.vx*.92+g.dx*.5;
+      ball.vy=ball.vy*.92+g.dy*.5;
+      var spd=Math.sqrt(ball.vx*ball.vx+ball.vy*ball.vy);
+      if(spd>8){var s=8/spd;ball.vx*=s;ball.vy*=s}
+      ball.x+=ball.vx;ball.y+=ball.vy;
+      ball.trail.push({x:ball.x,y:ball.y});
+      if(ball.trail.length>25)ball.trail.shift();
+      if(spd<0.05){cc++;if(cc>80){ball.stopped=true;ball.timer=Date.now();cc=0}}
+      else cc=Math.max(0,cc-1);
+    }else{
+      if(Date.now()-ball.timer>3000)reset();
     }
-    for(var gy=0;gy<h;gy+=step){
-      ctx.beginPath();
-      for(var gx=0;gx<w;gx+=4){
-        var z=sf(gx,gy);
-        if(gx===0)ctx.moveTo(gx,gy+z*2.5);else ctx.lineTo(gx,gy+z*2.5);
-      }
-      ctx.strokeStyle=lc+'0.12)';ctx.lineWidth=.5;ctx.stroke();
+    if(ball.x<-20||ball.x>w+20||ball.y<-20||ball.y>h+20)reset();
+    var ca=isLight?'rgba(200,60,20,':'rgba(74,222,128,';
+    for(var j=1;j<ball.trail.length;j++){
+      var a=Math.pow(j/ball.trail.length,2)*.5;
+      ctx.beginPath();ctx.moveTo(ball.trail[j-1].x,ball.trail[j-1].y);
+      ctx.lineTo(ball.trail[j].x,ball.trail[j].y);
+      ctx.strokeStyle=ca+a+')';ctx.lineWidth=3*(j/ball.trail.length);ctx.stroke();
     }
+    var gr=ctx.createRadialGradient(ball.x,ball.y,0,ball.x,ball.y,18);
+    gr.addColorStop(0,ca+'.6)');gr.addColorStop(.5,ca+'.15)');gr.addColorStop(1,ca+'0)');
+    ctx.fillStyle=gr;ctx.beginPath();ctx.arc(ball.x,ball.y,18,0,Math.PI*2);ctx.fill();
+    ctx.beginPath();ctx.arc(ball.x,ball.y,5,0,Math.PI*2);
+    ctx.fillStyle=ca+(ball.stopped?'.5)':'1)');ctx.fill();
+    if(ball.stopped){
+      ctx.font='10px monospace';ctx.fillStyle=ca+'.7)';ctx.textAlign='center';
+      ctx.fillText('local min',ball.x,ball.y+16);
+    }
+    requestAnimationFrame(draw);
   }
-  drawGrid();
-  window.redrawBgGrid=drawGrid;
+  draw();
 })();
 
 // Glitch Effect
