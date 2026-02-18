@@ -868,50 +868,88 @@ var threeScene;
   addEventListener('resize',function(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
 })();
 
-// Single Gradient Descent Ball (mathematical surface)
+// Single Gradient Descent Ball with visible contour surface
 (function(){
   var c=document.getElementById('ballCanvas'),ctx=c.getContext('2d'),w,h;
-  function resize(){w=c.width=innerWidth;h=c.height=innerHeight}
+  function resize(){w=c.width=innerWidth;h=c.height=innerHeight;gridImg=null}
   resize();addEventListener('resize',resize);
+  var step=28;
   function sf(x,y){
     var nx=x/(w||1)*6-3,ny=y/(h||1)*6-3;
     return Math.sin(nx*1.5)*Math.cos(ny*1.2)*2+Math.sin(nx*.7+ny*.5)*1.5+ny*1.8+Math.cos(nx*2.1-ny*.8)*.6;
   }
   function gd(x,y){var e=1;return{dx:(sf(x+e,y)-sf(x-e,y))/(2*e),dy:(sf(x,y+e)-sf(x,y-e))/(2*e)}}
-  var ball={x:0,y:0,vx:0,vy:0,r:7,trail:[]};
+  var gridImg=null;
+  function drawGrid(){
+    var oc=document.createElement('canvas');oc.width=w;oc.height=h;
+    var ox=oc.getContext('2d');
+    var lineC=isLight?'rgba(60,50,30,':'rgba(255,255,255,';
+    for(var gx=0;gx<w;gx+=step){
+      ox.beginPath();
+      for(var gy=0;gy<h;gy+=4){
+        var z=sf(gx,gy);
+        var px=gx+z*3,py=gy;
+        if(gy===0)ox.moveTo(px,py);else ox.lineTo(px,py);
+      }
+      ox.strokeStyle=lineC+'0.06)';ox.lineWidth=.5;ox.stroke();
+    }
+    for(var gy=0;gy<h;gy+=step){
+      ox.beginPath();
+      for(var gx=0;gx<w;gx+=4){
+        var z=sf(gx,gy);
+        var px=gx,py=gy+z*3;
+        if(gx===0)ox.moveTo(px,py);else ox.lineTo(px,py);
+      }
+      ox.strokeStyle=lineC+'0.06)';ox.lineWidth=.5;ox.stroke();
+    }
+    var levels=[-2,-1,0,1,2,3,4,5];
+    levels.forEach(function(lv){
+      for(var gx=0;gx<w;gx+=3){for(var gy=0;gy<h;gy+=3){
+        var v=sf(gx,gy);
+        if(Math.abs(v-lv)<.15){
+          ox.fillStyle=lineC+'0.04)';
+          ox.fillRect(gx,gy,2,2);
+        }
+      }}
+    });
+    gridImg=oc;
+  }
+  var ball={x:0,y:0,vx:0,vy:0,r:6,trail:[]};
   function reset(){
     var gx=Math.floor(Math.random()*8),gy=Math.floor(Math.random()*3);
-    ball.x=(gx+.5)/(8)*(w||800);
-    ball.y=(gy+.5)/(6)*(h||600);
-    ball.vx=(Math.random()-.5)*1;ball.vy=.5;ball.trail=[];
+    ball.x=(gx+.5)/8*(w||800);
+    ball.y=(gy+.5)/6*(h||600);
+    ball.vx=(Math.random()-.5)*1.5;ball.vy=.8;ball.trail=[];
   }
   reset();
+  var fc=0;
   function draw(){
     ctx.clearRect(0,0,w,h);
     if(!w||!h||isNaN(ball.x)||isNaN(ball.y)){reset();requestAnimationFrame(draw);return}
+    if(!gridImg||fc%300===0)drawGrid();
+    fc++;
+    ctx.drawImage(gridImg,0,0);
     var g=gd(ball.x,ball.y);
-    ball.vx=ball.vx*.96+g.dx*.22;ball.vy=ball.vy*.96+g.dy*.22;
+    ball.vx=ball.vx*.96+g.dx*.25;ball.vy=ball.vy*.96+g.dy*.25;
     var spd=Math.sqrt(ball.vx*ball.vx+ball.vy*ball.vy);
-    if(spd>5){var sc=5/spd;ball.vx*=sc;ball.vy*=sc}
+    if(spd>6){var sc=6/spd;ball.vx*=sc;ball.vy*=sc}
     ball.x+=ball.vx;ball.y+=ball.vy;
     ball.trail.push({x:ball.x,y:ball.y});
-    if(ball.trail.length>100)ball.trail.shift();
-    var cr,cg,cb,ca;
-    if(isLight){cr=200;cg=160;cb=20;ca='rgba(200,160,20,';}
-    else{cr=255;cg=255;cb=255;ca='rgba(255,255,255,';}
+    if(ball.trail.length>120)ball.trail.shift();
+    var ca=isLight?'rgba(180,140,20,':'rgba(255,255,255,';
     for(var j=1;j<ball.trail.length;j++){
-      var a=(j/ball.trail.length)*.25;
+      var a=(j/ball.trail.length)*.3;
       ctx.beginPath();ctx.moveTo(ball.trail[j-1].x,ball.trail[j-1].y);
       ctx.lineTo(ball.trail[j].x,ball.trail[j].y);
       ctx.strokeStyle=ca+a+')';
-      ctx.lineWidth=ball.r*.5*(j/ball.trail.length);ctx.stroke();
+      ctx.lineWidth=ball.r*.4*(j/ball.trail.length);ctx.stroke();
     }
     var grd=ctx.createRadialGradient(ball.x,ball.y,0,ball.x,ball.y,ball.r*3);
-    grd.addColorStop(0,ca+'.25)');grd.addColorStop(1,ca+'0)');
+    grd.addColorStop(0,ca+'.3)');grd.addColorStop(1,ca+'0)');
     ctx.fillStyle=grd;ctx.beginPath();ctx.arc(ball.x,ball.y,ball.r*3,0,Math.PI*2);ctx.fill();
     ctx.beginPath();ctx.arc(ball.x,ball.y,ball.r,0,Math.PI*2);
-    ctx.fillStyle=ca+'.7)';ctx.fill();
-    ctx.beginPath();ctx.arc(ball.x-ball.r*.3,ball.y-ball.r*.3,ball.r*.35,0,Math.PI*2);
+    ctx.fillStyle=ca+'.8)';ctx.fill();
+    ctx.beginPath();ctx.arc(ball.x-ball.r*.3,ball.y-ball.r*.3,ball.r*.3,0,Math.PI*2);
     ctx.fillStyle=ca+'.4)';ctx.fill();
     if(ball.y>h+30||ball.x>w+30||ball.x<-30)reset();
     requestAnimationFrame(draw);
@@ -988,7 +1026,11 @@ var threeScene;
 var audioEngine=(function(){
   var actx=null,masterGain=null,playing=false,currentMode=null,nodes=[];
   var clickVolume=.15,scrollVolume=.08,clickType='clean',bgmVolume=.4;
-  function ensureCtx(){if(!actx)actx=new(window.AudioContext||window.webkitAudioContext)();return actx}
+  function ensureCtx(){
+    if(!actx)actx=new(window.AudioContext||window.webkitAudioContext)();
+    if(actx.state==='suspended')actx.resume();
+    return actx;
+  }
   function stopAll(){
     nodes.forEach(function(n){try{if(n.stop)n.stop();if(n.disconnect)n.disconnect()}catch(e){}});
     nodes=[];
@@ -1079,16 +1121,16 @@ musicBtn.addEventListener('click',function(){
 });
 var autoStarted=false;
 function autoStart(){
-  if(!autoStarted){autoStarted=true;audioEngine.start(isLight?'light':'dark');musicBtn.classList.add('on')}
-  document.removeEventListener('click',autoStart);document.removeEventListener('scroll',autoStart);
-  document.removeEventListener('keydown',autoStart);document.removeEventListener('mousemove',autoStartOnce);document.removeEventListener('touchstart',autoStart);
+  if(!autoStarted){
+    autoStarted=true;
+    audioEngine.start(isLight?'light':'dark');
+    musicBtn.classList.add('on');
+  }
+  ['click','scroll','keydown','touchstart','pointerdown'].forEach(function(ev){document.removeEventListener(ev,autoStart)});
 }
-function autoStartOnce(e){autoStart()}
-document.addEventListener('click',autoStart);
-document.addEventListener('scroll',autoStart,{passive:true});
-document.addEventListener('keydown',autoStart);
-document.addEventListener('mousemove',autoStartOnce,{once:true});
-document.addEventListener('touchstart',autoStart,{once:true});
+['click','scroll','keydown','touchstart','pointerdown'].forEach(function(ev){
+  document.addEventListener(ev,autoStart,ev==='scroll'?{passive:true,once:true}:{once:true});
+});
 
 // Settings Panel
 var settingsBtn=document.getElementById('settingsBtn'),settingsPanel=document.getElementById('settingsPanel');
