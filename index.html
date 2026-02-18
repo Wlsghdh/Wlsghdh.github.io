@@ -24,7 +24,8 @@ body.light{
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:#333 #090909}
 body{font-family:var(--mono);background:var(--bg);color:var(--w);line-height:1.7;overflow-x:hidden;transition:background .4s,color .4s}
-.splash-overlay{position:fixed;inset:0;z-index:99999;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;transition:opacity .6s,backdrop-filter .6s}
+.splash-overlay{position:fixed;inset:0;z-index:99999;background:rgba(9,9,9,.75);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;transition:opacity .6s}
+body.light .splash-overlay{background:rgba(240,237,230,.75)}
 .splash-overlay.hiding{opacity:0;pointer-events:none}
 .splash-title{font-family:var(--sans);font-size:clamp(18px,3vw,28px);font-weight:600;color:var(--w);letter-spacing:1px}
 .splash-sub{font-size:12px;color:var(--g3);font-family:var(--mono)}
