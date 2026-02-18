@@ -23,8 +23,14 @@ body.light{
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:#333 #090909}
-body{font-family:var(--mono);background:var(--bg);color:var(--w);line-height:1.7;overflow-x:hidden;transition:background .4s,color .4s;opacity:0;animation:pageIn .8s ease .1s forwards}
-@keyframes pageIn{to{opacity:1}}
+body{font-family:var(--mono);background:var(--bg);color:var(--w);line-height:1.7;overflow-x:hidden;transition:background .4s,color .4s}
+.splash-overlay{position:fixed;inset:0;z-index:99999;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;transition:opacity .6s,backdrop-filter .6s}
+.splash-overlay.hiding{opacity:0;pointer-events:none}
+.splash-title{font-family:var(--sans);font-size:clamp(18px,3vw,28px);font-weight:600;color:var(--w);letter-spacing:1px}
+.splash-sub{font-size:12px;color:var(--g3);font-family:var(--mono)}
+.splash-btn{padding:14px 40px;border:1px solid var(--g3);border-radius:4px;background:transparent;color:var(--g2);font-family:var(--mono);font-size:13px;cursor:pointer;transition:all .3s;letter-spacing:1px}
+.splash-btn:hover{border-color:var(--w);color:var(--w);transform:scale(1.03)}
+body:not(.loaded) .main,body:not(.loaded) .titlebar,body:not(.loaded) .sidebar,body:not(.loaded) .sbar,body:not(.loaded) .tabs,body:not(.loaded) .mnav,body:not(.loaded) .bottom-controls,body:not(.loaded) .sctop{filter:blur(12px);pointer-events:none}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:#333;border-radius:3px}
 a{color:var(--g2);text-decoration:none;transition:var(--tr)}a:hover{color:var(--w)}
 ::selection{background:rgba(128,128,128,.2)}
@@ -334,6 +340,11 @@ body.light .sctop{background:rgba(220,216,208,.6)}
 </style>
 </head>
 <body>
+<div class="splash-overlay" id="splash">
+  <div class="splash-title">Ju Jinho — Portfolio</div>
+  <div class="splash-sub">AI Researcher · Computer Vision</div>
+  <button class="splash-btn" id="splashBtn">ENTER</button>
+</div>
 <div id="three-bg"></div>
 <canvas id="ballCanvas"></canvas>
 <canvas id="glitchCanvas"></canvas>
@@ -873,96 +884,89 @@ var threeScene;
   var c=document.getElementById('ballCanvas'),ctx=c.getContext('2d'),w,h;
   function resize(){w=c.width=innerWidth;h=c.height=innerHeight;gridImg=null}
   resize();addEventListener('resize',resize);
-  var step=28;
+  var step=30;
   function sf(x,y){
-    var nx=x/(w||1)*6-3,ny=y/(h||1)*6-3;
-    return Math.sin(nx*1.5)*Math.cos(ny*1.2)*2+Math.sin(nx*.7+ny*.5)*1.5+ny*1.8+Math.cos(nx*2.1-ny*.8)*.6;
+    var nx=(x/(w||1))*4*Math.PI,ny=(y/(h||1))*4*Math.PI;
+    return Math.sin(nx*.5)*Math.cos(ny*.4)*3+Math.cos(nx*.3-ny*.2)*2+ny*.8;
   }
-  function gd(x,y){var e=1;return{dx:(sf(x+e,y)-sf(x-e,y))/(2*e),dy:(sf(x,y+e)-sf(x,y-e))/(2*e)}}
+  function gd(x,y){var e=2;return{dx:(sf(x+e,y)-sf(x-e,y))/(2*e),dy:(sf(x,y+e)-sf(x,y-e))/(2*e)}}
   var gridImg=null;
   function drawGrid(){
     var oc=document.createElement('canvas');oc.width=w;oc.height=h;
     var ox=oc.getContext('2d');
-    var lineC=isLight?'rgba(60,50,30,':'rgba(255,255,255,';
+    var lc=isLight?'rgba(60,50,30,':'rgba(255,255,255,';
     for(var gx=0;gx<w;gx+=step){
       ox.beginPath();
       for(var gy=0;gy<h;gy+=4){
         var z=sf(gx,gy);
-        var px=gx+z*3,py=gy;
-        if(gy===0)ox.moveTo(px,py);else ox.lineTo(px,py);
+        if(gy===0)ox.moveTo(gx+z*2.5,gy);else ox.lineTo(gx+z*2.5,gy);
       }
-      ox.strokeStyle=lineC+'0.06)';ox.lineWidth=.5;ox.stroke();
+      ox.strokeStyle=lc+'0.055)';ox.lineWidth=.5;ox.stroke();
     }
     for(var gy=0;gy<h;gy+=step){
       ox.beginPath();
       for(var gx=0;gx<w;gx+=4){
         var z=sf(gx,gy);
-        var px=gx,py=gy+z*3;
-        if(gx===0)ox.moveTo(px,py);else ox.lineTo(px,py);
+        if(gx===0)ox.moveTo(gx,gy+z*2.5);else ox.lineTo(gx,gy+z*2.5);
       }
-      ox.strokeStyle=lineC+'0.06)';ox.lineWidth=.5;ox.stroke();
+      ox.strokeStyle=lc+'0.055)';ox.lineWidth=.5;ox.stroke();
     }
-    var levels=[-2,-1,0,1,2,3,4,5];
-    levels.forEach(function(lv){
-      for(var gx=0;gx<w;gx+=3){for(var gy=0;gy<h;gy+=3){
-        var v=sf(gx,gy);
-        if(Math.abs(v-lv)<.15){
-          ox.fillStyle=lineC+'0.04)';
-          ox.fillRect(gx,gy,2,2);
-        }
-      }}
-    });
     gridImg=oc;
   }
-  var ball={x:0,y:0,vx:0,vy:0,r:6,trail:[]};
-  function reset(){
-    var gx=Math.floor(Math.random()*8),gy=Math.floor(Math.random()*3);
-    ball.x=(gx+.5)/8*(w||800);
-    ball.y=(gy+.5)/6*(h||600);
-    ball.vx=(Math.random()-.5)*3;ball.vy=2;ball.trail=[];
-  }
-  reset();
-  var fc=0;
-  var heatCanvas=document.createElement('canvas');
-  var hctx;
+  var ball={x:0,y:0,vx:0,vy:0,r:6,trail:[],stopped:false,stopTimer:0};
+  var heatCanvas=document.createElement('canvas'),hctx;
   function initHeat(){heatCanvas.width=w;heatCanvas.height=h;hctx=heatCanvas.getContext('2d')}
   initHeat();
-  var oldResize=resize;
-  resize=function(){oldResize();initHeat();gridImg=null};
+  function reset(){
+    ball.x=w*.1+Math.random()*w*.8;
+    ball.y=h*.05+Math.random()*h*.25;
+    ball.vx=(Math.random()-.5)*2;ball.vy=1;ball.trail=[];ball.stopped=false;ball.stopTimer=0;
+    initHeat();
+  }
+  reset();
+  var fc=0,convergeCount=0;
   function draw(){
     ctx.clearRect(0,0,w,h);
     if(!w||!h||isNaN(ball.x)||isNaN(ball.y)){reset();requestAnimationFrame(draw);return}
-    if(!gridImg||fc%300===0)drawGrid();
+    if(!gridImg||fc%600===0)drawGrid();
     fc++;
     ctx.drawImage(gridImg,0,0);
-    hctx.fillStyle='rgba(0,0,0,0.003)';hctx.fillRect(0,0,w,h);
+    hctx.fillStyle='rgba(0,0,0,0.002)';hctx.fillRect(0,0,w,h);
     ctx.drawImage(heatCanvas,0,0);
-    var g=gd(ball.x,ball.y);
-    ball.vx=ball.vx*.95+g.dx*.7;ball.vy=ball.vy*.95+g.dy*.7;
-    var spd=Math.sqrt(ball.vx*ball.vx+ball.vy*ball.vy);
-    if(spd>14){var sc=14/spd;ball.vx*=sc;ball.vy*=sc}
-    ball.x+=ball.vx;ball.y+=ball.vy;
-    var hc=isLight?'rgba(120,100,30,':'rgba(255,255,255,';
-    hctx.beginPath();hctx.arc(ball.x,ball.y,4,0,Math.PI*2);
-    hctx.fillStyle=hc+'0.15)';hctx.fill();
-    ball.trail.push({x:ball.x,y:ball.y});
-    if(ball.trail.length>80)ball.trail.shift();
+    if(!ball.stopped){
+      var g=gd(ball.x,ball.y);
+      ball.vx=ball.vx*.94+g.dx*.6;ball.vy=ball.vy*.94+g.dy*.6;
+      var spd=Math.sqrt(ball.vx*ball.vx+ball.vy*ball.vy);
+      if(spd>12){var sc=12/spd;ball.vx*=sc;ball.vy*=sc}
+      if(spd<0.08){convergeCount++;if(convergeCount>60){ball.stopped=true;ball.stopTimer=Date.now();convergeCount=0}}
+      else{convergeCount=Math.max(0,convergeCount-1)}
+      ball.x+=ball.vx;ball.y+=ball.vy;
+      var hc=isLight?'rgba(120,100,30,':'rgba(255,255,255,';
+      hctx.beginPath();hctx.arc(ball.x,ball.y,3,0,Math.PI*2);
+      hctx.fillStyle=hc+'0.08)';hctx.fill();
+      ball.trail.push({x:ball.x,y:ball.y,t:fc});
+      if(ball.trail.length>100)ball.trail.shift();
+    }else{
+      if(Date.now()-ball.stopTimer>2500)reset();
+    }
+    if(ball.y>h+30||ball.x>w+30||ball.x<-30)reset();
     var ca=isLight?'rgba(180,140,20,':'rgba(255,255,255,';
     for(var j=1;j<ball.trail.length;j++){
-      var a=(j/ball.trail.length)*.3;
+      var a=Math.pow(j/ball.trail.length,2)*.35;
       ctx.beginPath();ctx.moveTo(ball.trail[j-1].x,ball.trail[j-1].y);
       ctx.lineTo(ball.trail[j].x,ball.trail[j].y);
       ctx.strokeStyle=ca+a+')';
-      ctx.lineWidth=ball.r*.4*(j/ball.trail.length);ctx.stroke();
+      ctx.lineWidth=ball.r*.5*Math.pow(j/ball.trail.length,1.5);ctx.stroke();
     }
     var grd=ctx.createRadialGradient(ball.x,ball.y,0,ball.x,ball.y,ball.r*3);
     grd.addColorStop(0,ca+'.3)');grd.addColorStop(1,ca+'0)');
     ctx.fillStyle=grd;ctx.beginPath();ctx.arc(ball.x,ball.y,ball.r*3,0,Math.PI*2);ctx.fill();
     ctx.beginPath();ctx.arc(ball.x,ball.y,ball.r,0,Math.PI*2);
-    ctx.fillStyle=ca+'.8)';ctx.fill();
-    ctx.beginPath();ctx.arc(ball.x-ball.r*.3,ball.y-ball.r*.3,ball.r*.3,0,Math.PI*2);
-    ctx.fillStyle=ca+'.4)';ctx.fill();
-    if(ball.y>h+30||ball.x>w+30||ball.x<-30)reset();
+    ctx.fillStyle=ca+(ball.stopped?'.4)':'.8)');ctx.fill();
+    if(ball.stopped){
+      ctx.font='9px monospace';ctx.fillStyle=ca+'0.5)';ctx.textAlign='center';
+      ctx.fillText('local min',ball.x,ball.y+ball.r+12);
+    }
     requestAnimationFrame(draw);
   }
   draw();
@@ -1131,24 +1135,16 @@ musicBtn.addEventListener('click',function(){
   else{audioEngine.start(isLight?'light':'dark');musicBtn.classList.add('on')}
 });
 var autoStarted=false;
-var preCtx=new(window.AudioContext||window.webkitAudioContext)();
-function autoStart(){
+document.getElementById('splashBtn').addEventListener('click',function(){
+  document.body.classList.add('loaded');
+  document.getElementById('splash').classList.add('hiding');
+  setTimeout(function(){document.getElementById('splash').style.display='none'},700);
   if(!autoStarted){
     autoStarted=true;
-    if(preCtx.state==='suspended')preCtx.resume();
     audioEngine.start(isLight?'light':'dark');
     musicBtn.classList.add('on');
   }
-}
-document.addEventListener('pointerdown',autoStart,{once:true});
-document.addEventListener('keydown',autoStart,{once:true});
-document.addEventListener('scroll',autoStart,{passive:true,once:true});
-document.addEventListener('touchstart',autoStart,{once:true});
-try{
-  var silBuf=preCtx.createBuffer(1,1,22050);
-  var silSrc=preCtx.createBufferSource();
-  silSrc.buffer=silBuf;silSrc.connect(preCtx.destination);silSrc.start(0);
-}catch(e){}
+});
 
 // Settings Panel
 var settingsBtn=document.getElementById('settingsBtn'),settingsPanel=document.getElementById('settingsPanel');
