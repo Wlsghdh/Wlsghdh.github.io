@@ -933,17 +933,17 @@ var threeScene;
     ctx.putImageData(surfImg,0,0);
     if(!ball.stopped){
       var g=grad(ball.x,ball.y);
-      ball.vx=ball.vx*.92+g.dx*.5;
-      ball.vy=ball.vy*.92+g.dy*.5;
+      ball.vx=ball.vx*.90+g.dx*1.2;
+      ball.vy=ball.vy*.90+g.dy*1.2;
       var spd=Math.sqrt(ball.vx*ball.vx+ball.vy*ball.vy);
-      if(spd>8){var s=8/spd;ball.vx*=s;ball.vy*=s}
+      if(spd>16){var s=16/spd;ball.vx*=s;ball.vy*=s}
       ball.x+=ball.vx;ball.y+=ball.vy;
       ball.trail.push({x:ball.x,y:ball.y});
       if(ball.trail.length>25)ball.trail.shift();
       if(spd<0.05){cc++;if(cc>80){ball.stopped=true;ball.timer=Date.now();cc=0}}
       else cc=Math.max(0,cc-1);
     }else{
-      if(Date.now()-ball.timer>3000)reset();
+      // wait for reset in render section
     }
     if(ball.x<-20||ball.x>w+20||ball.y<-20||ball.y>h+20)reset();
     var ca=isLight?'rgba(200,60,20,':'rgba(74,222,128,';
@@ -959,8 +959,7 @@ var threeScene;
     ctx.beginPath();ctx.arc(ball.x,ball.y,5,0,Math.PI*2);
     ctx.fillStyle=ca+(ball.stopped?'.5)':'1)');ctx.fill();
     if(ball.stopped){
-      ctx.font='10px monospace';ctx.fillStyle=ca+'.7)';ctx.textAlign='center';
-      ctx.fillText('local min',ball.x,ball.y+16);
+      if(Date.now()-ball.timer>2000)reset();
     }
     requestAnimationFrame(draw);
   }
