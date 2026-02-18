@@ -960,7 +960,7 @@ var threeScene;
     if(!w||!h){requestAnimationFrame(draw);return}
     time+=0.0002;
     ctx.clearRect(0,0,w,h);
-    if(surfFrame%60===0){surfCache=drawSurf()}
+    if(!surfCache||surfFrame%60===0){surfCache=drawSurf()}
     if(surfCache)ctx.putImageData(surfCache,0,0);
     surfFrame++;
     var g=grad(ball.x,ball.y);
