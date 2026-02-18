@@ -595,8 +595,8 @@ body.light .sctop{background:rgba(220,216,208,.6)}
 <div class="settings-panel" id="settingsPanel">
   <h4>Sound Settings</h4>
   <div class="settings-row"><label>BGM Volume</label><input type="range" id="bgmVol" min="0" max="1" step="0.05" value="0.4"></div>
-  <div class="settings-row"><label>Click Volume</label><input type="range" id="clickVol" min="0" max="1" step="0.05" value="0.15"></div>
-  <div class="settings-row"><label>Scroll Volume</label><input type="range" id="scrollVol" min="0" max="1" step="0.05" value="0.08"></div>
+  <div class="settings-row"><label>Click Volume</label><input type="range" id="clickVol" min="0" max="1" step="0.05" value="0.05"></div>
+  <div class="settings-row"><label>Scroll Volume</label><input type="range" id="scrollVol" min="0" max="1" step="0.05" value="0.05"></div>
   <div class="settings-row"><label>Click Type</label><select id="clickType"><option value="clean">Clean Click</option><option value="pop">Soft Pop</option><option value="mech">Mechanical</option></select></div>
 </div>
 </div>
@@ -887,7 +887,7 @@ var threeScene;
   var step=30;
   function sf(x,y){
     var nx=(x/(w||1))*4*Math.PI,ny=(y/(h||1))*4*Math.PI;
-    return Math.sin(nx*.5)*Math.cos(ny*.4)*3+Math.cos(nx*.3-ny*.2)*2+ny*.8;
+    return Math.sin(nx*.5)*Math.cos(ny*.4)*3+Math.cos(nx*.3-ny*.2)*2+Math.sin(nx*.8+ny*.6)*1.5;
   }
   function gd(x,y){var e=2;return{dx:(sf(x+e,y)-sf(x-e,y))/(2*e),dy:(sf(x,y+e)-sf(x,y-e))/(2*e)}}
   var gridImg=null;
@@ -913,14 +913,27 @@ var threeScene;
     }
     gridImg=oc;
   }
+  function findMax(){
+    var bestX=0,bestY=0,bestV=-Infinity;
+    for(var sx=0;sx<w;sx+=40){for(var sy=0;sy<h;sy+=40){
+      var v=sf(sx,sy);
+      if(v>bestV){bestV=v;bestX=sx;bestY=sy}
+    }}
+    for(var sx=bestX-40;sx<=bestX+40;sx+=8){for(var sy=bestY-40;sy<=bestY+40;sy+=8){
+      if(sx<0||sy<0||sx>w||sy>h)continue;
+      var v=sf(sx,sy);if(v>bestV){bestV=v;bestX=sx;bestY=sy}
+    }}
+    return{x:bestX,y:bestY};
+  }
   var ball={x:0,y:0,vx:0,vy:0,r:6,trail:[],stopped:false,stopTimer:0};
   var heatCanvas=document.createElement('canvas'),hctx;
   function initHeat(){heatCanvas.width=w;heatCanvas.height=h;hctx=heatCanvas.getContext('2d')}
   initHeat();
   function reset(){
-    ball.x=w*.1+Math.random()*w*.8;
-    ball.y=h*.05+Math.random()*h*.25;
-    ball.vx=(Math.random()-.5)*2;ball.vy=1;ball.trail=[];ball.stopped=false;ball.stopTimer=0;
+    var m=findMax();
+    ball.x=m.x+(Math.random()-.5)*20;
+    ball.y=m.y+(Math.random()-.5)*20;
+    ball.vx=(Math.random()-.5)*.5;ball.vy=(Math.random()-.5)*.5;ball.trail=[];ball.stopped=false;ball.stopTimer=0;
     initHeat();
   }
   reset();
@@ -944,25 +957,30 @@ var threeScene;
       var hc=isLight?'rgba(120,100,30,':'rgba(255,255,255,';
       hctx.beginPath();hctx.arc(ball.x,ball.y,3,0,Math.PI*2);
       hctx.fillStyle=hc+'0.08)';hctx.fill();
-      ball.trail.push({x:ball.x,y:ball.y,t:fc});
-      if(ball.trail.length>100)ball.trail.shift();
+      ball.trail.push({x:ball.x,y:ball.y,z:sf(ball.x,ball.y)});
+      if(ball.trail.length>15)ball.trail.shift();
     }else{
       if(Date.now()-ball.stopTimer>2500)reset();
     }
     if(ball.y>h+30||ball.x>w+30||ball.x<-30)reset();
     var ca=isLight?'rgba(180,140,20,':'rgba(255,255,255,';
     for(var j=1;j<ball.trail.length;j++){
-      var a=Math.pow(j/ball.trail.length,2)*.35;
-      ctx.beginPath();ctx.moveTo(ball.trail[j-1].x,ball.trail[j-1].y);
-      ctx.lineTo(ball.trail[j].x,ball.trail[j].y);
+      var a=Math.pow(j/ball.trail.length,2)*.4;
+      var z0=ball.trail[j-1].z||0,z1=ball.trail[j].z||0;
+      var ox0=z0*2.5,oy0=z0*2.5,ox1=z1*2.5,oy1=z1*2.5;
+      ctx.beginPath();ctx.moveTo(ball.trail[j-1].x+ox0,ball.trail[j-1].y+oy0);
+      ctx.lineTo(ball.trail[j].x+ox1,ball.trail[j].y+oy1);
       ctx.strokeStyle=ca+a+')';
       ctx.lineWidth=ball.r*.5*Math.pow(j/ball.trail.length,1.5);ctx.stroke();
     }
-    var grd=ctx.createRadialGradient(ball.x,ball.y,0,ball.x,ball.y,ball.r*3);
-    grd.addColorStop(0,ca+'.3)');grd.addColorStop(1,ca+'0)');
-    ctx.fillStyle=grd;ctx.beginPath();ctx.arc(ball.x,ball.y,ball.r*3,0,Math.PI*2);ctx.fill();
-    ctx.beginPath();ctx.arc(ball.x,ball.y,ball.r,0,Math.PI*2);
-    ctx.fillStyle=ca+(ball.stopped?'.4)':'.8)');ctx.fill();
+    var bz=sf(ball.x,ball.y),bxo=bz*2.5,byo=bz*2.5;
+    var grd=ctx.createRadialGradient(ball.x+bxo,ball.y+byo,0,ball.x+bxo,ball.y+byo,ball.r*6);
+    grd.addColorStop(0,ca+'.5)');grd.addColorStop(.4,ca+'.15)');grd.addColorStop(1,ca+'0)');
+    ctx.fillStyle=grd;ctx.beginPath();ctx.arc(ball.x+bxo,ball.y+byo,ball.r*6,0,Math.PI*2);ctx.fill();
+    ctx.beginPath();ctx.arc(ball.x+bxo,ball.y+byo,ball.r,0,Math.PI*2);
+    ctx.fillStyle=ca+(ball.stopped?'.4)':'.9)');ctx.fill();
+    ctx.beginPath();ctx.arc(ball.x+bxo-ball.r*.25,ball.y+byo-ball.r*.25,ball.r*.35,0,Math.PI*2);
+    ctx.fillStyle='rgba(255,255,255,.3)';ctx.fill();
     if(ball.stopped){
       ctx.font='9px monospace';ctx.fillStyle=ca+'0.5)';ctx.textAlign='center';
       ctx.fillText('local min',ball.x,ball.y+ball.r+12);
@@ -1040,7 +1058,7 @@ var threeScene;
 // Audio Engine (fixed IIFE)
 var audioEngine=(function(){
   var actx=null,masterGain=null,playing=false,currentMode=null,nodes=[];
-  var clickVolume=.15,scrollVolume=.08,clickType='clean',bgmVolume=.4;
+  var clickVolume=.05,scrollVolume=.05,clickType='clean',bgmVolume=.4;
   function ensureCtx(){
     if(!actx)actx=new(window.AudioContext||window.webkitAudioContext)();
     if(actx.state==='suspended')actx.resume();
