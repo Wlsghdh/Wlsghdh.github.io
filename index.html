@@ -948,10 +948,10 @@ var threeScene;
     ctx.putImageData(surfImg,0,0);
     if(!ball.stopped){
       var g=grad(ball.x,ball.y);
-      ball.vx=ball.vx*.90+g.dx*1.2;
-      ball.vy=ball.vy*.90+g.dy*1.2;
+      ball.vx=ball.vx*.97+g.dx*.4;
+      ball.vy=ball.vy*.97+g.dy*.4;
       var spd=Math.sqrt(ball.vx*ball.vx+ball.vy*ball.vy);
-      if(spd>16){var s=16/spd;ball.vx*=s;ball.vy*=s}
+      if(spd>10){var s=10/spd;ball.vx*=s;ball.vy*=s}
       ball.x+=ball.vx;ball.y+=ball.vy;
       ball.trail.push({x:ball.x,y:ball.y});
       if(ball.trail.length>25)ball.trail.shift();
