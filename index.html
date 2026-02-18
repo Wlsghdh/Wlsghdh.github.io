@@ -23,7 +23,8 @@ body.light{
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth;scrollbar-width:thin;scrollbar-color:#333 #090909}
-body{font-family:var(--mono);background:var(--bg);color:var(--w);line-height:1.7;overflow-x:hidden;transition:background .4s,color .4s}
+body{font-family:var(--mono);background:var(--bg);color:var(--w);line-height:1.7;overflow-x:hidden;transition:background .4s,color .4s;opacity:0;animation:pageIn .8s ease .1s forwards}
+@keyframes pageIn{to{opacity:1}}
 ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:#333;border-radius:3px}
 a{color:var(--g2);text-decoration:none;transition:var(--tr)}a:hover{color:var(--w)}
 ::selection{background:rgba(128,128,128,.2)}
@@ -55,6 +56,15 @@ body.light .titlebar{background:#dedad1}
   transition:background .4s,border-color .4s;
 }
 body.light .sidebar{background:#dedad1}
+body.light .ni{color:#8a7f6f}
+body.light .ni:hover{color:#5a5040;background:rgba(90,80,64,.08)}
+body.light .ni.active{color:#3d6b4f}
+body.light .ni.active::after{background:#3d6b4f}
+body.light .tab.active{color:#3d6b4f;border-bottom-color:#3d6b4f}
+body.light .re:hover{box-shadow:0 8px 30px rgba(0,0,0,.08)}
+body.light .rv:hover{box-shadow:0 12px 40px rgba(0,0,0,.1)}
+body.light .btn-w{background:#2a2318;color:#f0ede6;border-color:#2a2318}
+body.light .btn-w:hover{background:transparent;color:#2a2318}
 .ni{
   width:42px;height:42px;display:flex;align-items:center;justify-content:center;
   cursor:pointer;color:var(--g3);transition:var(--tr);border-radius:4px;position:relative;
@@ -134,8 +144,8 @@ body.light .kw:hover{text-shadow:0 0 12px rgba(0,0,0,.25)}
 .kw.w5{font-size:28px;font-weight:600;color:var(--g1)}
 .kw.w4{font-size:20px;font-weight:500;color:var(--g2)}
 .kw.w3{font-size:15px;font-weight:400;color:var(--g3)}
-.kw.w2{font-size:12px;font-weight:400;color:var(--g4)}
-.kw.w1{font-size:10px;font-weight:300;color:var(--g4);opacity:.65}
+.kw.w2{font-size:12px;font-weight:400;color:var(--g3)}
+.kw.w1{font-size:10px;font-weight:300;color:var(--g3);opacity:.8}
 .re-l{display:flex;flex-direction:column;gap:24px;max-width:780px}
 .re{background:var(--bg2);border:1px solid var(--border);border-radius:5px;padding:24px;transition:var(--tr);cursor:pointer}
 .re:hover{border-color:var(--g3);transform:translateY(-3px);box-shadow:0 8px 30px rgba(0,0,0,.3)}
@@ -293,9 +303,9 @@ body.light .rd-nav{background:rgba(232,228,218,.96)}
 .settings-row label{color:var(--g3);display:block;margin-bottom:5px;font-size:10px}
 .settings-row input[type=range]{width:100%;accent-color:var(--g2);cursor:pointer}
 .settings-row select{background:var(--bg3);border:1px solid var(--border);color:var(--g2);padding:4px 8px;font-size:10px;font-family:var(--mono);border-radius:3px;width:100%;cursor:pointer}
-.sctop{width:28px;height:28px;background:rgba(30,30,30,.55);border:1px solid rgba(100,100,100,.3);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--g3);font-size:11px;opacity:0;transition:var(--tr);backdrop-filter:blur(6px)}
-body.light .sctop{background:rgba(220,216,208,.55)}
-.sctop.show{opacity:.7}.sctop:hover{opacity:1;border-color:var(--w);color:var(--w)}
+.sctop{position:fixed;bottom:60px;right:20px;width:36px;height:36px;background:rgba(30,30,30,.6);border:1px solid rgba(100,100,100,.3);border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--g3);font-size:13px;opacity:0;transition:var(--tr);backdrop-filter:blur(6px);z-index:500}
+body.light .sctop{background:rgba(220,216,208,.6)}
+.sctop.show{opacity:.75}.sctop:hover{opacity:1;border-color:var(--w);color:var(--w)}
 .footer{padding:28px 56px 40px 72px;text-align:center;font-size:10px;color:var(--g4)}
 .mnav{display:none}
 @media(max-width:768px){
@@ -383,7 +393,7 @@ body.light .sctop{background:rgba(220,216,208,.55)}
       <div class="h-role">Vision & Data-Efficient Learning</div>
       <div class="h-mission">"Advancing perception with less — efficient models for a data-constrained world."</div>
       <div class="h-typ"><span id="typT"></span><span class="cur"></span></div>
-      <p class="h-desc">수원대학교 AI·데이터과학부 4학년 학부연구생으로, <strong style="color:var(--w)">Computer Vision</strong>과 <strong style="color:var(--w)">Data-Efficient Learning</strong> 분야를 연구합니다. 제한된 레이블 환경에서 강건하고 일반화 가능한 시각 모델을 설계하는 것에 연구 관심을 두고 있으며, 국내 AI 대학원 진학을 목표로 합니다.</p>
+      <p class="h-desc">수원대학교 AI·데이터과학부 4학년 학부연구생으로, <strong style="color:var(--w)">Computer Vision</strong>과 <strong style="color:var(--w)">Data-Efficient Learning</strong> 분야를 연구합니다.<br>제한된 레이블 환경에서 강건하고 일반화 가능한 시각 모델을 설계하는 것에 연구 관심을 두고 있으며, 국내 AI 대학원 진학을 목표로 합니다.</p>
       <div class="h-btns">
         <a href="#research-exp" class="btn btn-w">Research</a>
         <a href="#publications" class="btn">Publications</a>
@@ -561,14 +571,17 @@ body.light .sctop{background:rgba(220,216,208,.55)}
 </nav>
 
 <div class="sctop" id="sctop">↑</div>
-<div class="settings-btn" id="settingsBtn" title="Sound Settings">⚙</div>
+<div class="bottom-controls">
+  <div class="settings-btn" id="settingsBtn" title="Sound Settings">⚙</div>
+  <div class="music-btn" id="musicBtn" title="Background Music"><div class="music-bars"><span style="height:4px"></span><span style="height:8px"></span><span style="height:5px"></span><span style="height:10px"></span></div></div>
+</div>
 <div class="settings-panel" id="settingsPanel">
   <h4>Sound Settings</h4>
-  <div class="settings-row"><label>Click Volume</label><input type="range" id="clickVol" min="0" max="1" step="0.05" value="0.4"></div>
-  <div class="settings-row"><label>Scroll Volume</label><input type="range" id="scrollVol" min="0" max="1" step="0.05" value="0.15"></div>
+  <div class="settings-row"><label>BGM Volume</label><input type="range" id="bgmVol" min="0" max="1" step="0.05" value="0.4"></div>
+  <div class="settings-row"><label>Click Volume</label><input type="range" id="clickVol" min="0" max="1" step="0.05" value="0.15"></div>
+  <div class="settings-row"><label>Scroll Volume</label><input type="range" id="scrollVol" min="0" max="1" step="0.05" value="0.08"></div>
   <div class="settings-row"><label>Click Type</label><select id="clickType"><option value="clean">Clean Click</option><option value="pop">Soft Pop</option><option value="mech">Mechanical</option></select></div>
 </div>
-<div class="music-btn" id="musicBtn" title="Background Music"><div class="music-bars"><span style="height:4px"></span><span style="height:8px"></span><span style="height:5px"></span><span style="height:10px"></span></div></div>
 </div>
 
 <script>
@@ -845,22 +858,33 @@ var threeScene;
   addEventListener('resize',function(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
 })();
 
-// Single Gradient Descent Ball
+// Single Gradient Descent Ball (uses Three.js terrain)
 (function(){
   var c=document.getElementById('ballCanvas'),ctx=c.getContext('2d'),w,h;
   function resize(){w=c.width=innerWidth;h=c.height=innerHeight}
   resize();addEventListener('resize',resize);
-  function sf(x,y){var nx=x/w,ny=y/h;return ny*h*0.8+Math.sin(nx*12+ny*4)*60+Math.cos(ny*8)*40}
-  function gd(x,y){var e=2;return{dx:(sf(x+e,y)-sf(x-e,y))/(2*e),dy:(sf(x,y+e)-sf(x,y-e))/(2*e)}}
+  function getTerrainZ(sx,sy){
+    if(!threeScene||!threeScene.origZ)return sy;
+    var nx=(sx/w-.5)*80,ny=(sy/h-.5)*80;
+    var best=null,bestDist=Infinity;
+    for(var i=0;i<threeScene.origZ.length;i+=4){
+      var o=threeScene.origZ[i];
+      var dx=o.x-nx,dy=o.y-ny,d=dx*dx+dy*dy;
+      if(d<bestDist){bestDist=d;best=o}
+    }
+    return best?-best.z*30:0;
+  }
+  function sf(x,y){return getTerrainZ(x,y)+y*.6}
+  function gd(x,y){var e=3;return{dx:(sf(x+e,y)-sf(x-e,y))/(2*e),dy:(sf(x,y+e)-sf(x,y-e))/(2*e)}}
   var ball={x:100,y:30,vx:0,vy:0,r:8,trail:[]};
-  function reset(){ball.x=Math.random()*(w||800)*.6+(w||800)*.2;ball.y=-10;ball.vx=0;ball.vy=0;ball.trail=[]}
+  function reset(){ball.x=Math.random()*(w||800)*.6+(w||800)*.2;ball.y=30+Math.random()*60;ball.vx=(Math.random()-.5)*.3;ball.vy=0;ball.trail=[]}
   function draw(){
     ctx.clearRect(0,0,w,h);
     if(!w||!h||isNaN(ball.x)||isNaN(ball.y)){reset();requestAnimationFrame(draw);return}
     var g=gd(ball.x,ball.y);
-    ball.vx=ball.vx*.995+g.dx*.006;ball.vy=ball.vy*.995+g.dy*.006;
+    ball.vx=ball.vx*.993+g.dx*.004;ball.vy=ball.vy*.993+g.dy*.004;
     var spd=Math.sqrt(ball.vx*ball.vx+ball.vy*ball.vy);
-    if(spd>1.2){var sc=1.2/spd;ball.vx*=sc;ball.vy*=sc}
+    if(spd>0.8){var sc=0.8/spd;ball.vx*=sc;ball.vy*=sc}
     ball.x+=ball.vx;ball.y+=ball.vy;
     ball.trail.push({x:ball.x,y:ball.y});
     if(ball.trail.length>60)ball.trail.shift();
@@ -955,7 +979,7 @@ var threeScene;
 // Audio Engine (fixed IIFE)
 var audioEngine=(function(){
   var actx=null,masterGain=null,playing=false,currentMode=null,nodes=[];
-  var clickVolume=.4,scrollVolume=.15,clickType='clean';
+  var clickVolume=.15,scrollVolume=.08,clickType='clean',bgmVolume=.4;
   function ensureCtx(){if(!actx)actx=new(window.AudioContext||window.webkitAudioContext)();return actx}
   function stopAll(){
     nodes.forEach(function(n){try{if(n.stop)n.stop();if(n.disconnect)n.disconnect()}catch(e){}});
@@ -987,7 +1011,7 @@ var audioEngine=(function(){
     var noise=ctx.createBufferSource();noise.buffer=buf;noise.loop=true;
     var nG=ctx.createGain();nG.gain.value=.2;
     noise.connect(filt);filt.connect(nG);nG.connect(masterGain);noise.start();nodes.push(noise);
-    masterGain.gain.linearRampToValueAtTime(.6,ctx.currentTime+2);
+    masterGain.gain.linearRampToValueAtTime(bgmVolume,ctx.currentTime+2);
   }
   function startLight(){
     var ctx=ensureCtx();
@@ -998,7 +1022,7 @@ var audioEngine=(function(){
       osc.type='sine';osc.frequency.value=f;osc.detune.value=(Math.random()-.5)*5;
       g.gain.value=.025*(1-i/8);osc.connect(g);g.connect(masterGain);osc.start();nodes.push(osc);
     });
-    masterGain.gain.linearRampToValueAtTime(.5,ctx.currentTime+2);
+    masterGain.gain.linearRampToValueAtTime(bgmVolume,ctx.currentTime+2);
   }
   function doStart(mode){
     ensureCtx();
@@ -1032,6 +1056,7 @@ var audioEngine=(function(){
     start:doStart,stop:doStop,click:click,scrollSound:scrollSound,
     setClickVol:function(v){clickVolume=v},
     setScrollVol:function(v){scrollVolume=v},
+    setBgmVol:function(v){bgmVolume=v;if(masterGain&&playing)masterGain.gain.linearRampToValueAtTime(v,actx.currentTime+0.3)},
     setClickType:function(t){clickType=t},
     isPlaying:function(){return playing},
     getMode:function(){return currentMode}
@@ -1056,6 +1081,7 @@ var settingsBtn=document.getElementById('settingsBtn'),settingsPanel=document.ge
 settingsBtn.addEventListener('click',function(e){e.stopPropagation();settingsPanel.classList.toggle('open')});
 document.addEventListener('click',function(){settingsPanel.classList.remove('open')});
 settingsPanel.addEventListener('click',function(e){e.stopPropagation()});
+document.getElementById('bgmVol').addEventListener('input',function(){audioEngine.setBgmVol(+this.value)});
 document.getElementById('clickVol').addEventListener('input',function(){audioEngine.setClickVol(+this.value)});
 document.getElementById('scrollVol').addEventListener('input',function(){audioEngine.setScrollVol(+this.value)});
 document.getElementById('clickType').addEventListener('change',function(){audioEngine.setClickType(this.value)});
