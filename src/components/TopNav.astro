@@ -1,0 +1,120 @@
+---
+import { site, navSections } from '../data/site';
+
+const isHome = Astro.url.pathname === '/';
+---
+
+<header class="topnav">
+  <div class="topnav-inner">
+    <a class="logo" href="/">{site.authorKo}</a>
+    <nav aria-label="섹션 내비게이션">
+      <ul>
+        {
+          navSections.map((s) => (
+            <li>
+              <a href={isHome ? `#${s.id}` : `/#${s.id}`} data-section={s.id}>
+                {s.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .topnav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--hairline);
+  }
+  .topnav-inner {
+    max-width: var(--content-width);
+    margin: 0 auto;
+    padding: 0.65rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+
+  /* 로고 = 이름, 한나체 Air + CAU Blue */
+  .logo {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    color: var(--primary);
+    flex-shrink: 0;
+  }
+  .logo:hover {
+    text-decoration: none;
+    color: var(--primary-hover);
+  }
+
+  nav ul {
+    display: flex;
+    align-items: center;
+    gap: 0.15rem;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  nav ul::-webkit-scrollbar {
+    display: none;
+  }
+  nav a {
+    display: block;
+    padding: 0.3rem 0.65rem;
+    border-radius: 6px;
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    white-space: nowrap;
+    transition:
+      color var(--transition),
+      background-color var(--transition);
+  }
+  nav a:hover {
+    color: var(--primary);
+    background: var(--accent-soft);
+    text-decoration: none;
+  }
+  nav a.active {
+    color: var(--primary);
+    font-weight: 600;
+    background: var(--accent-soft);
+  }
+
+  @media (max-width: 640px) {
+    .topnav-inner {
+      padding: 0.55rem 1rem;
+    }
+  }
+</style>
+
+<script>
+  // 스크롤 스파이 — 보이는 섹션의 상단바 메뉴를 활성(CAU Blue) 처리
+  const links = document.querySelectorAll<HTMLAnchorElement>('.topnav a[data-section]');
+  if (links.length > 0 && location.pathname === '/') {
+    const setActive = (id: string) => {
+      links.forEach((a) => a.classList.toggle('active', a.dataset.section === id));
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((e) => e.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        if (visible[0]) setActive(visible[0].target.id);
+      },
+      { rootMargin: '-20% 0px -65% 0px' },
+    );
+
+    links.forEach((a) => {
+      const el = document.getElementById(a.dataset.section!);
+      if (el) observer.observe(el);
+    });
+  }
+</script>

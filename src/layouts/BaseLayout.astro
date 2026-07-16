@@ -1,6 +1,6 @@
 ---
 import '../styles/global.css';
-import ProfileSidebar from '../components/ProfileSidebar.astro';
+import TopNav from '../components/TopNav.astro';
 import { site } from '../data/site';
 
 interface Props {
@@ -24,40 +24,24 @@ const pageTitle = title ? `${title} · ${site.authorKo}` : `${site.authorKo} —
     <title>{pageTitle}</title>
   </head>
   <body>
-    <div class="wrap">
-      <aside class="sidebar">
-        <ProfileSidebar />
-      </aside>
-      <main class="content">
-        <slot />
-      </main>
-    </div>
+    <TopNav />
+    <main class="content">
+      <slot />
+    </main>
   </body>
 </html>
 
 <style>
-  /* 2단: 좌측 고정 사이드바(300px) + 우측 콘텐츠(읽기폭 720px) */
-  .wrap {
-    max-width: calc(var(--sidebar-width) + var(--content-width) + 4rem);
-    margin: 0 auto;
-    padding: 3.5rem 1.5rem 5rem;
-    display: grid;
-    grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
-    gap: 4rem;
-    align-items: start;
-  }
-
+  /* 단일 컬럼 — 읽기폭 720px, 노션풍 */
   .content {
     max-width: var(--content-width);
-    min-width: 0;
+    margin: 0 auto;
+    padding: 0 1.5rem 5rem;
   }
 
-  /* 모바일: 세로 스택 */
-  @media (max-width: 900px) {
-    .wrap {
-      grid-template-columns: 1fr;
-      gap: 2.5rem;
-      padding-top: 2rem;
+  @media (max-width: 640px) {
+    .content {
+      padding: 0 1rem 3.5rem;
     }
   }
 </style>

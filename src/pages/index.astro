@@ -1,46 +1,103 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { site } from '../data/site';
+import ProfileHeader from '../components/ProfileHeader.astro';
+import { site, activityCategories } from '../data/site';
+import { education, experience, publications, projects, awards, skills } from '../data/cv';
 ---
 
 <BaseLayout>
-  <!-- About -->
-  <section id="about" class="home-section">
-    <h2 class="section-title">About</h2>
-    <p>
-      안녕하세요. <strong>{site.affiliation}</strong>에서 학부 연구 인턴으로 공부하고 있습니다.
-      이 사이트는 매일의 연구 기록과 읽은 논문 리뷰를 쌓아 가는 공간입니다.
-    </p>
-    <p class="placeholder-note">
-      ※ 자기소개 문단은 <code>src/pages/index.astro</code>의 About 섹션에서 수정하세요.
-    </p>
+  <ProfileHeader />
+
+  <hr class="hairline" />
+
+  <!-- Publications -->
+  <section id="publications" class="home-section">
+    <h2 class="section-title">Publications</h2>
+    <ul class="pub-list">
+      {
+        publications.map((pub) => (
+          <li class="pub-item">
+            <span class="pub-tag mono">[{pub.tag}]</span>
+            <div class="pub-body">
+              <p class="pub-title">{pub.title}</p>
+              <p class="pub-authors">
+                {pub.authors.map((a, i) => (
+                  <>
+                    {i > 0 && ', '}
+                    {a === site.authorKo ? <strong class="me">{a}</strong> : a}
+                  </>
+                ))}
+              </p>
+              <p class="pub-venue mono">
+                {pub.venue}
+                {pub.note && <span class="pub-note"> · {pub.note}</span>}
+              </p>
+              <p class="pub-summary">{pub.summary}</p>
+              <p class="pub-links">
+                {pub.links.map((l) => (
+                  <a href={l.url} target="_blank" rel="noopener noreferrer">
+                    {l.label}
+                  </a>
+                ))}
+              </p>
+            </div>
+          </li>
+        ))
+      }
+    </ul>
   </section>
 
   <hr class="hairline" />
 
-  <!-- 활동 (잔디) — Phase 3에서 Contribution graph가 들어올 자리 -->
-  <section id="activity" class="home-section">
-    <h2 class="section-title">활동</h2>
-    <div class="card activity-placeholder">
-      <p class="mono">🌱 Contribution graph — Phase 3에서 53주×7일 잔디가 여기 배치됩니다.</p>
-      <p class="sub">logs + papers 활동이 날짜별 농도로 표시되고, 오버 시 미리보기 · 클릭 시 해당 날짜로 이동.</p>
-    </div>
+  <!-- Projects -->
+  <section id="projects" class="home-section">
+    <h2 class="section-title">Projects</h2>
+    <ul class="proj-list">
+      {
+        projects.map((p) => (
+          <li class="card proj-card">
+            <div class="proj-head">
+              <strong>{p.title}</strong>
+              <span class="mono proj-period">{p.period}</span>
+            </div>
+            {p.subtitle && <p class="proj-subtitle">{p.subtitle}</p>}
+            <p class="proj-summary">{p.summary}</p>
+            <p class="proj-stack">
+              {p.stack.map((s) => (
+                <span class="tag">{s}</span>
+              ))}
+            </p>
+            <p class="proj-links">
+              {p.links.map((l) => (
+                <a href={l.url} target="_blank" rel="noopener noreferrer">
+                  {l.label}
+                </a>
+              ))}
+            </p>
+          </li>
+        ))
+      }
+    </ul>
   </section>
 
   <hr class="hairline" />
 
-  <!-- Reading Papers — Phase 2에서 목록 연결 -->
-  <section id="reading" class="home-section">
-    <h2 class="section-title">Reading Papers</h2>
-    <p class="placeholder-note">Phase 2에서 <code>/reading</code> 목록(제목·저자·읽은날·태그·별점)이 연결됩니다.</p>
-  </section>
-
-  <hr class="hairline" />
-
-  <!-- Education — Phase 4에서 cv.ts 데이터 연결 -->
+  <!-- Education -->
   <section id="education" class="home-section">
     <h2 class="section-title">Education</h2>
-    <p class="placeholder-note">Phase 4에서 <code>src/data/cv.ts</code> 기반으로 채워집니다. (중앙대학교 · 재학)</p>
+    <ul class="entry-list">
+      {
+        education.map((e) => (
+          <li>
+            <span class="mono entry-date">{e.period}</span>
+            <div>
+              <strong>{e.school}</strong>
+              {e.detail && <p class="entry-detail">{e.detail}</p>}
+            </div>
+          </li>
+        ))
+      }
+    </ul>
   </section>
 
   <hr class="hairline" />
@@ -49,12 +106,18 @@ import { site } from '../data/site';
   <section id="experience" class="home-section">
     <h2 class="section-title">Experience</h2>
     <ul class="entry-list">
-      <li>
-        <span class="mono entry-date">2026.07.13 ~ 현재</span>
-        <div>
-          <strong>중앙대학교 학부 연구 인턴</strong>
-        </div>
-      </li>
+      {
+        experience.map((e) => (
+          <li>
+            <span class="mono entry-date">{e.period}</span>
+            <div>
+              <strong>{e.title}</strong>
+              {e.org && <span class="entry-org"> · {e.org}</span>}
+              {e.detail && <p class="entry-detail">{e.detail}</p>}
+            </div>
+          </li>
+        ))
+      }
     </ul>
   </section>
 
@@ -63,7 +126,36 @@ import { site } from '../data/site';
   <!-- Honors & Awards -->
   <section id="awards" class="home-section">
     <h2 class="section-title">Honors &amp; Awards</h2>
-    <p class="placeholder-note">Phase 4에서 <code>src/data/cv.ts</code>의 수상 항목이 표시됩니다.</p>
+    <ul class="entry-list">
+      {
+        awards.map((a) => (
+          <li>
+            <span class="mono entry-date">{a.date}</span>
+            <div>
+              <strong>{a.title}</strong>
+              {a.org && <span class="entry-org"> · {a.org}</span>}
+            </div>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <hr class="hairline" />
+
+  <!-- Skills -->
+  <section id="skills" class="home-section">
+    <h2 class="section-title">Skills</h2>
+    <ul class="skill-list">
+      {
+        skills.map((s) => (
+          <li>
+            <span class="mono skill-cat">{s.category}</span>
+            <span class="skill-items">{s.items.join(' · ')}</span>
+          </li>
+        ))
+      }
+    </ul>
   </section>
 
   <hr class="hairline" />
@@ -77,17 +169,32 @@ import { site } from '../data/site';
         <span class="label mono">GitHub</span>
         <a href={site.github} target="_blank" rel="noopener noreferrer">github.com/{site.githubUsername}</a>
       </li>
-      {
-        site.scholar && (
-          <li>
-            <span class="label mono">Scholar</span>
-            <a href={site.scholar} target="_blank" rel="noopener noreferrer">
-              Google Scholar
-            </a>
-          </li>
-        )
-      }
+      <li>
+        <span class="label mono">Blog</span>
+        <a href={site.blog} target="_blank" rel="noopener noreferrer">edu-data.tistory.com</a>
+      </li>
     </ul>
+  </section>
+
+  <hr class="hairline" />
+
+  <!-- History line — 맨 아래. Phase 3에서 카테고리 색 타임라인이 들어올 자리 -->
+  <section id="history" class="home-section">
+    <h2 class="section-title">History</h2>
+    <div class="history-legend">
+      {
+        activityCategories.map((c) => (
+          <span class="legend-item">
+            <span class="legend-dot" style={`background:${c.color}`}></span>
+            {c.label}
+          </span>
+        ))
+      }
+    </div>
+    <div class="card history-placeholder">
+      <p class="mono">🗓 History line — Phase 3에서 날짜별 활동이 카테고리 색으로 표시됩니다.</p>
+      <p class="sub">logs + papers가 자동 집계되고, 오버 시 그날 기록 미리보기 · 클릭 시 해당 기록으로 이동.</p>
+    </div>
   </section>
 </BaseLayout>
 
@@ -95,51 +202,124 @@ import { site } from '../data/site';
   .home-section {
     padding: 2.2rem 0;
   }
-  .home-section:first-child {
-    padding-top: 0.4rem;
-  }
-  .home-section > p {
-    margin-top: 0.9rem;
-  }
 
-  .placeholder-note {
-    color: var(--text-faint);
-    font-size: 0.875rem;
-    margin-top: 0.9rem;
-  }
-  .placeholder-note code {
-    font-family: var(--font-mono);
-    font-size: 0.8em;
-    background: var(--surface);
-    border: 1px solid var(--hairline);
-    border-radius: 4px;
-    padding: 0.05rem 0.35rem;
-  }
-
-  .activity-placeholder {
-    margin-top: 1rem;
-    padding: 1.2rem 1.4rem;
-  }
-  .activity-placeholder .sub {
-    color: var(--text-muted);
-    font-size: 0.875rem;
-    margin-top: 0.4rem;
-  }
-
-  .entry-list {
-    margin-top: 1rem;
+  /* --- Publications --- */
+  .pub-list {
+    margin-top: 1.1rem;
     display: flex;
     flex-direction: column;
-    gap: 0.8rem;
+    gap: 1.5rem;
+  }
+  .pub-item {
+    display: grid;
+    grid-template-columns: 2.6rem 1fr;
+    gap: 0.4rem;
+  }
+  .pub-tag {
+    color: var(--primary);
+    padding-top: 0.15rem;
+  }
+  .pub-title {
+    font-weight: 700;
+    line-height: 1.5;
+  }
+  .pub-authors {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-top: 0.15rem;
+  }
+  .pub-authors .me {
+    color: var(--primary);
+  }
+  .pub-venue {
+    color: var(--text-faint);
+    font-style: italic;
+    margin-top: 0.15rem;
+  }
+  .pub-note {
+    color: var(--primary);
+    font-style: normal;
+  }
+  .pub-summary {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-top: 0.4rem;
+  }
+  .pub-links {
+    margin-top: 0.3rem;
+    display: flex;
+    gap: 0.9rem;
+    font-size: 0.875rem;
+  }
+
+  /* --- Projects --- */
+  .proj-list {
+    margin-top: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+  .proj-card {
+    padding: 1.1rem 1.3rem;
+  }
+  .proj-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .proj-period {
+    color: var(--text-faint);
+    flex-shrink: 0;
+  }
+  .proj-subtitle {
+    color: var(--text-faint);
+    font-size: 0.8125rem;
+    margin-top: 0.15rem;
+  }
+  .proj-summary {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+  }
+  .proj-stack {
+    margin-top: 0.6rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+  .proj-links {
+    margin-top: 0.55rem;
+    display: flex;
+    gap: 0.9rem;
+    font-size: 0.875rem;
+  }
+
+  /* --- Education / Experience / Awards 공통 --- */
+  .entry-list {
+    margin-top: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
   }
   .entry-list li {
     display: grid;
-    grid-template-columns: 10.5rem 1fr;
+    grid-template-columns: 11rem 1fr;
     gap: 1rem;
     align-items: baseline;
   }
   .entry-date {
     color: var(--text-faint);
+  }
+  .entry-org {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+  .entry-detail {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    margin-top: 0.2rem;
   }
   @media (max-width: 640px) {
     .entry-list li {
@@ -148,8 +328,36 @@ import { site } from '../data/site';
     }
   }
 
+  /* --- Skills --- */
+  .skill-list {
+    margin-top: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+  .skill-list li {
+    display: grid;
+    grid-template-columns: 11rem 1fr;
+    gap: 1rem;
+    align-items: baseline;
+  }
+  .skill-cat {
+    color: var(--primary);
+  }
+  .skill-items {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+  @media (max-width: 640px) {
+    .skill-list li {
+      grid-template-columns: 1fr;
+      gap: 0.1rem;
+    }
+  }
+
+  /* --- Contact --- */
   .contact-list {
-    margin-top: 1rem;
+    margin-top: 1.1rem;
     display: flex;
     flex-direction: column;
     gap: 0.45rem;
@@ -163,5 +371,35 @@ import { site } from '../data/site';
     color: var(--text-faint);
     width: 4.5rem;
     flex-shrink: 0;
+  }
+
+  /* --- History line (맨 아래) --- */
+  .history-legend {
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.1rem;
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+  }
+  .legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    display: inline-block;
+  }
+  .history-placeholder {
+    margin-top: 0.9rem;
+    padding: 1.1rem 1.3rem;
+  }
+  .history-placeholder .sub {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    margin-top: 0.35rem;
   }
 </style>

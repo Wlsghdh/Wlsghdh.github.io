@@ -29,6 +29,13 @@
   /* 비공개(locked) */
   --lock: #9aa5b4;
 
+  /* History line 활동 카테고리 색 레이블 */
+  --cat-reading: #004c97; /* 논문리딩 */
+  --cat-coding: #0f9d58; /* 코드작업 */
+  --cat-industry: #d97706; /* 기업과제 */
+  --cat-writing: #7c3aed; /* 논문작성 */
+  --cat-seminar: #db2777; /* 세미나 */
+
   /* 타이포 */
   --font-display: 'BMHANNAAir', 'Pretendard', sans-serif; /* 이름·로고 only */
   --font-body: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui,
