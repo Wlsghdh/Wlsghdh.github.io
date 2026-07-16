@@ -1,0 +1,161 @@
+@import 'tailwindcss';
+@import './tokens.css';
+
+/* ============================================
+   폰트 — /public/fonts 셀프 호스팅, CDN은 폴백
+   ============================================ */
+@font-face {
+  font-family: 'BMHANNAAir';
+  src:
+    url('/fonts/BMHANNAAir.woff') format('woff'),
+    url('https://cdn.jsdelivr.net/gh/fontbee/font@main/BM/BMHANNAAir.woff') format('woff');
+  font-weight: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Pretendard';
+  src:
+    url('/fonts/PretendardVariable.woff2') format('woff2-variations'),
+    url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/woff2/PretendardVariable.woff2')
+      format('woff2-variations');
+  font-weight: 45 920;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src:
+    url('/fonts/JetBrainsMono-Regular.woff2') format('woff2'),
+    url('https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono@2.304/fonts/webfonts/JetBrainsMono-Regular.woff2')
+      format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src:
+    url('/fonts/JetBrainsMono-Bold.woff2') format('woff2'),
+    url('https://cdn.jsdelivr.net/gh/JetBrains/JetBrainsMono@2.304/fonts/webfonts/JetBrainsMono-Bold.woff2')
+      format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+
+/* ============================================
+   베이스
+   ============================================ */
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: var(--accent-soft);
+  color: var(--primary);
+}
+
+/* 포커스 링 — CAU Blue, 접근성 AA */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* 본문 링크 */
+a {
+  color: var(--primary);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+a:hover {
+  color: var(--primary-hover);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* ============================================
+   공용 유틸 클래스
+   ============================================ */
+
+/* 날짜·태그·수치·venue 등 학술 디테일 */
+.mono {
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  letter-spacing: -0.01em;
+}
+
+/* 섹션 사이 얇은 헤어라인 */
+.hairline {
+  border: 0;
+  border-top: 1px solid var(--hairline);
+  margin: 0;
+}
+
+/* 카드 — 그림자 대신 얇은 보더, hover 시 보더 CAU Blue + 옅은 하늘색 배경 */
+.card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--bg);
+  transition:
+    border-color var(--transition),
+    background-color var(--transition);
+}
+.card:hover {
+  border-color: var(--primary);
+  background: var(--accent-soft);
+}
+
+/* 태그 칩 */
+.tag {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--primary);
+  background: var(--accent-soft);
+  border-radius: 4px;
+  padding: 0.1rem 0.45rem;
+}
+
+/* 섹션 제목 — 좌측 CAU Blue 마커 */
+.section-title {
+  font-size: var(--fs-h2);
+  font-weight: 700;
+  line-height: 1.4;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.section-title::before {
+  content: '';
+  display: inline-block;
+  width: 4px;
+  height: 1.05em;
+  border-radius: 2px;
+  background: var(--primary);
+}
+
+/* ============================================
+   모션 최소화 존중
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

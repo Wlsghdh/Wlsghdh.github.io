@@ -1,0 +1,167 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { site } from '../data/site';
+---
+
+<BaseLayout>
+  <!-- About -->
+  <section id="about" class="home-section">
+    <h2 class="section-title">About</h2>
+    <p>
+      안녕하세요. <strong>{site.affiliation}</strong>에서 학부 연구 인턴으로 공부하고 있습니다.
+      이 사이트는 매일의 연구 기록과 읽은 논문 리뷰를 쌓아 가는 공간입니다.
+    </p>
+    <p class="placeholder-note">
+      ※ 자기소개 문단은 <code>src/pages/index.astro</code>의 About 섹션에서 수정하세요.
+    </p>
+  </section>
+
+  <hr class="hairline" />
+
+  <!-- 활동 (잔디) — Phase 3에서 Contribution graph가 들어올 자리 -->
+  <section id="activity" class="home-section">
+    <h2 class="section-title">활동</h2>
+    <div class="card activity-placeholder">
+      <p class="mono">🌱 Contribution graph — Phase 3에서 53주×7일 잔디가 여기 배치됩니다.</p>
+      <p class="sub">logs + papers 활동이 날짜별 농도로 표시되고, 오버 시 미리보기 · 클릭 시 해당 날짜로 이동.</p>
+    </div>
+  </section>
+
+  <hr class="hairline" />
+
+  <!-- Reading Papers — Phase 2에서 목록 연결 -->
+  <section id="reading" class="home-section">
+    <h2 class="section-title">Reading Papers</h2>
+    <p class="placeholder-note">Phase 2에서 <code>/reading</code> 목록(제목·저자·읽은날·태그·별점)이 연결됩니다.</p>
+  </section>
+
+  <hr class="hairline" />
+
+  <!-- Education — Phase 4에서 cv.ts 데이터 연결 -->
+  <section id="education" class="home-section">
+    <h2 class="section-title">Education</h2>
+    <p class="placeholder-note">Phase 4에서 <code>src/data/cv.ts</code> 기반으로 채워집니다. (중앙대학교 · 재학)</p>
+  </section>
+
+  <hr class="hairline" />
+
+  <!-- Experience -->
+  <section id="experience" class="home-section">
+    <h2 class="section-title">Experience</h2>
+    <ul class="entry-list">
+      <li>
+        <span class="mono entry-date">2026.07.13 ~ 현재</span>
+        <div>
+          <strong>중앙대학교 학부 연구 인턴</strong>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <hr class="hairline" />
+
+  <!-- Honors & Awards -->
+  <section id="awards" class="home-section">
+    <h2 class="section-title">Honors &amp; Awards</h2>
+    <p class="placeholder-note">Phase 4에서 <code>src/data/cv.ts</code>의 수상 항목이 표시됩니다.</p>
+  </section>
+
+  <hr class="hairline" />
+
+  <!-- Contact -->
+  <section id="contact" class="home-section">
+    <h2 class="section-title">Contact</h2>
+    <ul class="contact-list">
+      <li><span class="label mono">Email</span><a href={`mailto:${site.email}`}>{site.email}</a></li>
+      <li>
+        <span class="label mono">GitHub</span>
+        <a href={site.github} target="_blank" rel="noopener noreferrer">github.com/{site.githubUsername}</a>
+      </li>
+      {
+        site.scholar && (
+          <li>
+            <span class="label mono">Scholar</span>
+            <a href={site.scholar} target="_blank" rel="noopener noreferrer">
+              Google Scholar
+            </a>
+          </li>
+        )
+      }
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  .home-section {
+    padding: 2.2rem 0;
+  }
+  .home-section:first-child {
+    padding-top: 0.4rem;
+  }
+  .home-section > p {
+    margin-top: 0.9rem;
+  }
+
+  .placeholder-note {
+    color: var(--text-faint);
+    font-size: 0.875rem;
+    margin-top: 0.9rem;
+  }
+  .placeholder-note code {
+    font-family: var(--font-mono);
+    font-size: 0.8em;
+    background: var(--surface);
+    border: 1px solid var(--hairline);
+    border-radius: 4px;
+    padding: 0.05rem 0.35rem;
+  }
+
+  .activity-placeholder {
+    margin-top: 1rem;
+    padding: 1.2rem 1.4rem;
+  }
+  .activity-placeholder .sub {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    margin-top: 0.4rem;
+  }
+
+  .entry-list {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+  .entry-list li {
+    display: grid;
+    grid-template-columns: 10.5rem 1fr;
+    gap: 1rem;
+    align-items: baseline;
+  }
+  .entry-date {
+    color: var(--text-faint);
+  }
+  @media (max-width: 640px) {
+    .entry-list li {
+      grid-template-columns: 1fr;
+      gap: 0.15rem;
+    }
+  }
+
+  .contact-list {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
+  }
+  .contact-list li {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+  }
+  .contact-list .label {
+    color: var(--text-faint);
+    width: 4.5rem;
+    flex-shrink: 0;
+  }
+</style>

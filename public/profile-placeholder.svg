@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300" viewBox="0 0 300 300">
+  <rect width="300" height="300" rx="28" fill="#EAF2FB"/>
+  <circle cx="150" cy="118" r="52" fill="#7FB0E6"/>
+  <path d="M62 268c8-58 46-88 88-88s80 30 88 88" fill="#7FB0E6"/>
+  <text x="150" y="284" text-anchor="middle" font-family="sans-serif" font-size="18" fill="#004C97">profile.jpg</text>
+</svg>

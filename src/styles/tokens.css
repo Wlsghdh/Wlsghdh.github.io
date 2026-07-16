@@ -1,0 +1,51 @@
+/* ============================================
+   디자인 토큰 — 거의 흑백 + CAU Blue 텍스트 포인트
+   ============================================ */
+:root {
+  /* 배경/보더 */
+  --bg: #ffffff;
+  --surface: #f7f9fc;
+  --border: #e6eaf0;
+  --hairline: #edf1f6;
+
+  /* 텍스트 */
+  --text: #141a24;
+  --text-muted: #5b6577;
+  --text-faint: #8a93a3;
+
+  /* 포인트 — CAU Blue로만: 이름·직함·링크·태그·잔디·활성 메뉴·논문 속 "내 이름" 볼드 */
+  --primary: #004c97;
+  --primary-hover: #003a75;
+  --accent: #4a90d9;
+  --accent-soft: #eaf2fb; /* 카드 hover 배경 */
+
+  /* 잔디 5단계 */
+  --grass-0: #ebedf0;
+  --grass-1: #c7dbf2;
+  --grass-2: #7fb0e6;
+  --grass-3: #3d80cc;
+  --grass-4: #004c97;
+
+  /* 비공개(locked) */
+  --lock: #9aa5b4;
+
+  /* 타이포 */
+  --font-display: 'BMHANNAAir', 'Pretendard', sans-serif; /* 이름·로고 only */
+  --font-body: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui,
+    'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace; /* 날짜·태그·수치·venue */
+
+  --fs-name: 2rem;
+  --fs-h2: 1.4rem;
+  --fs-h3: 1.1rem;
+  --fs-body: 1rem;
+  --lh-body: 1.75;
+
+  /* 레이아웃 */
+  --content-width: 720px;
+  --sidebar-width: 300px;
+
+  /* 모션 */
+  --transition: 180ms ease;
+  --radius-card: 10px;
+}

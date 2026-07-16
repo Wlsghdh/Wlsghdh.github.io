@@ -1,0 +1,63 @@
+---
+import '../styles/global.css';
+import ProfileSidebar from '../components/ProfileSidebar.astro';
+import { site } from '../data/site';
+
+interface Props {
+  /** 페이지 <title>. 생략 시 사이트 기본 제목 */
+  title?: string;
+  description?: string;
+}
+
+const { title, description = site.description } = Astro.props;
+const pageTitle = title ? `${title} · ${site.authorKo}` : `${site.authorKo} — ${site.title}`;
+---
+
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{pageTitle}</title>
+  </head>
+  <body>
+    <div class="wrap">
+      <aside class="sidebar">
+        <ProfileSidebar />
+      </aside>
+      <main class="content">
+        <slot />
+      </main>
+    </div>
+  </body>
+</html>
+
+<style>
+  /* 2단: 좌측 고정 사이드바(300px) + 우측 콘텐츠(읽기폭 720px) */
+  .wrap {
+    max-width: calc(var(--sidebar-width) + var(--content-width) + 4rem);
+    margin: 0 auto;
+    padding: 3.5rem 1.5rem 5rem;
+    display: grid;
+    grid-template-columns: var(--sidebar-width) minmax(0, 1fr);
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .content {
+    max-width: var(--content-width);
+    min-width: 0;
+  }
+
+  /* 모바일: 세로 스택 */
+  @media (max-width: 900px) {
+    .wrap {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+      padding-top: 2rem;
+    }
+  }
+</style>
