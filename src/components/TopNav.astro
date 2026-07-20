@@ -1,102 +1,84 @@
 ---
-import { site, navSections } from '../data/site';
+import { navSections } from '../data/site';
 
 const isHome = Astro.url.pathname === '/';
 ---
 
-<header class="topnav">
-  <div class="topnav-inner">
-    <a class="logo" href="/">{site.authorKo}</a>
-    <nav aria-label="섹션 내비게이션">
-      <ul>
-        {
-          navSections.map((s) => (
-            <li>
-              <a href={isHome ? `#${s.id}` : `/#${s.id}`} data-section={s.id}>
-                {s.label}
-              </a>
-            </li>
-          ))
-        }
-      </ul>
-    </nav>
+<nav class="navbar">
+  <div class="navbar-inner">
+    <ul class="navbar-list">
+      {
+        navSections.map((s) => (
+          <li>
+            <a class="navbar-link" href={isHome ? `#${s.id}` : `/#${s.id}`} data-section={s.id}>
+              {s.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
   </div>
-</header>
+</nav>
 
 <style>
-  .topnav {
+  /* vvsjeon .navbar — 얇은 상하 보더, 대문자 소형 링크, 스크롤 시 상단 고정 */
+  .navbar {
     position: sticky;
     top: 0;
     z-index: 50;
-    background: color-mix(in srgb, var(--bg) 88%, transparent);
-    backdrop-filter: blur(8px);
+    background: var(--bg);
+    border-top: 1px solid var(--hairline);
     border-bottom: 1px solid var(--hairline);
   }
-  .topnav-inner {
+  .navbar-inner {
     max-width: var(--content-width);
     margin: 0 auto;
-    padding: 0.65rem 1.5rem;
+    padding: 0 2rem;
+  }
+  .navbar-list {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 1.5rem;
-  }
-
-  /* 로고 = 이름, 한나체 Air + CAU Blue */
-  .logo {
-    font-family: var(--font-display);
-    font-size: 1.35rem;
-    color: var(--primary);
-    flex-shrink: 0;
-  }
-  .logo:hover {
-    text-decoration: none;
-    color: var(--primary-hover);
-  }
-
-  nav ul {
-    display: flex;
-    align-items: center;
-    gap: 0.15rem;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
   }
-  nav ul::-webkit-scrollbar {
+  .navbar-list::-webkit-scrollbar {
     display: none;
   }
-  nav a {
+  .navbar-link {
     display: block;
-    padding: 0.3rem 0.65rem;
-    border-radius: 6px;
-    color: var(--text-muted);
-    font-size: 0.875rem;
+    text-transform: uppercase;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.2rem;
+    line-height: 5.4rem;
+    margin-right: 3.2rem;
+    color: var(--text);
     white-space: nowrap;
-    transition:
-      color var(--transition),
-      background-color var(--transition);
   }
-  nav a:hover {
+  .navbar-link:hover {
     color: var(--primary);
-    background: var(--accent-soft);
     text-decoration: none;
   }
-  nav a.active {
+  .navbar-link.active {
     color: var(--primary);
-    font-weight: 600;
-    background: var(--accent-soft);
   }
 
   @media (max-width: 640px) {
-    .topnav-inner {
-      padding: 0.55rem 1rem;
+    .navbar-inner {
+      padding: 0 1.5rem;
+    }
+    .navbar-link {
+      line-height: 4.4rem;
+      margin-right: 2.2rem;
+      letter-spacing: 0.12rem;
     }
   }
 </style>
 
 <script>
-  // 스크롤 스파이 — 보이는 섹션의 상단바 메뉴를 활성(CAU Blue) 처리
-  const links = document.querySelectorAll<HTMLAnchorElement>('.topnav a[data-section]');
+  // 스크롤 스파이 — 보이는 섹션의 내비 링크를 활성(CAU Blue) 처리
+  const links = document.querySelectorAll<HTMLAnchorElement>('.navbar a[data-section]');
   if (links.length > 0 && location.pathname === '/') {
     const setActive = (id: string) => {
       links.forEach((a) => a.classList.toggle('active', a.dataset.section === id));

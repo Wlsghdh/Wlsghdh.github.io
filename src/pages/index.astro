@@ -6,180 +6,145 @@ import { education, experience, publications, projects, awards, skills } from '.
 ---
 
 <BaseLayout>
-  <ProfileHeader />
-
-  <hr class="hairline" />
+  <ProfileHeader slot="before-nav" />
 
   <!-- Publications -->
-  <section id="publications" class="home-section">
+  <section id="publications" class="docs-section first-section">
     <h2 class="section-title">Publications</h2>
-    <ul class="pub-list">
-      {
-        publications.map((pub) => (
-          <li class="pub-item">
-            <span class="pub-tag mono">[{pub.tag}]</span>
-            <div class="pub-body">
-              <p class="pub-title">{pub.title}</p>
-              <p class="pub-authors">
-                {pub.authors.map((a, i) => (
-                  <>
-                    {i > 0 && ', '}
-                    {a === site.authorKo ? <strong class="me">{a}</strong> : a}
-                  </>
-                ))}
-              </p>
-              <p class="pub-venue mono">
-                {pub.venue}
-                {pub.note && <span class="pub-note"> · {pub.note}</span>}
-              </p>
-              <p class="pub-summary">{pub.summary}</p>
-              <p class="pub-links">
-                {pub.links.map((l) => (
-                  <a href={l.url} target="_blank" rel="noopener noreferrer">
-                    {l.label}
-                  </a>
-                ))}
-              </p>
-            </div>
-          </li>
-        ))
-      }
-    </ul>
+    {
+      publications.map((pub) => (
+        <div class="paper">
+          <p class="title">[{pub.tag}] {pub.title}</p>
+          <p class="authors">
+            {pub.authors.map((a, i) => (
+              <>
+                {i > 0 && ', '}
+                {a === site.authorKo ? <b class="me">{a}</b> : a}
+              </>
+            ))}
+          </p>
+          <p class="venue">
+            <i>{pub.venue}</i>
+          </p>
+          <div class="paper-buttons">
+            {pub.links.map((l) => (
+              <a class="button" href={l.url} target="_blank" rel="noopener noreferrer">
+                {l.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      ))
+    }
   </section>
-
-  <hr class="hairline" />
 
   <!-- Projects -->
-  <section id="projects" class="home-section">
+  <section id="projects" class="docs-section">
     <h2 class="section-title">Projects</h2>
-    <ul class="proj-list">
-      {
-        projects.map((p) => (
-          <li class="card proj-card">
-            <div class="proj-head">
-              <strong>{p.title}</strong>
-              <span class="mono proj-period">{p.period}</span>
-            </div>
-            {p.subtitle && <p class="proj-subtitle">{p.subtitle}</p>}
-            <p class="proj-summary">{p.summary}</p>
-            <p class="proj-stack">
-              {p.stack.map((s) => (
-                <span class="tag">{s}</span>
-              ))}
-            </p>
-            <p class="proj-links">
-              {p.links.map((l) => (
-                <a href={l.url} target="_blank" rel="noopener noreferrer">
-                  {l.label}
-                </a>
-              ))}
-            </p>
-          </li>
-        ))
-      }
-    </ul>
+    {
+      projects.map((p) => (
+        <div class="paper">
+          <p class="title">
+            {p.title}
+            <b class="date-right">{p.period}</b>
+          </p>
+          {p.subtitle && <p class="muted small">{p.subtitle}</p>}
+          <p class="summary">{p.summary}</p>
+          <p class="stack small">{p.stack.join(' · ')}</p>
+          <div class="paper-buttons">
+            {p.links.map((l) => (
+              <a class="button" href={l.url} target="_blank" rel="noopener noreferrer">
+                {l.label}
+              </a>
+            ))}
+          </div>
+        </div>
+      ))
+    }
   </section>
-
-  <hr class="hairline" />
 
   <!-- Education -->
-  <section id="education" class="home-section">
+  <section id="education" class="docs-section">
     <h2 class="section-title">Education</h2>
-    <ul class="entry-list">
-      {
-        education.map((e) => (
-          <li>
-            <span class="mono entry-date">{e.period}</span>
-            <div>
-              <strong>{e.school}</strong>
-              {e.detail && <p class="entry-detail">{e.detail}</p>}
-            </div>
-          </li>
-        ))
-      }
-    </ul>
+    {
+      education.map((e) => (
+        <div class="paper">
+          <p class="title">{e.school}</p>
+          <p>
+            {e.detail || ' '}
+            <b class="date-right">{e.period}</b>
+          </p>
+        </div>
+      ))
+    }
   </section>
-
-  <hr class="hairline" />
 
   <!-- Experience -->
-  <section id="experience" class="home-section">
+  <section id="experience" class="docs-section">
     <h2 class="section-title">Experience</h2>
-    <ul class="entry-list">
-      {
-        experience.map((e) => (
-          <li>
-            <span class="mono entry-date">{e.period}</span>
-            <div>
-              <strong>{e.title}</strong>
-              {e.org && <span class="entry-org"> · {e.org}</span>}
-              {e.detail && <p class="entry-detail">{e.detail}</p>}
-            </div>
-          </li>
-        ))
-      }
-    </ul>
+    {
+      experience.map((e) => (
+        <div class="paper">
+          <p class="title">
+            {e.title}
+            <b class="date-right">{e.period}</b>
+          </p>
+          {e.org && <p class="muted">{e.org}</p>}
+          {e.detail && <p class="summary">{e.detail}</p>}
+        </div>
+      ))
+    }
   </section>
-
-  <hr class="hairline" />
 
   <!-- Honors & Awards -->
-  <section id="awards" class="home-section">
+  <section id="awards" class="docs-section">
     <h2 class="section-title">Honors &amp; Awards</h2>
-    <ul class="entry-list">
-      {
-        awards.map((a) => (
-          <li>
-            <span class="mono entry-date">{a.date}</span>
-            <div>
-              <strong>{a.title}</strong>
-              {a.org && <span class="entry-org"> · {a.org}</span>}
-            </div>
-          </li>
-        ))
-      }
-    </ul>
+    {
+      awards.map((a) => (
+        <div class="paper award">
+          <p>
+            <b>{a.title}</b>
+            {a.org && <span class="muted"> — {a.org}</span>}
+            <b class="date-right">{a.date}</b>
+          </p>
+        </div>
+      ))
+    }
   </section>
-
-  <hr class="hairline" />
 
   <!-- Skills -->
-  <section id="skills" class="home-section">
+  <section id="skills" class="docs-section">
     <h2 class="section-title">Skills</h2>
-    <ul class="skill-list">
-      {
-        skills.map((s) => (
-          <li>
-            <span class="mono skill-cat">{s.category}</span>
-            <span class="skill-items">{s.items.join(' · ')}</span>
-          </li>
-        ))
-      }
-    </ul>
+    {
+      skills.map((s) => (
+        <div class="paper skill">
+          <p>
+            <b class="skill-cat">{s.category}</b>
+            <span class="muted">{s.items.join(' · ')}</span>
+          </p>
+        </div>
+      ))
+    }
   </section>
-
-  <hr class="hairline" />
 
   <!-- Contact -->
-  <section id="contact" class="home-section">
+  <section id="contact" class="docs-section">
     <h2 class="section-title">Contact</h2>
-    <ul class="contact-list">
-      <li><span class="label mono">Email</span><a href={`mailto:${site.email}`}>{site.email}</a></li>
-      <li>
-        <span class="label mono">GitHub</span>
+    <div class="paper">
+      <p><b class="skill-cat">Email</b><a href={`mailto:${site.email}`}>{site.email}</a></p>
+      <p>
+        <b class="skill-cat">GitHub</b>
         <a href={site.github} target="_blank" rel="noopener noreferrer">github.com/{site.githubUsername}</a>
-      </li>
-      <li>
-        <span class="label mono">Blog</span>
+      </p>
+      <p>
+        <b class="skill-cat">Blog</b>
         <a href={site.blog} target="_blank" rel="noopener noreferrer">edu-data.tistory.com</a>
-      </li>
-    </ul>
+      </p>
+    </div>
   </section>
 
-  <hr class="hairline" />
-
-  <!-- History line — 맨 아래. Phase 3에서 카테고리 색 타임라인이 들어올 자리 -->
-  <section id="history" class="home-section">
+  <!-- History line — 맨 아래 (내비 미포함) -->
+  <section id="history" class="docs-section">
     <h2 class="section-title">History</h2>
     <div class="history-legend">
       {
@@ -192,195 +157,80 @@ import { education, experience, publications, projects, awards, skills } from '.
       }
     </div>
     <div class="card history-placeholder">
-      <p class="mono">🗓 History line — Phase 3에서 날짜별 활동이 카테고리 색으로 표시됩니다.</p>
-      <p class="sub">logs + papers가 자동 집계되고, 오버 시 그날 기록 미리보기 · 클릭 시 해당 기록으로 이동.</p>
+      <p>🗓 History line — 날짜별 활동이 카테고리 색으로 표시될 자리입니다 (Phase 3).</p>
     </div>
   </section>
 </BaseLayout>
 
 <style>
-  .home-section {
-    padding: 2.2rem 0;
+  /* 내비 바로 아래 첫 섹션은 상단 보더 제거 (vvsjeon과 동일) */
+  .first-section {
+    border-top: 0;
   }
 
-  /* --- Publications --- */
-  .pub-list {
-    margin-top: 1.1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+  .authors {
+    color: var(--text);
   }
-  .pub-item {
-    display: grid;
-    grid-template-columns: 2.6rem 1fr;
-    gap: 0.4rem;
-  }
-  .pub-tag {
+  .authors .me {
     color: var(--primary);
-    padding-top: 0.15rem;
+    font-weight: 600;
   }
-  .pub-title {
-    font-weight: 700;
-    line-height: 1.5;
-  }
-  .pub-authors {
+  .venue {
     color: var(--text-muted);
-    font-size: 0.9rem;
-    margin-top: 0.15rem;
   }
-  .pub-authors .me {
-    color: var(--primary);
-  }
-  .pub-venue {
-    color: var(--text-faint);
-    font-style: italic;
-    margin-top: 0.15rem;
-  }
-  .pub-note {
-    color: var(--primary);
-    font-style: normal;
-  }
-  .pub-summary {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    margin-top: 0.4rem;
-  }
-  .pub-links {
-    margin-top: 0.3rem;
+  .paper-buttons {
+    margin-top: 6px;
     display: flex;
-    gap: 0.9rem;
-    font-size: 0.875rem;
-  }
-
-  /* --- Projects --- */
-  .proj-list {
-    margin-top: 1.1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.9rem;
-  }
-  .proj-card {
-    padding: 1.1rem 1.3rem;
-  }
-  .proj-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 1rem;
+    gap: 0.5rem;
     flex-wrap: wrap;
   }
-  .proj-period {
-    color: var(--text-faint);
-    flex-shrink: 0;
+
+  .date-right {
+    float: right;
+    font-weight: 600;
+    color: var(--text);
+    margin-left: 1rem;
   }
-  .proj-subtitle {
-    color: var(--text-faint);
-    font-size: 0.8125rem;
-    margin-top: 0.15rem;
-  }
-  .proj-summary {
-    font-size: 0.9rem;
+  .muted {
     color: var(--text-muted);
-    margin-top: 0.5rem;
   }
-  .proj-stack {
-    margin-top: 0.6rem;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.35rem;
-  }
-  .proj-links {
-    margin-top: 0.55rem;
-    display: flex;
-    gap: 0.9rem;
+  .small {
     font-size: 0.875rem;
   }
-
-  /* --- Education / Experience / Awards 공통 --- */
-  .entry-list {
-    margin-top: 1.1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.9rem;
+  .summary {
+    color: var(--text-muted);
+    font-size: 0.9375rem;
+    margin-top: 2px;
   }
-  .entry-list li {
-    display: grid;
-    grid-template-columns: 11rem 1fr;
-    gap: 1rem;
-    align-items: baseline;
-  }
-  .entry-date {
+  .stack {
     color: var(--text-faint);
-  }
-  .entry-org {
-    color: var(--text-muted);
-    font-size: 0.9rem;
-  }
-  .entry-detail {
-    color: var(--text-muted);
-    font-size: 0.875rem;
-    margin-top: 0.2rem;
-  }
-  @media (max-width: 640px) {
-    .entry-list li {
-      grid-template-columns: 1fr;
-      gap: 0.15rem;
-    }
+    margin-top: 2px;
   }
 
-  /* --- Skills --- */
-  .skill-list {
-    margin-top: 1.1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.55rem;
+  .award p,
+  .skill p {
+    overflow: hidden; /* float date 포함 */
   }
-  .skill-list li {
-    display: grid;
-    grid-template-columns: 11rem 1fr;
-    gap: 1rem;
-    align-items: baseline;
+  .award {
+    margin-bottom: 0.7rem;
+  }
+  .skill {
+    margin-bottom: 0.45rem;
   }
   .skill-cat {
-    color: var(--primary);
-  }
-  .skill-items {
-    color: var(--text-muted);
-    font-size: 0.9rem;
-  }
-  @media (max-width: 640px) {
-    .skill-list li {
-      grid-template-columns: 1fr;
-      gap: 0.1rem;
-    }
+    display: inline-block;
+    min-width: 9.5rem;
+    font-weight: 600;
   }
 
-  /* --- Contact --- */
-  .contact-list {
-    margin-top: 1.1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.45rem;
-  }
-  .contact-list li {
-    display: flex;
-    align-items: baseline;
-    gap: 1rem;
-  }
-  .contact-list .label {
-    color: var(--text-faint);
-    width: 4.5rem;
-    flex-shrink: 0;
-  }
-
-  /* --- History line (맨 아래) --- */
+  /* History */
   .history-legend {
-    margin-top: 1rem;
     display: flex;
     flex-wrap: wrap;
     gap: 0.4rem 1.1rem;
-    font-size: 0.8125rem;
+    font-size: 0.875rem;
     color: var(--text-muted);
+    margin-bottom: 1rem;
   }
   .legend-item {
     display: inline-flex;
@@ -394,12 +244,21 @@ import { education, experience, publications, projects, awards, skills } from '.
     display: inline-block;
   }
   .history-placeholder {
-    margin-top: 0.9rem;
     padding: 1.1rem 1.3rem;
-  }
-  .history-placeholder .sub {
     color: var(--text-muted);
-    font-size: 0.875rem;
-    margin-top: 0.35rem;
+    font-size: 0.9375rem;
+  }
+
+  @media (max-width: 640px) {
+    .date-right {
+      float: none;
+      display: block;
+      margin-left: 0;
+      font-size: 0.875rem;
+    }
+    .skill-cat {
+      display: block;
+      min-width: 0;
+    }
   }
 </style>

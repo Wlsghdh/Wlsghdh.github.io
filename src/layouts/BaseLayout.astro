@@ -10,7 +10,7 @@ interface Props {
 }
 
 const { title, description = site.description } = Astro.props;
-const pageTitle = title ? `${title} · ${site.authorKo}` : `${site.authorKo} — ${site.title}`;
+const pageTitle = title ? `${title} · ${site.authorKo}` : `${site.authorKo} ${site.authorEn}`;
 ---
 
 <!doctype html>
@@ -24,24 +24,63 @@ const pageTitle = title ? `${title} · ${site.authorKo}` : `${site.authorKo} —
     <title>{pageTitle}</title>
   </head>
   <body>
+    <!-- 홈에서는 프로필 헤더가 내비 위에 온다 (vvsjeon 구조) -->
+    <div class="container">
+      <slot name="before-nav" />
+    </div>
     <TopNav />
-    <main class="content">
+    <main class="container">
       <slot />
     </main>
+    <footer class="footer">
+      <div class="container footer-inner">
+        <span>{site.authorKo} · {site.authorEn}</span>
+        <span>
+          <a href={site.github} target="_blank" rel="noopener noreferrer">GitHub</a>
+          <a href={site.blog} target="_blank" rel="noopener noreferrer">Blog</a>
+          <a href={`mailto:${site.email}`}>Email</a>
+        </span>
+      </div>
+    </footer>
   </body>
 </html>
 
 <style>
-  /* 단일 컬럼 — 읽기폭 720px, 노션풍 */
-  .content {
+  /* vvsjeon 중앙 정렬 컨테이너 */
+  .container {
     max-width: var(--content-width);
     margin: 0 auto;
-    padding: 0 1.5rem 5rem;
+    padding: 0 2rem;
+  }
+
+  .footer {
+    border-top: 1px solid var(--hairline);
+    margin-top: 4rem;
+    padding: 1.4rem 0 3.4rem;
+    color: var(--text-faint);
+    font-size: 0.875rem;
+  }
+  .footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .footer a {
+    color: var(--text-faint);
+    margin-left: 0.9rem;
+  }
+  .footer a:first-child {
+    margin-left: 0;
+  }
+  .footer a:hover {
+    color: var(--primary);
   }
 
   @media (max-width: 640px) {
-    .content {
-      padding: 0 1rem 3.5rem;
+    .container {
+      padding: 0 1.5rem;
     }
   }
 </style>

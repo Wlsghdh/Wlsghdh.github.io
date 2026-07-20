@@ -1,23 +1,24 @@
 /* ============================================
-   디자인 토큰 — 거의 흑백 + CAU Blue 텍스트 포인트
+   디자인 토큰 — vvsjeon.github.io 미니멀 + CAU Blue 포인트
    ============================================ */
 :root {
   /* 배경/보더 */
   --bg: #ffffff;
   --surface: #f7f9fc;
   --border: #e6eaf0;
-  --hairline: #edf1f6;
+  --hairline: #eeeeee; /* vvsjeon 섹션 구분선 */
 
   /* 텍스트 */
-  --text: #141a24;
+  --text: #222222; /* vvsjeon 본문색 */
   --text-muted: #5b6577;
   --text-faint: #8a93a3;
+  --icon: #646464; /* 헤더 아이콘 회색 */
 
-  /* 포인트 — CAU Blue로만: 이름·직함·링크·태그·잔디·활성 메뉴·논문 속 "내 이름" 볼드 */
+  /* 포인트 — CAU Blue (vvsjeon의 #2e9ae4/#33C3F0 자리) */
   --primary: #004c97;
   --primary-hover: #003a75;
   --accent: #4a90d9;
-  --accent-soft: #eaf2fb; /* 카드 hover 배경 */
+  --accent-soft: #eaf2fb;
 
   /* 잔디 5단계 */
   --grass-0: #ebedf0;
@@ -36,21 +37,18 @@
   --cat-writing: #7c3aed; /* 논문작성 */
   --cat-seminar: #db2777; /* 세미나 */
 
-  /* 타이포 */
-  --font-display: 'BMHANNAAir', 'Pretendard', sans-serif; /* 이름·로고 only */
-  --font-body: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui,
+  /* 타이포 — Raleway(라틴) + Pretendard(한글 폴백) */
+  --font-body: 'Raleway', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui,
     'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace; /* 날짜·태그·수치·venue */
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 
-  --fs-name: 2rem;
-  --fs-h2: 1.4rem;
-  --fs-h3: 1.1rem;
-  --fs-body: 1rem;
-  --lh-body: 1.75;
+  --fs-name: 3.4rem; /* 헤더 이름 (light) */
+  --fs-h2: 1.5rem; /* 섹션 헤더 */
+  --fs-body: 15px;
+  --lh-body: 1.6;
 
-  /* 레이아웃 */
-  --content-width: 720px;
-  --sidebar-width: 300px;
+  /* 레이아웃 — vvsjeon 중앙 정렬 컨테이너 */
+  --content-width: 800px;
 
   /* 모션 */
   --transition: 180ms ease;

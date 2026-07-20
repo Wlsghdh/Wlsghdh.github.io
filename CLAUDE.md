@@ -10,10 +10,14 @@
 
 ## 디자인 결정 사항 (사양서와 다른 확정 변경)
 
-- 좌측 사이드바 ❌ → **상단 sticky 내비바** + 홈 상단 프로필 헤더.
+- **vvsjeon.github.io 디자인을 거의 그대로 복제, 색만 CAU Blue** (2026-07-20 확정).
+  - 중앙 정렬 컨테이너 800px (사이드바 ❌). 홈 구조: 프로필 헤더(사진 좌 + 이름/직함/링크 우) → sticky 내비바(대문자 11px, letter-spacing) → 섹션 흐름 → 푸터.
+  - 폰트: **Raleway 300/400/600**(vvsjeon과 동일) + 한글 폴백 Pretendard. 이름은 Raleway/Pretendard light(300). 한나체 Air는 폐기.
+  - 섹션 = `.docs-section`(상단 헤어라인 + 4rem 패딩), 헤더는 light + letter-spacing. 링크 버튼은 Skeleton식 소형 아웃라인 `.button`.
+  - Publications 홈 목록엔 summary 없음(제목·저자·venue·버튼만) — "구조는 살짝 더 심플하게".
 - About 섹션 없음. 활동(잔디)은 내비에 넣지 않고 **홈 맨 아래 "History" 섹션**에 history line으로 배치.
 - 활동 카테고리 색 레이블: 논문리딩·코드작업·기업과제·논문작성·세미나 (`src/data/site.ts`의 `activityCategories`, 색 토큰은 `tokens.css`의 `--cat-*`).
-- 포인트 컬러는 CAU Blue(#004C97), 이름/로고만 한나체 Air, 본문 Pretendard, 날짜·태그·venue는 JetBrains Mono.
+- 포인트 컬러는 CAU Blue(#004C97) — 링크·활성 내비·논문 저자 중 "주진호" 볼드.
 
 ## 데이터 위치
 
