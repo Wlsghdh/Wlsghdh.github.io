@@ -45,10 +45,10 @@ export const experience = [
     detail: '',
   },
   {
-    period: '2026.02 ~ 현재',
+    period: '2026.02 ~ 2026.06',
     title: '학부생 조교 — DSML Vibe Coding',
     org: '수원대학교 DSML',
-    detail: '학부생 대상 멘토링을 수행하고 있습니다.',
+    detail: '학부생 대상 멘토링을 수행했습니다.',
   },
   {
     period: '2025.09 ~ 2025.12',
@@ -57,7 +57,7 @@ export const experience = [
     detail: '홈페이지 관리, 기사 작성, AutoCAD 3D 작업을 수행했습니다.',
   },
   {
-    period: '2025.07 ~ 현재',
+    period: '2025.07 ~ 2026.06',
     title: '학부연구생',
     org: '수원대학교 안홍렬 교수 연구실',
     detail:
@@ -116,8 +116,8 @@ export const publications: Publication[] = [
 export const projects: Project[] = [
   {
     title: 'CarNeRF — AI 기반 중고차 딜러 플랫폼',
-    period: '2025.12 ~ 현재',
-    subtitle: '개인/팀 프로젝트 · 진행 중인 공모전',
+    period: '2025.12 ~ 2026.07',
+    subtitle: '개인/팀 프로젝트 · 공모전',
     summary:
       '판매자의 1분 영상이 FastGS 기반 3D 복원 → YOLOv8 결함 탐지 → LightGBM 가격 예측 → LLM 자연어 검색으로 이어지는 자동화 파이프라인. Vanilla 3DGS 기준 PSNR 31.88, FastGS 이식 후 약 15배 속도 향상.',
     stack: ['FastGS', 'COLMAP', 'SAM', 'YOLOv8', 'LightGBM', 'FastAPI', 'RAG', 'React Native'],
