@@ -26,6 +26,11 @@ export interface Project {
 
 export const education = [
   {
+    period: '2026.07.13 ~ 현재',
+    school: '중앙대학교',
+    detail: '학부 연구 인턴',
+  },
+  {
     period: '2021.03 ~ 2027.02 (졸업 예정)',
     school: '수원대학교',
     detail: '데이터과학부 학사과정 · GPA 4.33 / 4.5',
@@ -38,12 +43,6 @@ export const education = [
 ];
 
 export const experience = [
-  {
-    period: '2026.07.13 ~ 현재',
-    title: '중앙대학교 학부 연구 인턴',
-    org: '중앙대학교',
-    detail: '',
-  },
   {
     period: '2026.02 ~ 2026.06',
     title: '학부생 조교 — DSML Vibe Coding',

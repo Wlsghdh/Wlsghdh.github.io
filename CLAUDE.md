@@ -11,7 +11,8 @@
 ## 디자인 결정 사항 (사양서와 다른 확정 변경)
 
 - **vvsjeon.github.io 디자인을 거의 그대로 복제, 색만 CAU Blue** (2026-07-20 확정).
-  - 중앙 정렬 컨테이너 800px (사이드바 ❌). 홈 구조: 프로필 헤더(사진 좌 + 이름/직함/링크 우) → sticky 내비바(대문자 11px, letter-spacing) → 섹션 흐름 → 푸터.
+  - 중앙 정렬 컨테이너 800px (사이드바 ❌). 홈 구조: 프로필 헤더(사진 좌 + 이름/태그라인/이메일/아이콘 우) → sticky 내비바(대문자 11px, letter-spacing) → 섹션 흐름 → 푸터.
+  - **헤더에 직함·소속(중앙대 학부 연구 인턴) 노출 안 함** (2026-07-21, "너무 어필하는 것 같다"는 피드백) — 대신 Education 섹션 맨 위에 항목으로만 표시. Experience 목록에도 중복 넣지 않음.
   - 폰트: **Raleway 300/400/600**(vvsjeon과 동일) + 한글 폴백 Pretendard. 이름은 Raleway/Pretendard light(300). 한나체 Air는 폐기.
   - 섹션 = `.docs-section`(상단 헤어라인 + 4rem 패딩), 헤더는 light + letter-spacing. 링크 버튼은 Skeleton식 소형 아웃라인 `.button`.
   - Publications 홈 목록엔 summary 없음(제목·저자·venue·버튼만) — "구조는 살짝 더 심플하게".
