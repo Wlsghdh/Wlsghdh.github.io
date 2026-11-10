@@ -1,56 +1,61 @@
 /* ============================================
-   디자인 토큰 — vvsjeon.github.io 미니멀 + CAU Blue 포인트
+   디자인 토큰 — 얇은 선, 정갈한 활자 (CVPR 논문 톤)
+   색은 본문 / 보조 / 액센트 3개 + 선 + 카테고리 5색(채도 낮게)
    ============================================ */
 :root {
-  /* 배경/보더 */
   --bg: #ffffff;
-  --surface: #f7f9fc;
-  --border: #e6eaf0;
-  --hairline: #eeeeee; /* vvsjeon 섹션 구분선 */
+  --text: #1a1a1a;
+  --text-muted: #6b7280;
+  --accent: #1f4f8f;
+  --line: #e7e7e7;
+  --cell-empty: #efefef;
 
-  /* 텍스트 */
-  --text: #222222; /* vvsjeon 본문색 */
-  --text-muted: #5b6577;
-  --text-faint: #8a93a3;
-  --icon: #646464; /* 헤더 아이콘 회색 */
+  --cat-reading: #5a7598;
+  --cat-coding: #5f8a73;
+  --cat-industry: #a5824f;
+  --cat-writing: #86709a;
+  --cat-seminar: #ad6d70;
 
-  /* 포인트 — CAU Blue (vvsjeon의 #2e9ae4/#33C3F0 자리) */
-  --primary: #004c97;
-  --primary-hover: #003a75;
-  --accent: #4a90d9;
-  --accent-soft: #eaf2fb;
+  --font-body: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
+    'Noto Sans KR', system-ui, sans-serif;
 
-  /* 잔디 5단계 */
-  --grass-0: #ebedf0;
-  --grass-1: #c7dbf2;
-  --grass-2: #7fb0e6;
-  --grass-3: #3d80cc;
-  --grass-4: #004c97;
-
-  /* 비공개(locked) */
-  --lock: #9aa5b4;
-
-  /* History line 활동 카테고리 색 레이블 */
-  --cat-reading: #004c97; /* 논문리딩 */
-  --cat-coding: #0f9d58; /* 코드작업 */
-  --cat-industry: #d97706; /* 기업과제 */
-  --cat-writing: #7c3aed; /* 논문작성 */
-  --cat-seminar: #db2777; /* 세미나 */
-
-  /* 타이포 — Raleway(라틴) + Pretendard(한글 폴백) */
-  --font-body: 'Raleway', 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui,
-    'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-
-  --fs-name: 3.4rem; /* 헤더 이름 (light) */
-  --fs-h2: 1.5rem; /* 섹션 헤더 */
   --fs-body: 15px;
-  --lh-body: 1.6;
+  --fs-small: 13px;
+  --fs-tiny: 12px;
+  --lh-body: 1.65;
+  --content-width: 740px;
+  --gutter: 24px;
+}
 
-  /* 레이아웃 — vvsjeon 중앙 정렬 컨테이너 */
-  --content-width: 800px;
+/* 다크 — 시스템 설정 (수동 라이트 선택 시 제외) */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --bg: #111213;
+    --text: #e6e6e6;
+    --text-muted: #9aa0a8;
+    --accent: #8fb3e6;
+    --line: #2a2c2f;
+    --cell-empty: #222427;
 
-  /* 모션 */
-  --transition: 180ms ease;
-  --radius-card: 10px;
+    --cat-reading: #7f9bbf;
+    --cat-coding: #84ad96;
+    --cat-industry: #c4a274;
+    --cat-writing: #a893bb;
+    --cat-seminar: #c98f92;
+  }
+}
+/* 다크 — 수동 토글 */
+:root[data-theme='dark'] {
+  --bg: #111213;
+  --text: #e6e6e6;
+  --text-muted: #9aa0a8;
+  --accent: #8fb3e6;
+  --line: #2a2c2f;
+  --cell-empty: #222427;
+
+  --cat-reading: #7f9bbf;
+  --cat-coding: #84ad96;
+  --cat-industry: #c4a274;
+  --cat-writing: #a893bb;
+  --cat-seminar: #c98f92;
 }

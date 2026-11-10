@@ -1,264 +1,101 @@
 ---
+/**
+ * 홈 — 섹션 순서만 정한다. 내용은 src/data/profile.json, src/data/log.json.
+ */
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ProfileHeader from '../components/ProfileHeader.astro';
-import { site, activityCategories } from '../data/site';
-import { education, experience, publications, projects, awards, skills } from '../data/cv';
+import Header from '../components/Header.astro';
+import Section from '../components/Section.astro';
+import DatedList from '../components/DatedList.astro';
+import ResearchLog from '../components/ResearchLog.astro';
+import Publications from '../components/Publications.astro';
+import Projects from '../components/Projects.astro';
+import { profile } from '../lib/data';
+
+const p = profile.person;
+const news = profile.news.slice(0, 8).map((n: { date: string; text: string; link?: string }) => ({
+  date: n.date,
+  title: n.text,
+  href: n.link,
+}));
+const experience = profile.experience.map((e) => ({ date: e.period, title: e.title, sub: e.org, detail: e.detail }));
+const education = profile.education.map((e) => ({ date: e.period, title: e.school, detail: e.detail }));
+const awards = profile.awards.map((a) => ({ date: a.date, title: a.title, sub: a.org, href: a.image || undefined }));
+const certificates = profile.certificates.map((c) => ({
+  date: c.date,
+  title: c.title,
+  sub: c.org,
+  href: c.image || undefined,
+}));
 ---
 
 <BaseLayout>
-  <ProfileHeader slot="before-nav" />
+  <Header />
 
-  <!-- Publications -->
-  <section id="publications" class="docs-section first-section">
-    <h2 class="section-title">Publications</h2>
-    {
-      publications.map((pub) => (
-        <div class="paper">
-          <p class="title">[{pub.tag}] {pub.title}</p>
-          <p class="authors">
-            {pub.authors.map((a, i) => (
-              <>
-                {i > 0 && ', '}
-                {a === site.authorKo ? <b class="me">{a}</b> : a}
-              </>
-            ))}
-          </p>
-          <p class="venue">
-            <i>{pub.venue}</i>
-          </p>
-          <div class="paper-buttons">
-            {pub.links.map((l) => (
-              <a class="button" href={l.url} target="_blank" rel="noopener noreferrer">
-                {l.label}
-              </a>
-            ))}
-          </div>
-        </div>
-      ))
-    }
-  </section>
+  <Section id="news" title="News">
+    <DatedList items={news} empty="소식이 아직 없습니다." />
+  </Section>
 
-  <!-- Projects -->
-  <section id="projects" class="docs-section">
-    <h2 class="section-title">Projects</h2>
-    {
-      projects.map((p) => (
-        <div class="paper">
-          <p class="title">
-            {p.title}
-            <b class="date-right">{p.period}</b>
-          </p>
-          {p.subtitle && <p class="muted small">{p.subtitle}</p>}
-          <p class="summary">{p.summary}</p>
-          <p class="stack small">{p.stack.join(' · ')}</p>
-          <div class="paper-buttons">
-            {p.links.map((l) => (
-              <a class="button" href={l.url} target="_blank" rel="noopener noreferrer">
-                {l.label}
-              </a>
-            ))}
-          </div>
-        </div>
-      ))
-    }
-  </section>
+  <Section id="log" title="Research Log">
+    <ResearchLog />
+  </Section>
 
-  <!-- Education -->
-  <section id="education" class="docs-section">
-    <h2 class="section-title">Education</h2>
-    {
-      education.map((e) => (
-        <div class="paper">
-          <p class="title">{e.school}</p>
-          <p>
-            {e.detail || ' '}
-            <b class="date-right">{e.period}</b>
-          </p>
-        </div>
-      ))
-    }
-  </section>
+  <Section id="publications" title="Publications">
+    <Publications />
+  </Section>
 
-  <!-- Experience -->
-  <section id="experience" class="docs-section">
-    <h2 class="section-title">Experience</h2>
-    {
-      experience.map((e) => (
-        <div class="paper">
-          <p class="title">
-            {e.title}
-            <b class="date-right">{e.period}</b>
-          </p>
-          {e.org && <p class="muted">{e.org}</p>}
-          {e.detail && <p class="summary">{e.detail}</p>}
-        </div>
-      ))
-    }
-  </section>
+  <Section id="projects" title="Projects">
+    <Projects />
+  </Section>
 
-  <!-- Honors & Awards -->
-  <section id="awards" class="docs-section">
-    <h2 class="section-title">Honors &amp; Awards</h2>
-    {
-      awards.map((a) => (
-        <div class="paper award">
-          <p>
-            <b>{a.title}</b>
-            {a.org && <span class="muted"> — {a.org}</span>}
-            <b class="date-right">{a.date}</b>
-          </p>
-        </div>
-      ))
-    }
-  </section>
+  <Section id="experience" title="Experience">
+    <DatedList items={experience} />
+  </Section>
 
-  <!-- Skills -->
-  <section id="skills" class="docs-section">
-    <h2 class="section-title">Skills</h2>
-    {
-      skills.map((s) => (
-        <div class="paper skill">
-          <p>
-            <b class="skill-cat">{s.category}</b>
-            <span class="muted">{s.items.join(' · ')}</span>
-          </p>
-        </div>
-      ))
-    }
-  </section>
+  <Section id="education" title="Education">
+    <DatedList items={education} />
+  </Section>
 
-  <!-- Contact -->
-  <section id="contact" class="docs-section">
-    <h2 class="section-title">Contact</h2>
-    <div class="paper">
-      <p><b class="skill-cat">Email</b><a href={`mailto:${site.email}`}>{site.email}</a></p>
-      <p>
-        <b class="skill-cat">GitHub</b>
-        <a href={site.github} target="_blank" rel="noopener noreferrer">github.com/{site.githubUsername}</a>
-      </p>
-      <p>
-        <b class="skill-cat">Blog</b>
-        <a href={site.blog} target="_blank" rel="noopener noreferrer">edu-data.tistory.com</a>
-      </p>
-    </div>
-  </section>
-
-  <!-- History line — 맨 아래 (내비 미포함) -->
-  <section id="history" class="docs-section">
-    <h2 class="section-title">History</h2>
-    <div class="history-legend">
+  <Section id="skills" title="Skills">
+    <div class="rows">
       {
-        activityCategories.map((c) => (
-          <span class="legend-item">
-            <span class="legend-dot" style={`background:${c.color}`}></span>
-            {c.label}
-          </span>
+        profile.skills.map((s) => (
+          <div class="row">
+            <span class="row-date">{s.category}</span>
+            <span class="small">{s.items.join(' · ')}</span>
+          </div>
         ))
       }
     </div>
-    <div class="card history-placeholder">
-      <p>🗓 History line — 날짜별 활동이 카테고리 색으로 표시될 자리입니다 (Phase 3).</p>
+  </Section>
+
+  <Section id="awards" title="Honors & Awards">
+    <DatedList items={awards} />
+    <h3 class="sub-title">Certificates</h3>
+    <DatedList items={certificates} />
+  </Section>
+
+  <Section id="contact" title="Contact">
+    <div class="rows">
+      <div class="row"><span class="row-date">Email</span><a href={`mailto:${p.email}`}>{p.email}</a></div>
+      <div class="row">
+        <span class="row-date">GitHub</span>
+        <a href={`https://github.com/${p.githubUsername}`} target="_blank" rel="noopener noreferrer"
+          >github.com/{p.githubUsername}</a
+        >
+      </div>
+      <div class="row">
+        <span class="row-date">Blog</span>
+        <a href={p.blog} target="_blank" rel="noopener noreferrer">{p.blog.replace(/^https?:\/\//, '')}</a>
+      </div>
     </div>
-  </section>
+  </Section>
 </BaseLayout>
 
 <style>
-  /* 내비 바로 아래 첫 섹션은 상단 보더 제거 (vvsjeon과 동일) */
-  .first-section {
-    border-top: 0;
-  }
-
-  .authors {
-    color: var(--text);
-  }
-  .authors .me {
-    color: var(--primary);
-    font-weight: 600;
-  }
-  .venue {
+  .sub-title {
+    font-size: var(--fs-small);
+    font-weight: 500;
     color: var(--text-muted);
-  }
-  .paper-buttons {
-    margin-top: 6px;
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-  }
-
-  .date-right {
-    float: right;
-    font-weight: 600;
-    color: var(--text);
-    margin-left: 1rem;
-  }
-  .muted {
-    color: var(--text-muted);
-  }
-  .small {
-    font-size: 0.875rem;
-  }
-  .summary {
-    color: var(--text-muted);
-    font-size: 0.9375rem;
-    margin-top: 2px;
-  }
-  .stack {
-    color: var(--text-faint);
-    margin-top: 2px;
-  }
-
-  .award p,
-  .skill p {
-    overflow: hidden; /* float date 포함 */
-  }
-  .award {
-    margin-bottom: 0.7rem;
-  }
-  .skill {
-    margin-bottom: 0.45rem;
-  }
-  .skill-cat {
-    display: inline-block;
-    min-width: 9.5rem;
-    font-weight: 600;
-  }
-
-  /* History */
-  .history-legend {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem 1.1rem;
-    font-size: 0.875rem;
-    color: var(--text-muted);
-    margin-bottom: 1rem;
-  }
-  .legend-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-  }
-  .legend-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 3px;
-    display: inline-block;
-  }
-  .history-placeholder {
-    padding: 1.1rem 1.3rem;
-    color: var(--text-muted);
-    font-size: 0.9375rem;
-  }
-
-  @media (max-width: 640px) {
-    .date-right {
-      float: none;
-      display: block;
-      margin-left: 0;
-      font-size: 0.875rem;
-    }
-    .skill-cat {
-      display: block;
-      min-width: 0;
-    }
+    margin: 1.6rem 0 0.6rem;
   }
 </style>

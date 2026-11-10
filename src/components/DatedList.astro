@@ -1,0 +1,54 @@
+---
+/**
+ * 날짜(좌) + 내용(우) 목록 — News, Experience, Education, Awards, Certificates 공용.
+ * image 가 있으면 제목이 그 이미지(또는 PDF)로 연결된다.
+ */
+interface Item {
+  date: string;
+  title: string;
+  sub?: string;
+  detail?: string;
+  href?: string;
+}
+interface Props {
+  items: Item[];
+  empty?: string;
+}
+const { items, empty = '아직 항목이 없습니다.' } = Astro.props;
+---
+
+{
+  items.length === 0 ? (
+    <p class="muted small">{empty}</p>
+  ) : (
+    <div class="rows">
+      {items.map((it) => (
+        <div class="row">
+          <span class="row-date">{it.date}</span>
+          <div>
+            <span class="t">
+              {it.href ? (
+                <a href={it.href} target="_blank" rel="noopener noreferrer">
+                  {it.title}
+                </a>
+              ) : (
+                it.title
+              )}
+            </span>
+            {it.sub && <span class="muted small sub">{it.sub}</span>}
+            {it.detail && <p class="muted small detail">{it.detail}</p>}
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
+
+<style>
+  .sub {
+    margin-left: 0.5rem;
+  }
+  .detail {
+    margin-top: 0.1rem;
+  }
+</style>

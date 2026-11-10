@@ -1,16 +1,15 @@
 ---
 import '../styles/global.css';
-import TopNav from '../components/TopNav.astro';
-import { site } from '../data/site';
+import { profile, todayKST } from '../lib/data';
 
 interface Props {
-  /** 페이지 <title>. 생략 시 사이트 기본 제목 */
   title?: string;
   description?: string;
 }
 
-const { title, description = site.description } = Astro.props;
-const pageTitle = title ? `${title} · ${site.authorKo}` : `${site.authorKo} ${site.authorEn}`;
+const p = profile.person;
+const { title, description = profile.site.description } = Astro.props;
+const pageTitle = title ? `${title} · ${p.nameKo}` : `${p.nameKo} ${p.nameEn}`;
 ---
 
 <!doctype html>
@@ -20,67 +19,42 @@ const pageTitle = title ? `${title} · ${site.authorKo}` : `${site.authorKo} ${s
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
+    <meta name="color-scheme" content="light dark" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <title>{pageTitle}</title>
+    <script is:inline>
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
   </head>
   <body>
-    <!-- 홈에서는 프로필 헤더가 내비 위에 온다 (vvsjeon 구조) -->
-    <div class="container">
-      <slot name="before-nav" />
-    </div>
-    <TopNav />
     <main class="container">
       <slot />
     </main>
-    <footer class="footer">
-      <div class="container footer-inner">
-        <span>{site.authorKo} · {site.authorEn}</span>
-        <span>
-          <a href={site.github} target="_blank" rel="noopener noreferrer">GitHub</a>
-          <a href={site.blog} target="_blank" rel="noopener noreferrer">Blog</a>
-          <a href={`mailto:${site.email}`}>Email</a>
-        </span>
-      </div>
+    <footer class="container footer">
+      <span>© {p.nameKo} · {p.nameEn}</span>
+      <span>Last updated {todayKST()}</span>
     </footer>
   </body>
 </html>
 
 <style>
-  /* vvsjeon 중앙 정렬 컨테이너 */
-  .container {
-    max-width: var(--content-width);
-    margin: 0 auto;
-    padding: 0 2rem;
-  }
-
   .footer {
-    border-top: 1px solid var(--hairline);
-    margin-top: 4rem;
-    padding: 1.4rem 0 3.4rem;
-    color: var(--text-faint);
-    font-size: 0.875rem;
-  }
-  .footer-inner {
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
-    gap: 1rem;
     flex-wrap: wrap;
+    gap: 0.5rem 1rem;
+    color: var(--text-muted);
+    font-size: var(--fs-tiny);
+    padding-top: 1.25rem;
+    padding-bottom: 3rem;
   }
-  .footer a {
-    color: var(--text-faint);
-    margin-left: 0.9rem;
-  }
-  .footer a:first-child {
-    margin-left: 0;
-  }
-  .footer a:hover {
-    color: var(--primary);
-  }
-
-  @media (max-width: 640px) {
-    .container {
-      padding: 0 1.5rem;
-    }
+  .footer::before {
+    content: '';
+    flex-basis: 100%;
+    border-top: 1px solid var(--line);
+    margin-bottom: 0.75rem;
   }
 </style>

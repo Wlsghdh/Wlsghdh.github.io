@@ -1,0 +1,322 @@
+---
+/**
+ * Research Log — src/data/log.json 만 읽는다.
+ * (a) 최근 12개월 히트맵  (b) 날짜 역순 리스트(하루 = 한 덩어리)
+ * (c) 카테고리 필터 — CSS만 (라디오 + :checked)  (d) 최근 20개 + 더 보기 — CSS만 (체크박스)
+ */
+import { log, todayKST, type LogEntry } from '../lib/data';
+import { categories, categoryById, type CategoryId } from '../data/categories';
+
+const LIMIT = 20;
+const DAY = 86400000;
+const WD = ['일', '월', '화', '수', '목', '금', '토'];
+const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const iso = (d: Date) => d.toISOString().slice(0, 10);
+const asDate = (s: string) => new Date(s + 'T00:00:00Z');
+
+/* ---------- (a) 히트맵 ---------- */
+const end = asDate(todayKST());
+const start = new Date(end.getTime() - 364 * DAY);
+start.setTime(start.getTime() - start.getUTCDay() * DAY); // 일요일부터
+
+const perDay = new Map<string, LogEntry[]>();
+for (const e of log) perDay.set(e.date, [...(perDay.get(e.date) ?? []), e]);
+
+type Cell = { date: string; col: number; row: number; color?: string; level: number; tip: string };
+const cells: Cell[] = [];
+const months: { col: number; label: string }[] = [];
+let inRange = 0;
+for (let t = start.getTime(), i = 0; t <= end.getTime(); t += DAY, i++) {
+  const d = new Date(t);
+  const date = iso(d);
+  const col = Math.floor(i / 7) + 1;
+  const entries = perDay.get(date) ?? [];
+  inRange += entries.length;
+  if (d.getUTCDate() === 1 && col > 1) months.push({ col, label: MON[d.getUTCMonth()] });
+  let color: string | undefined;
+  let tip = date;
+  if (entries.length) {
+    const counts = categories.map((c) => ({ c, n: entries.filter((e) => e.category === c.id).length }));
+    const top = counts.reduce((a, b) => (b.n > a.n ? b : a));
+    color = top.c.color;
+    tip += ' · ' + counts.filter((x) => x.n).map((x) => `${x.c.label} ${x.n}`).join(', ');
+  }
+  cells.push({ date, col, row: d.getUTCDay() + 1, color, level: Math.min(entries.length, 3), tip });
+}
+const weeks = cells[cells.length - 1].col;
+const activeDays = cells.filter((c) => c.level > 0).length;
+
+/* ---------- (b) 리스트: 날짜별 묶음 ---------- */
+const days: { date: string; label: string; items: { e: LogEntry; idx: number }[] }[] = [];
+log.forEach((e, idx) => {
+  const last = days[days.length - 1];
+  if (last && last.date === e.date) last.items.push({ e, idx });
+  else {
+    const d = asDate(e.date);
+    days.push({ date: e.date, label: `${e.date.replaceAll('-', '.')} (${WD[d.getUTCDay()]})`, items: [{ e, idx }] });
+  }
+});
+const countOf = (id: CategoryId) => log.filter((e) => e.category === id).length;
+
+/* ---------- (c)(d) CSS 전용 필터 규칙 ---------- */
+const filterCss = categories
+  .map(
+    (c) => `
+#lf-${c.id}:checked ~ .log-list .entry:not([data-cat="${c.id}"]),
+#lf-${c.id}:checked ~ .log-list .day:not(:has(.entry[data-cat="${c.id}"])) { display: none; }
+#lf-${c.id}:checked ~ .filters label[for="lf-${c.id}"] { color: var(--text); border-bottom-color: ${c.color}; }
+#lf-${c.id}:focus-visible ~ .filters label[for="lf-${c.id}"] { outline: 1px solid var(--accent); }`,
+  )
+  .join('\n');
+---
+
+<div class="rlog">
+  <input class="visually-hidden lf" type="radio" name="log-filter" id="lf-all" checked />
+  {categories.map((c) => <input class="visually-hidden lf" type="radio" name="log-filter" id={`lf-${c.id}`} />)}
+  <input class="visually-hidden" type="checkbox" id="log-more" />
+
+  <div class="heatmap-wrap" aria-label={`최근 12개월 활동: ${inRange}개 기록, ${activeDays}일`}>
+    <div class="heatmap" style={`--weeks:${weeks}`}>
+      {months.map((m) => <span class="month" style={`grid-column:${m.col} / span 4`}>{m.label}</span>)}
+      {
+        cells.map((c) => (
+          <span
+            class={`cell l${c.level}`}
+            style={`grid-column:${c.col};grid-row:${c.row + 1}${c.color ? `;--c:${c.color}` : ''}`}
+            title={c.tip}
+          />
+        ))
+      }
+    </div>
+  </div>
+  <p class="stats">최근 12개월 · {inRange}개 기록 · {activeDays}일</p>
+
+  <div class="filters" role="group" aria-label="카테고리 필터">
+    <label for="lf-all">전체 <span class="n">{log.length}</span></label>
+    {
+      categories.map((c) => (
+        <label for={`lf-${c.id}`}>
+          <span class="dot" style={`background:${c.color}`} />
+          {c.label} <span class="n">{countOf(c.id)}</span>
+        </label>
+      ))
+    }
+  </div>
+
+  {
+    log.length === 0 ? (
+      <p class="empty">아직 기록이 없습니다. 첫 기록이 추가되면 여기에 날짜별로 쌓입니다.</p>
+    ) : (
+      <ol class="log-list">
+        {days.map((d) => (
+          <li class:list={['day', 'row', { extra: d.items.every((x) => x.idx >= LIMIT) }]}>
+            <time class="row-date" datetime={d.date}>
+              {d.label}
+            </time>
+            <ul class="entries">
+              {d.items.map(({ e, idx }) => (
+                <li class:list={['entry', { extra: idx >= LIMIT }]} data-cat={e.category}>
+                  <span class="cat" style={`color:${categoryById[e.category].color}`}>
+                    {categoryById[e.category].label}
+                  </span>
+                  <div class="content">
+                    <p class="title">
+                      {e.link ? (
+                        <a href={e.link} target="_blank" rel="noopener noreferrer">
+                          {e.title}
+                        </a>
+                      ) : (
+                        e.title
+                      )}
+                      {e.venue && <span class="venue"> · {e.venue}</span>}
+                    </p>
+                    <p class="summary">{e.summary}</p>
+                    {e.takeaway && <p class="takeaway">→ {e.takeaway}</p>}
+                    {e.tags && e.tags.length > 0 && (
+                      <p class="tags">{e.tags.map((t) => `#${t}`).join(' ')}</p>
+                    )}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </li>
+        ))}
+      </ol>
+    )
+  }
+  {log.length > LIMIT && <label class="more" for="log-more">더 보기 ({log.length - LIMIT})</label>}
+</div>
+
+<style is:inline set:html={filterCss}></style>
+
+<style is:global>
+  /* ---------- 히트맵 ---------- */
+  .rlog .heatmap-wrap {
+    display: flex;
+    justify-content: flex-end; /* 좁은 화면에선 오래된 주가 왼쪽에서 잘림 (가로 스크롤 없음) */
+    overflow: hidden;
+  }
+  .rlog .heatmap {
+    display: grid;
+    grid-template-columns: repeat(var(--weeks), 10px);
+    grid-template-rows: 14px repeat(7, 10px);
+    gap: 3px;
+    flex: none;
+  }
+  .rlog .month {
+    grid-row: 1;
+    font-size: 10px;
+    line-height: 14px;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+  .rlog .cell {
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    background: var(--cell-empty);
+  }
+  .rlog .cell.l1 {
+    background: color-mix(in srgb, var(--c) 55%, var(--cell-empty));
+  }
+  .rlog .cell.l2 {
+    background: color-mix(in srgb, var(--c) 80%, var(--cell-empty));
+  }
+  .rlog .cell.l3 {
+    background: var(--c);
+  }
+  .rlog .stats {
+    font-size: var(--fs-tiny);
+    color: var(--text-muted);
+    text-align: right;
+    margin-top: 0.4rem;
+  }
+
+  /* ---------- 필터 ---------- */
+  .rlog .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem 1.1rem;
+    margin: 1.1rem 0 1.4rem;
+    padding-bottom: 0.6rem;
+    border-bottom: 1px solid var(--line);
+    font-size: var(--fs-small);
+  }
+  .rlog .filters label {
+    cursor: pointer;
+    color: var(--text-muted);
+    border-bottom: 1px solid transparent;
+    user-select: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+  .rlog .filters label:hover {
+    color: var(--text);
+  }
+  .rlog .filters .n {
+    font-size: var(--fs-tiny);
+    opacity: 0.7;
+  }
+  .rlog .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  #lf-all:checked ~ .filters label[for='lf-all'] {
+    color: var(--text);
+    border-bottom-color: var(--text);
+  }
+
+  /* ---------- 리스트 ---------- */
+  .rlog .log-list,
+  .rlog .entries {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .rlog .day + .day {
+    margin-top: 1.1rem;
+  }
+  .rlog .entry {
+    display: grid;
+    grid-template-columns: 4.25rem minmax(0, 1fr);
+    column-gap: 0.75rem;
+  }
+  .rlog .entry + .entry {
+    margin-top: 0.7rem;
+  }
+  .rlog .cat {
+    font-size: var(--fs-tiny);
+    font-weight: 500;
+    padding-top: 0.15rem;
+    white-space: nowrap;
+  }
+  .rlog .title {
+    font-weight: 500;
+    line-height: 1.5;
+  }
+  .rlog .title a {
+    color: var(--text);
+  }
+  .rlog .title a:hover {
+    color: var(--accent);
+  }
+  .rlog .venue {
+    font-weight: 400;
+    font-size: var(--fs-small);
+    color: var(--text-muted);
+  }
+  .rlog .summary {
+    font-size: var(--fs-small);
+  }
+  .rlog .takeaway {
+    font-size: var(--fs-tiny);
+    color: var(--text-muted);
+    padding-left: 0.9rem;
+    margin-top: 0.15rem;
+    border-left: 1px solid var(--line);
+  }
+  .rlog .tags {
+    font-size: var(--fs-tiny);
+    color: var(--text-muted);
+    opacity: 0.8;
+    margin-top: 0.1rem;
+  }
+  .rlog .empty {
+    color: var(--text-muted);
+    font-size: var(--fs-small);
+    padding: 1.5rem 0;
+    text-align: center;
+  }
+
+  /* 더 보기: 기본 20개. 체크하거나 카테고리 필터를 쓰면 전부 */
+  .rlog .extra {
+    display: none;
+  }
+  #log-more:checked ~ .log-list .extra,
+  .lf:not(#lf-all):checked ~ .log-list .extra {
+    display: grid;
+  }
+  .rlog .more {
+    display: block;
+    margin-top: 1.25rem;
+    font-size: var(--fs-small);
+    color: var(--accent);
+    cursor: pointer;
+  }
+  #log-more:checked ~ .more,
+  .lf:not(#lf-all):checked ~ .more {
+    display: none;
+  }
+
+  @media (max-width: 560px) {
+    .rlog .entry {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .rlog .day .row-date {
+      margin-bottom: 0.3rem;
+    }
+  }
+</style>
