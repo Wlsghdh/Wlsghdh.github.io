@@ -1,1 +1,32 @@
-[]
+[
+  {
+    "date": "2026-11-10",
+    "category": "writing",
+    "title": "Personal research — running paper experiments",
+    "summary": "Ran experiments for the paper on my personal research project.",
+    "tags": ["experiments", "personal-research"]
+  },
+  {
+    "date": "2026-11-10",
+    "category": "paper-reading",
+    "title": "AutoEval: Autonomous Evaluation of Generalist Robot Manipulation Policies in the Real World",
+    "link": "https://arxiv.org/abs/2503.24278",
+    "venue": "CoRL 2025",
+    "summary": "Read as part of a preliminary literature survey on Physical AI agents.",
+    "tags": ["physical-ai", "robot-evaluation"]
+  },
+  {
+    "date": "2026-11-10",
+    "category": "coding",
+    "title": "Investigating GPU overload under DDP",
+    "summary": "Explored possible causes of GPU overload during multi-GPU training with DDP.",
+    "tags": ["ddp", "multi-gpu", "debugging"]
+  },
+  {
+    "date": "2026-11-10",
+    "category": "writing",
+    "title": "Personal research 2 — exploring solutions",
+    "summary": "Thought through possible approaches for my second personal research project.",
+    "tags": ["personal-research", "ideation"]
+  }
+]
