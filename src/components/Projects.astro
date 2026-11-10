@@ -1,0 +1,73 @@
+---
+import { profile } from '../lib/data';
+const projects = profile.projects;
+---
+
+<div class="list">
+  {
+    projects.map((p) => (
+      <article class:list={['proj', { 'has-img': !!p.image }]}>
+        {p.image && <img class="img" src={p.image} alt="" loading="lazy" />}
+        <div>
+          <p class="head">
+            <span class="title">{p.title}</span>
+            <span class="period">{p.period}</span>
+          </p>
+          {p.subtitle && <p class="muted small">{p.subtitle}</p>}
+          <p class="summary">{p.summary}</p>
+          <p class="stack">{p.stack.join(' · ')}</p>
+          {p.links.length > 0 && (
+            <p class="chips">
+              {p.links.map((l) => <a href={l.url} target="_blank" rel="noopener noreferrer">{l.label}</a>)}
+            </p>
+          )}
+        </div>
+      </article>
+    ))
+  }
+</div>
+
+<style>
+  .proj + .proj {
+    margin-top: 1.4rem;
+  }
+  .proj.has-img {
+    display: grid;
+    grid-template-columns: 160px minmax(0, 1fr);
+    gap: 1.25rem;
+  }
+  .img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    border: 1px solid var(--line);
+  }
+  .head {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.25rem 1rem;
+    flex-wrap: wrap;
+  }
+  .title {
+    font-weight: 500;
+  }
+  .period {
+    color: var(--text-muted);
+    font-size: var(--fs-small);
+    white-space: nowrap;
+  }
+  .summary {
+    font-size: var(--fs-small);
+    margin-top: 0.2rem;
+  }
+  .stack {
+    color: var(--text-muted);
+    font-size: var(--fs-tiny);
+    margin-top: 0.15rem;
+  }
+  @media (max-width: 560px) {
+    .proj.has-img {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+</style>
