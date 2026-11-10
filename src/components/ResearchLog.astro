@@ -58,6 +58,22 @@ log.forEach((e, idx) => {
 });
 const countOf = (id: CategoryId) => log.filter((e) => e.category === id).length;
 
+/* ---------- 히트맵 hover 박스 / 클릭용 데이터 (기록 있는 날만) ---------- */
+const dayData = Object.fromEntries(
+  days.map((d) => [
+    d.date,
+    {
+      label: d.label,
+      items: d.items.map(({ e }) => ({
+        cat: categoryById[e.category].en,
+        color: categoryById[e.category].color,
+        title: e.title,
+      })),
+    },
+  ]),
+);
+const dayJson = JSON.stringify(dayData).replace(/</g, '\\u003c');
+
 /* ---------- (c)(d) CSS 전용 필터 규칙 ---------- */
 const filterCss = categories
   .map(
@@ -83,13 +99,17 @@ const filterCss = categories
           <span
             class={`cell l${c.level}`}
             style={`grid-column:${c.col};grid-row:${c.row + 1}${c.color ? `;--c:${c.color}` : ''}`}
-            title={c.tip}
+            data-date={c.date}
+            aria-label={c.tip}
+            {...(c.level > 0 ? { tabindex: 0, role: 'button' } : {})}
           />
         ))
       }
     </div>
   </div>
-  <p class="stats">{inRange} entries on {activeDays} days in the past year</p>
+  <p class="stats">
+    {inRange} {inRange === 1 ? 'entry' : 'entries'} on {activeDays} {activeDays === 1 ? 'day' : 'days'} in the past year
+  </p>
 
   <div class="filters" role="group" aria-label="Filter by category">
     <label for="lf-all">All <span class="n">{log.length}</span></label>
@@ -107,9 +127,12 @@ const filterCss = categories
     log.length === 0 ? (
       <p class="empty">No entries yet. Daily research notes will appear here, grouped by date.</p>
     ) : (
+      <p class="dayfilter" hidden>
+        Showing <b class="dayfilter-label" /> <button type="button" class="dayfilter-clear">Show all ✕</button>
+      </p>
       <ol class="log-list">
         {days.map((d) => (
-          <li class:list={['day', 'row', { extra: d.items.every((x) => x.idx >= LIMIT) }]}>
+          <li class:list={['day', 'row', { extra: d.items.every((x) => x.idx >= LIMIT) }]} data-date={d.date}>
             <time class="row-date" datetime={d.date}>
               {d.label}
             </time>
@@ -145,9 +168,106 @@ const filterCss = categories
     )
   }
   {log.length > LIMIT && <label class="more" for="log-more">Show more ({log.length - LIMIT})</label>}
+  <div class="rlog-tip" role="tooltip" hidden></div>
+  <script type="application/json" id="rlog-data" set:html={dayJson}></script>
 </div>
 
 <style is:inline set:html={filterCss}></style>
+
+<script>
+  /* 히트맵: hover/focus → 그날 기록 박스, 클릭 → 아래 목록을 그날만 보이게 */
+  type Day = { label: string; items: { cat: string; color: string; title: string }[] };
+  const root = document.querySelector<HTMLElement>('.rlog');
+  const dataEl = document.getElementById('rlog-data');
+  if (root && dataEl) {
+    const data: Record<string, Day> = JSON.parse(dataEl.textContent || '{}');
+    const tip = root.querySelector<HTMLElement>('.rlog-tip')!;
+    const bar = root.querySelector<HTMLElement>('.dayfilter');
+    const barLabel = root.querySelector<HTMLElement>('.dayfilter-label');
+    const dayEls = root.querySelectorAll<HTMLElement>('.log-list .day');
+    const MAX = 6;
+
+    const el = (tag: string, cls?: string, text?: string) => {
+      const n = document.createElement(tag);
+      if (cls) n.className = cls;
+      if (text) n.textContent = text;
+      return n;
+    };
+
+    const show = (cell: HTMLElement) => {
+      const date = cell.dataset.date!;
+      const day = data[date];
+      tip.replaceChildren();
+      if (!day) {
+        tip.append(el('p', 'tip-date', `${cell.getAttribute('aria-label') ?? date} · no entries`));
+      } else {
+        tip.append(el('p', 'tip-date', day.label));
+        const ul = el('ul');
+        day.items.slice(0, MAX).forEach((it) => {
+          const li = el('li');
+          const cat = el('span', 'tip-cat', it.cat);
+          cat.style.color = it.color;
+          li.append(cat, el('span', 'tip-title', it.title));
+          ul.append(li);
+        });
+        tip.append(ul);
+        if (day.items.length > MAX) tip.append(el('p', 'tip-more', `+${day.items.length - MAX} more`));
+        tip.append(el('p', 'tip-hint', 'Click to see details'));
+      }
+      tip.hidden = false;
+      const r = cell.getBoundingClientRect();
+      const w = tip.offsetWidth;
+      const h = tip.offsetHeight;
+      const left = Math.min(Math.max(8, r.left + r.width / 2 - w / 2), innerWidth - w - 8);
+      const top = r.top - h - 8 < 8 ? r.bottom + 8 : r.top - h - 8;
+      tip.style.left = `${left}px`;
+      tip.style.top = `${top}px`;
+    };
+    const hide = () => {
+      tip.hidden = true;
+    };
+
+    const clearDay = () => {
+      root.classList.remove('day-mode');
+      dayEls.forEach((d) => (d.hidden = false));
+      root.querySelectorAll('.cell.sel').forEach((c) => c.classList.remove('sel'));
+      if (bar) bar.hidden = true;
+    };
+    const selectDay = (cell: HTMLElement) => {
+      const date = cell.dataset.date!;
+      if (!data[date]) return;
+      if (cell.classList.contains('sel')) return clearDay();
+      const all = document.getElementById('lf-all') as HTMLInputElement | null;
+      if (all) all.checked = true;
+      root.classList.add('day-mode');
+      dayEls.forEach((d) => (d.hidden = d.dataset.date !== date));
+      root.querySelectorAll('.cell.sel').forEach((c) => c.classList.remove('sel'));
+      cell.classList.add('sel');
+      if (bar && barLabel) {
+        barLabel.textContent = data[date].label;
+        bar.hidden = false;
+        bar.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    };
+
+    root.querySelectorAll<HTMLElement>('.cell').forEach((cell) => {
+      cell.addEventListener('pointerenter', () => show(cell));
+      cell.addEventListener('pointerleave', hide);
+      cell.addEventListener('focus', () => show(cell));
+      cell.addEventListener('blur', hide);
+      cell.addEventListener('click', () => selectDay(cell));
+      cell.addEventListener('keydown', (ev) => {
+        if (ev.key === 'Enter' || ev.key === ' ') {
+          ev.preventDefault();
+          selectDay(cell);
+        }
+      });
+    });
+    addEventListener('scroll', hide, { passive: true });
+    root.querySelector('.dayfilter-clear')?.addEventListener('click', clearDay);
+    root.querySelectorAll('input.lf').forEach((r) => r.addEventListener('change', clearDay));
+  }
+</script>
 
 <style is:global>
   /* ---------- 히트맵 ---------- */
@@ -308,6 +428,89 @@ const filterCss = categories
   }
   #log-more:checked ~ .more,
   .lf:not(#lf-all):checked ~ .more {
+    display: none;
+  }
+
+  /* ---------- 히트맵 hover 박스 ---------- */
+  .rlog .cell[role='button'] {
+    cursor: pointer;
+  }
+  .rlog .cell:hover,
+  .rlog .cell:focus-visible {
+    outline: 1px solid var(--text-muted);
+    outline-offset: 1px;
+  }
+  .rlog .cell.sel {
+    outline: 1.5px solid var(--text);
+    outline-offset: 1px;
+  }
+  .rlog-tip {
+    position: fixed;
+    z-index: 50;
+    max-width: min(320px, calc(100vw - 16px));
+    padding: 0.6rem 0.75rem;
+    background: #fffdf8;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    box-shadow: 0 4px 14px rgba(60, 50, 30, 0.08);
+    font-size: var(--fs-tiny);
+    line-height: 1.5;
+    pointer-events: none;
+  }
+  .rlog-tip .tip-date {
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+  }
+  .rlog-tip ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .rlog-tip li {
+    display: grid;
+    grid-template-columns: 3.9rem minmax(0, 1fr);
+    gap: 0.4rem;
+  }
+  .rlog-tip li + li {
+    margin-top: 0.2rem;
+  }
+  .rlog-tip .tip-cat {
+    font-weight: 500;
+  }
+  .rlog-tip .tip-more,
+  .rlog-tip .tip-hint {
+    color: var(--text-muted);
+    margin-top: 0.3rem;
+  }
+
+  /* ---------- 날짜 클릭 → 그날만 ---------- */
+  .rlog [hidden] {
+    display: none !important;
+  }
+  .rlog .dayfilter {
+    font-size: var(--fs-small);
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+  .rlog .dayfilter b {
+    color: var(--text);
+    font-weight: 600;
+  }
+  .rlog .dayfilter-clear {
+    margin-left: 0.5rem;
+    font: inherit;
+    font-size: var(--fs-tiny);
+    color: var(--accent);
+    background: none;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 0.15rem 0.5rem;
+    cursor: pointer;
+  }
+  .rlog.day-mode .extra {
+    display: grid;
+  }
+  .rlog.day-mode .more {
     display: none;
   }
 
