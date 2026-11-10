@@ -1,14 +1,16 @@
 /* ============================================
-   디자인 토큰 — 얇은 선, 정갈한 활자 (CVPR 논문 톤)
-   색은 본문 / 보조 / 액센트 3개 + 선 + 카테고리 5색(채도 낮게)
+   디자인 토큰 — 밝은 베이지 배경, 얇은 선, 정갈한 활자 (다크모드 없음)
    ============================================ */
 :root {
-  --bg: #ffffff;
+  color-scheme: light;
+
+  --bg: #faf7f0;
   --text: #1a1a1a;
-  --text-muted: #6b7280;
+  --text-muted: #6b6a66;
   --accent: #1f4f8f;
-  --line: #e7e7e7;
-  --cell-empty: #efefef;
+  --line: #e4ddcf;
+  --cell-empty: #ece6d9;
+  --thumb-bg: #f1ece1;
 
   --cat-reading: #5a7598;
   --cat-coding: #5f8a73;
@@ -25,37 +27,4 @@
   --lh-body: 1.65;
   --content-width: 740px;
   --gutter: 24px;
-}
-
-/* 다크 — 시스템 설정 (수동 라이트 선택 시 제외) */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    --bg: #111213;
-    --text: #e6e6e6;
-    --text-muted: #9aa0a8;
-    --accent: #8fb3e6;
-    --line: #2a2c2f;
-    --cell-empty: #222427;
-
-    --cat-reading: #7f9bbf;
-    --cat-coding: #84ad96;
-    --cat-industry: #c4a274;
-    --cat-writing: #a893bb;
-    --cat-seminar: #c98f92;
-  }
-}
-/* 다크 — 수동 토글 */
-:root[data-theme='dark'] {
-  --bg: #111213;
-  --text: #e6e6e6;
-  --text-muted: #9aa0a8;
-  --accent: #8fb3e6;
-  --line: #2a2c2f;
-  --cell-empty: #222427;
-
-  --cat-reading: #7f9bbf;
-  --cat-coding: #84ad96;
-  --cat-industry: #c4a274;
-  --cat-writing: #a893bb;
-  --cat-seminar: #c98f92;
 }

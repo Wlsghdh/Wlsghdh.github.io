@@ -60,12 +60,18 @@
 
 ## 디자인 원칙 (2026-11-10 확정 — 바꾸지 말 것)
 
-- CVPR 논문처럼 아주 단순하게 만든다. 얇은 1px 선, 정갈한 활자, 여백과 활자 크기로만 위계를 만든다.
+- CVPR 논문처럼 아주 단순하게 만든다. 얇은 1px 선, 정갈한 활자, 여백과 활자 크기로만 위계를 만든다. 참고 대상: seokju-cho.github.io, yejich.github.io, 연세대 전해곤 교수 연구실 석사생 사이트.
+- **밝은 베이지 배경(`#faf7f0`) 하나만 쓴다. 다크모드와 테마 토글은 넣지 않는다** (2026-11-10 사용자 지시).
+- 헤더: 사진(테두리·원형 크롭 없이 그대로) + 이름 + "중앙대학교 지능형반도체공학과" + 링크 줄. 태그라인은 넣지 않는다.
+- 모든 publication과 project에 썸네일 칸이 있다. 파일이 없으면 `/assets/thumb-placeholder.svg`가 보인다.
+  - 논문: `public/assets/publications/P2.png`처럼 id 이름으로 넣는다.
+  - 프로젝트: `public/assets/projects/carnerf.png`, `etf-with-ai.png`, `jump-ai-2025.png`, `personal-color.png`.
+  - 다른 이름이나 확장자를 쓰려면 profile.json 의 `thumb`/`image` 경로를 바꾼다.
+- publication에 `"hidden": true`를 넣으면 데이터에는 남고 화면에서만 빠진다. P1(BMVC 탈락)이 지금 이 상태다. 다시 내려면 `hidden`을 지운다.
 - 단일 중앙 컬럼, 본문 폭 740px, 사이드바 없음.
 - 폰트는 Pretendard 하나. 라틴 글리프가 Inter 계열이라 한글, 영문, 숫자가 흔들리지 않는다. 본문 15px, 행간 1.65, 숫자는 tabular.
 - 색: 본문 `#1a1a1a`, 보조 `#6b7280`, 링크 액센트 1개, 선 `#e7e7e7`. 카테고리 5색은 채도를 낮게 쓴다.
 - 그라데이션, 그림자, 카드 테두리, 둥근 큰 박스는 쓰지 않는다.
-- 다크모드: `prefers-color-scheme`과 헤더 우상단 ◐ 수동 토글(`html[data-theme]`)을 둘 다 지원한다.
 - 모바일 380px에서 가로 스크롤이 생기면 안 된다.
 - 섹션 순서: Header → News → Research Log → Publications → Projects → Experience → Education → Skills → Honors & Awards(+Certificates) → Contact
 - 디자인 수정은 한 번에 한 가지만 한다. 데이터 추가와 디자인 수정을 한 커밋에 섞지 않는다.

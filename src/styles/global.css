@@ -91,14 +91,22 @@ a:hover {
 }
 .row {
   display: grid;
-  grid-template-columns: 7.5rem minmax(0, 1fr);
+  grid-template-columns: 9.5rem minmax(0, 1fr);
   column-gap: 1.25rem;
 }
 .row-date {
   color: var(--text-muted);
   font-size: var(--fs-small);
   padding-top: 0.1rem;
-  white-space: nowrap;
+}
+
+/* 썸네일 자리 — 파일이 없으면 placeholder 가 보인다 */
+.thumb-img {
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  display: block;
+  background: var(--thumb-bg);
 }
 @media (max-width: 560px) {
   .row {

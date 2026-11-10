@@ -10,25 +10,20 @@ const links = [
   { label: 'Google Scholar', url: p.scholar },
   { label: 'Blog', url: p.blog },
 ].filter((l) => l.url);
-const intro = p.intro.length ? p.intro : [p.tagline];
 ---
 
 <header class="header">
-  <button class="theme-toggle" type="button" aria-label="다크 모드 전환" title="Light / Dark">
-    <span aria-hidden="true">◐</span>
-  </button>
   <img
     class="photo"
     src={p.photo}
     alt={p.nameKo}
-    width="112"
-    height="112"
+    width="120"
     onerror="this.onerror=null;this.src='/profile-placeholder.svg'"
   />
   <div class="desc">
     <h1>{p.nameKo}<span class="en">{p.nameEn}</span></h1>
-    <p class="headline">{p.headline}</p>
-    {intro.map((s) => <p class="intro">{s}</p>)}
+    {p.headline && <p class="headline">{p.headline}</p>}
+    {p.intro.map((s: string) => <p class="intro">{s}</p>)}
     <p class="links">
       {
         links.map((l, i) => (
@@ -48,39 +43,22 @@ const intro = p.intro.length ? p.intro : [p.tagline];
   {navSections.map((s) => <a href={`#${s.id}`}>{s.label}</a>)}
 </nav>
 
-<script>
-  const btn = document.querySelector<HTMLButtonElement>('.theme-toggle');
-  btn?.addEventListener('click', () => {
-    const root = document.documentElement;
-    const current =
-      root.dataset.theme ?? (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-    const next = current === 'dark' ? 'light' : 'dark';
-    root.dataset.theme = next;
-    try {
-      localStorage.setItem('theme', next);
-    } catch {}
-  });
-</script>
-
 <style>
   .header {
-    position: relative;
     display: flex;
-    gap: 1.75rem;
+    gap: 2rem;
     align-items: flex-start;
     padding: 4.5rem 0 2rem;
   }
   .photo {
-    flex: 0 0 112px;
-    width: 112px;
-    height: 112px;
-    object-fit: cover;
-    object-position: center 20%;
-    border-radius: 50%;
-    border: 1px solid var(--line);
+    flex: 0 0 120px;
+    width: 120px;
+    height: auto;
+    display: block;
   }
   .desc {
     min-width: 0;
+    padding-top: 0.25rem;
   }
   h1 {
     font-size: 1.6rem;
@@ -96,34 +74,18 @@ const intro = p.intro.length ? p.intro : [p.tagline];
   }
   .headline {
     color: var(--text-muted);
-    font-size: var(--fs-small);
-    margin: 0.15rem 0 0.75rem;
+    margin: 0.3rem 0 0;
   }
   .intro {
-    margin-bottom: 0.35rem;
+    margin-top: 0.5rem;
   }
   .links {
-    margin-top: 0.75rem;
+    margin-top: 1rem;
     font-size: var(--fs-small);
   }
   .sep {
     color: var(--line);
     margin: 0 0.5rem;
-  }
-  .theme-toggle {
-    position: absolute;
-    top: 1.5rem;
-    right: 0;
-    background: none;
-    border: 0;
-    color: var(--text-muted);
-    font-size: 15px;
-    line-height: 1;
-    padding: 0.25rem;
-    cursor: pointer;
-  }
-  .theme-toggle:hover {
-    color: var(--text);
   }
 
   .nav {
@@ -143,21 +105,16 @@ const intro = p.intro.length ? p.intro : [p.tagline];
     color: var(--text);
     text-decoration: none;
   }
-  /* 내비 바로 아래 첫 섹션 선과 겹치지 않게 */
-  .nav + :global(.section) {
-    margin-top: 0;
-  }
 
   @media (max-width: 560px) {
     .header {
       flex-direction: column;
       gap: 1.1rem;
-      padding-top: 3.5rem;
+      padding-top: 3rem;
     }
     .photo {
-      width: 88px;
-      height: 88px;
-      flex-basis: 88px;
+      width: 100px;
+      flex-basis: auto;
     }
   }
 </style>

@@ -1,13 +1,20 @@
 ---
 import { profile } from '../lib/data';
 const projects = profile.projects;
+const PLACEHOLDER = '/assets/thumb-placeholder.svg';
 ---
 
 <div class="list">
   {
     projects.map((p) => (
-      <article class:list={['proj', { 'has-img': !!p.image }]}>
-        {p.image && <img class="img" src={p.image} alt="" loading="lazy" />}
+      <article class="proj">
+        <img
+          class="thumb-img"
+          src={p.image || PLACEHOLDER}
+          alt=""
+          loading="lazy"
+          onerror={`this.onerror=null;this.src='${PLACEHOLDER}'`}
+        />
         <div>
           <p class="head">
             <span class="title">{p.title}</span>
@@ -28,19 +35,14 @@ const projects = profile.projects;
 </div>
 
 <style>
-  .proj + .proj {
-    margin-top: 1.4rem;
-  }
-  .proj.has-img {
+  .proj {
     display: grid;
-    grid-template-columns: 160px minmax(0, 1fr);
-    gap: 1.25rem;
+    grid-template-columns: 180px minmax(0, 1fr);
+    gap: 1.5rem;
+    align-items: start;
   }
-  .img {
-    width: 100%;
-    aspect-ratio: 16 / 10;
-    object-fit: cover;
-    border: 1px solid var(--line);
+  .proj + .proj {
+    margin-top: 1.5rem;
   }
   .head {
     display: flex;
@@ -66,8 +68,12 @@ const projects = profile.projects;
     margin-top: 0.15rem;
   }
   @media (max-width: 560px) {
-    .proj.has-img {
+    .proj {
       grid-template-columns: minmax(0, 1fr);
+      gap: 0.6rem;
+    }
+    .proj .thumb-img {
+      max-width: 240px;
     }
   }
 </style>

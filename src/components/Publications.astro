@@ -2,7 +2,9 @@
 import { profile, type Publication } from '../lib/data';
 
 const me = profile.person.nameKo;
-const pubs = profile.publications;
+/** hidden: true 인 항목은 데이터에만 남기고 화면에서 뺀다 */
+const pubs = profile.publications.filter((p) => !(p as { hidden?: boolean }).hidden);
+const PLACEHOLDER = '/assets/thumb-placeholder.svg';
 const years = [...new Set(pubs.map((p) => p.year))].sort((a, b) => b - a);
 
 const linksOf = (p: Publication) => [
@@ -18,12 +20,16 @@ const linksOf = (p: Publication) => [
       {pubs
         .filter((p) => p.year === y)
         .map((p) => (
-          <article class:list={['pub', { 'has-thumb': !!p.thumb }]}>
-            {p.thumb && (
-              <a class="thumb" href={p.pdf || undefined} target="_blank" rel="noopener noreferrer">
-                <img src={p.thumb} alt="" loading="lazy" />
-              </a>
-            )}
+          <article class="pub">
+            <a class="thumb" href={p.pdf || undefined} target="_blank" rel="noopener noreferrer">
+              <img
+                class="thumb-img"
+                src={p.thumb || PLACEHOLDER}
+                alt=""
+                loading="lazy"
+                onerror={`this.onerror=null;this.src='${PLACEHOLDER}'`}
+              />
+            </a>
             <div class="body">
               <p class="title">
                 {p.pdf ? (
@@ -77,21 +83,12 @@ const linksOf = (p: Publication) => [
   }
   .pub {
     display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 1.25rem;
+    grid-template-columns: 180px minmax(0, 1fr);
+    gap: 1.5rem;
+    align-items: start;
   }
   .pub + .pub {
-    margin-top: 1.1rem;
-  }
-  .pub.has-thumb {
-    grid-template-columns: 160px minmax(0, 1fr);
-  }
-  .thumb img {
-    width: 100%;
-    aspect-ratio: 16 / 10;
-    object-fit: cover;
-    border: 1px solid var(--line);
-    display: block;
+    margin-top: 1.5rem;
   }
   .title {
     font-weight: 500;
@@ -120,7 +117,7 @@ const linksOf = (p: Publication) => [
     margin-top: 0.2rem;
   }
   @media (max-width: 560px) {
-    .pub.has-thumb {
+    .pub {
       grid-template-columns: minmax(0, 1fr);
       gap: 0.6rem;
     }
