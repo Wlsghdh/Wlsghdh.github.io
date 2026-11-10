@@ -2,12 +2,16 @@
   "person": {
     "nameKo": "주진호",
     "nameEn": "Jin-Ho Ju",
-    "headline": "중앙대학교 지능형반도체공학과",
+    "headline": "Intelligent Semiconductor Engineering · Chung-Ang University",
     "tagline": "",
-    "intro": [],
-    "role": "중앙대학교 학부 연구 인턴",
-    "rolePeriod": "2026.07.13 ~ 현재",
-    "affiliation": "중앙대학교 (Chung-Ang University)",
+    "intro": [
+      "I am with the Department of Intelligent Semiconductor Engineering at Chung-Ang University, where I have been an undergraduate research intern since July 2026.",
+      "My work so far spans computer vision and applied machine learning — generative data augmentation for small-sample industrial defect detection, multimodal sensor learning, and 3D reconstruction pipelines."
+    ],
+    "keywords": ["Computer Vision", "Generative Augmentation", "3D Reconstruction", "Applied ML"],
+    "role": "Undergraduate Research Intern, Chung-Ang University",
+    "rolePeriod": "Jul. 13, 2026 – Present",
+    "affiliation": "Chung-Ang University",
     "photo": "/profile.jpg",
     "email": "wlsgh20728@naver.com",
     "githubUsername": "Wlsghdh",
@@ -16,15 +20,15 @@
     "cv": ""
   },
   "site": {
-    "title": "연구 기록",
-    "description": "주진호 — 일일 연구 기록과 Reading Papers, 학술 포트폴리오"
+    "title": "Research Log",
+    "description": "Jin-Ho Ju — academic homepage and daily research log"
   },
   "news": [
-    { "date": "2026.07", "text": "중앙대학교 학부 연구 인턴 시작" },
-    { "date": "2025.12", "text": "한국정보과학회(KIISE) 장려상 수상" },
-    { "date": "2025.11", "text": "수원대학교 DSML 주식 차트 데이터 수집 #2 1위" },
-    { "date": "2025.10", "text": "수원대학교 DSML 주식 차트 데이터 수집 #1 1위" },
-    { "date": "2025.08", "text": "DACON JUMP AI 2025 신약 개발 경진대회 Top 4% (20위 / 1,134팀)" }
+    { "date": "Jul. 2026", "text": "Started as an undergraduate research intern at Chung-Ang University." },
+    { "date": "Dec. 2025", "text": "Received the Encouragement Award from KIISE." },
+    { "date": "Nov. 2025", "text": "1st place in DSML Stock Chart Data Collection #2, University of Suwon." },
+    { "date": "Oct. 2025", "text": "1st place in DSML Stock Chart Data Collection #1, University of Suwon." },
+    { "date": "Aug. 2025", "text": "Top 4% (20th / 1,134 teams) at the DACON JUMP AI 2025 drug discovery challenge." }
   ],
   "publications": [
     {
@@ -32,11 +36,12 @@
       "hidden": true,
       "year": 2026,
       "title": "Why Deep ResNets Train Successfully: Self-Selection of Effective Depth Enabled by Skip Connections",
-      "authors": ["주진호", "안홍렬"],
+      "authors": ["Jin-Ho Ju", "Hongryeol Ahn"],
+      "authorsKo": ["주진호", "안홍렬"],
       "coFirst": [],
-      "venue": "arXiv · BMVC 2026 심사 중",
-      "note": "제1저자",
-      "summary": "잔차 블록마다 학습 가능한 스칼라 α를 도입한 Learnable Residual Scaling(LRS)을 제안 — 깊은 ResNet이 명목 깊이보다 훨씬 작은 effective depth를 스스로 선택함을 입증했습니다(200층 중 active 5~6 블록). ResNet-200/CIFAR-100에서 α < 0.03 블록 제거 시 재학습 없이 정확도 손실 0을 확인했습니다.",
+      "venue": "arXiv",
+      "note": "First author",
+      "summary": "Proposes Learnable Residual Scaling (LRS), a learnable scalar α per residual block, showing that deep ResNets self-select an effective depth far smaller than their nominal depth (5–6 active blocks out of 200). On ResNet-200 / CIFAR-100, removing blocks with α < 0.03 causes zero accuracy loss without retraining.",
       "pdf": "",
       "thumb": "/assets/publications/P1.png",
       "links": [{ "label": "Code", "url": "https://github.com/Wlsghdh/Learnable_Residual_Scaling" }]
@@ -45,11 +50,12 @@
       "id": "P2",
       "year": 2026,
       "title": "Effects of Generative-AI Augmentation for Small-Sample Industrial Defect Detection",
-      "authors": ["주진호", "임대윤", "양진우", "안홍렬"],
+      "authors": ["Jin-Ho Ju", "Daeyun Lim", "Jinwoo Yang", "Hongryeol Ahn"],
+      "authorsKo": ["주진호", "임대윤", "양진우", "안홍렬"],
       "coFirst": [],
       "venue": "KIISE 2026",
-      "note": "제1저자",
-      "summary": "산업 결함 탐지의 데이터 희소성(클래스당 ~20장)에서 의미론적 다양성이 양보다 중요함을 입증 — 전통 증강은 mAP −1.76, Gemini-2.0 기반 생성형 증강은 +1.90, 둘을 조합한 8× 최적점에서 +5.0 mAP를 검출기 계열 전반에서 확인했습니다.",
+      "note": "First author",
+      "summary": "Under extreme data scarcity (~20 images per class), semantic diversity matters more than quantity: traditional augmentation gives −1.76 mAP, Gemini-2.0-based generative augmentation +1.90, and their combination at an 8× optimum +5.0 mAP across detector families.",
       "pdf": "",
       "thumb": "/assets/publications/P2.png",
       "links": [{ "label": "Code", "url": "https://github.com/Wlsghdh/VISION-Instance-Seg" }]
@@ -58,11 +64,12 @@
       "id": "P3",
       "year": 2025,
       "title": "An Integrated Preprocessing Pipeline for Model Performance Comparison on a Multimodal Gas Sensor Dataset",
-      "authors": ["맹영민", "주진호", "윤재훈", "정우창", "안홍렬"],
+      "authors": ["Youngmin Maeng", "Jin-Ho Ju", "Jaehoon Yoon", "Woochang Jung", "Hongryeol Ahn"],
+      "authorsKo": ["맹영민", "주진호", "윤재훈", "정우창", "안홍렬"],
       "coFirst": [],
       "venue": "KIISE 2025",
-      "note": "제2저자",
-      "summary": "MultimodalGasData 벤치마크를 위한 4단계 표준 전처리 파이프라인을 설계하고 8개 모델을 공정 비교 — 최고와 최저 간 22.2%p 격차를 도출해 융합 전략이 모델 깊이보다 중요함을 입증했습니다.",
+      "note": "Second author",
+      "summary": "Designs a standardized four-stage preprocessing pipeline for the MultimodalGasData benchmark and compares eight models fairly, finding a 22.2%p gap between best and worst and showing that the fusion strategy matters more than model depth.",
       "pdf": "",
       "thumb": "/assets/publications/P3.png",
       "links": [{ "label": "Code", "url": "https://github.com/Ahn-Laboratory/Gas-Leakage-Detection" }]
@@ -70,10 +77,10 @@
   ],
   "projects": [
     {
-      "title": "CarNeRF — AI 기반 중고차 딜러 플랫폼",
-      "period": "2025.12 ~ 2026.07",
-      "subtitle": "개인/팀 프로젝트 · 공모전",
-      "summary": "판매자의 1분 영상이 FastGS 기반 3D 복원 → YOLOv8 결함 탐지 → LightGBM 가격 예측 → LLM 자연어 검색으로 이어지는 자동화 파이프라인. Vanilla 3DGS 기준 PSNR 31.88, FastGS 이식 후 약 15배 속도 향상.",
+      "title": "CarNeRF — AI-Powered Used-Car Dealer Platform",
+      "period": "Dec. 2025 – Jul. 2026",
+      "subtitle": "Team project · Competition",
+      "summary": "An automated pipeline that turns a seller's one-minute video into FastGS-based 3D reconstruction → YOLOv8 defect detection → LightGBM price prediction → LLM natural-language search. PSNR 31.88 with vanilla 3DGS; about 15× faster after porting to FastGS.",
       "stack": ["FastGS", "COLMAP", "SAM", "YOLOv8", "LightGBM", "FastAPI", "RAG", "React Native"],
       "image": "/assets/projects/carnerf.png",
       "links": [
@@ -82,10 +89,10 @@
       ]
     },
     {
-      "title": "ETF with AI — LambdaRank 기반 트레이딩 시스템",
-      "period": "2026.02 ~ 현재",
-      "subtitle": "개인/팀 프로젝트 · 진행 중인 공모전",
-      "summary": "LightGBM LambdaRank를 85개 특징 위에 학습하고 TradingView 자동 수집기와 Next.js 대시보드를 통합. 한국투자증권 API 연동 실거래, cron 기반 일일 예측·월간 재학습. 1,000 티커로 확장 중.",
+      "title": "ETF with AI — LambdaRank-Based Trading System",
+      "period": "Feb. 2026 – Present",
+      "subtitle": "Team project · Ongoing competition",
+      "summary": "LightGBM LambdaRank trained on 85 features, integrated with an automated TradingView collector and a Next.js dashboard. Live trading through the Korea Investment & Securities API with cron-based daily prediction and monthly retraining; scaling to 1,000 tickers.",
       "stack": ["LightGBM LambdaRank", "FastAPI", "Next.js", "Playwright", "MySQL", "Docker", "KIS API"],
       "image": "/assets/projects/etf-with-ai.png",
       "links": [
@@ -94,47 +101,47 @@
       ]
     },
     {
-      "title": "JUMP AI 2025 — 제3회 신약 개발 경진대회",
-      "period": "2025.07 ~ 08",
-      "subtitle": "DACON · 1인 참가 · Top 4% (20위 / 1,134팀)",
-      "summary": "SMILES 입력으로 MAP3K5 IC50 활성 예측. 140차원 특징 설계, 5개 베이스 학습기를 Optuna로 튜닝한 뒤 Two-track 앙상블(SLSQP 가중 + Quantile-matching)로 결합.",
+      "title": "JUMP AI 2025 — 3rd Drug Discovery Challenge",
+      "period": "Jul. – Aug. 2025",
+      "subtitle": "DACON · Solo · Top 4% (20th / 1,134 teams)",
+      "summary": "Predicts MAP3K5 IC50 activity from SMILES. Designed 140-dimensional features, tuned five base learners with Optuna, and combined them in a two-track ensemble (SLSQP weighting + quantile matching).",
       "stack": ["RDKit", "LightGBM", "XGBoost", "Optuna", "scikit-learn"],
       "image": "/assets/projects/jump-ai-2025.png",
       "links": [{ "label": "Code", "url": "https://github.com/Wlsghdh/Jump-AI-2025" }]
     },
     {
-      "title": "퍼스널 컬러 진단 시스템",
-      "period": "2024.06 ~ 2025.03",
-      "subtitle": "개인/팀 프로젝트 · 화성시 AI 포럼 초청 강연",
-      "summary": "얼굴 사진으로 퍼스널 컬러를 진단하고 맞춤 영상 콘텐츠를 재생하는 인터랙티브 부스 웹 서비스. 셀럽 레퍼런스 ~5만 장 수집, White-balancing + OpenCV 피부톤 분할, OpenAI 프롬프트 라우팅.",
+      "title": "Personal Color Diagnosis System",
+      "period": "Jun. 2024 – Mar. 2025",
+      "subtitle": "Team project · Invited talk, Hwaseong AI Forum",
+      "summary": "An interactive kiosk web service that diagnoses personal color from a face photo and plays tailored video content. Collected ~50K celebrity reference images; white-balancing with OpenCV skin-tone segmentation; OpenAI prompt routing.",
       "stack": ["PyTorch", "OpenCV", "OpenAI API", "AWS", "Docker", "React"],
       "image": "/assets/projects/personal-color.png",
       "links": [{ "label": "Code", "url": "https://github.com/Woochang4862/personal-color-app" }]
     }
   ],
   "experience": [
-    { "period": "2026.02 ~ 2026.06", "title": "학부생 조교 — DSML Vibe Coding", "org": "수원대학교 DSML", "detail": "학부생 대상 멘토링을 수행했습니다." },
-    { "period": "2025.09 ~ 2025.12", "title": "연구 인턴 — Hadd Science", "org": "성균관대학교", "detail": "홈페이지 관리, 기사 작성, AutoCAD 3D 작업을 수행했습니다." },
-    { "period": "2025.07 ~ 2026.06", "title": "학부연구생", "org": "수원대학교 안홍렬 교수 연구실", "detail": "제1저자·공저자 논문으로 이어진 컴퓨터 비전 연구를 수행했습니다. 연구와 병행해 React / Node.js / MongoDB 기반 응용 프로토타입도 구축했습니다." },
-    { "period": "2024.08 ~ 2025.02", "title": "자율주행팀 인턴", "org": "AIMMO Inc.", "detail": "비전 실패 데이터 정제, Labellerr 검수, 학습 데이터 수집, 탐지 실패 센서 그래프 분석을 수행했습니다." },
-    { "period": "2022.01 ~ 2023.07", "title": "군 복무 — 대한민국 해병대", "org": "", "detail": "병역 의무 만기 전역." }
+    { "period": "Feb. 2026 – Jun. 2026", "title": "Undergraduate Teaching Assistant — DSML Vibe Coding", "org": "DSML, University of Suwon", "detail": "Mentored undergraduate students." },
+    { "period": "Sep. 2025 – Dec. 2025", "title": "Research Intern — Hadd Science", "org": "Sungkyunkwan University", "detail": "Managed the website, wrote articles, and worked on AutoCAD 3D modeling." },
+    { "period": "Jul. 2025 – Jun. 2026", "title": "Undergraduate Researcher", "org": "Prof. Hongryeol Ahn's Lab, University of Suwon", "detail": "Computer vision research that led to first- and co-authored papers; also built application prototypes with React / Node.js / MongoDB." },
+    { "period": "Aug. 2024 – Feb. 2025", "title": "Intern, Autonomous Driving Team", "org": "AIMMO Inc.", "detail": "Cleaned vision failure data, reviewed Labellerr annotations, collected training data, and analyzed sensor graphs of detection failures." },
+    { "period": "Jan. 2022 – Jul. 2023", "title": "Military Service — Republic of Korea Marine Corps", "org": "", "detail": "Honorably discharged." }
   ],
   "education": [
-    { "period": "2026.07.13 ~ 현재", "school": "중앙대학교", "detail": "학부 연구 인턴" },
-    { "period": "2021.03 ~ 2027.02 (졸업 예정)", "school": "수원대학교", "detail": "데이터과학부 학사과정 · GPA 4.33 / 4.5" },
-    { "period": "2019.03 ~ 2021.02", "school": "성일고등학교", "detail": "" }
+    { "period": "Jul. 2026 – Present", "school": "Chung-Ang University", "detail": "Undergraduate Research Intern" },
+    { "period": "Mar. 2021 – Feb. 2027 (expected)", "school": "University of Suwon", "detail": "B.S. in Data Science · GPA 4.33 / 4.5" },
+    { "period": "Mar. 2019 – Feb. 2021", "school": "Seongil High School", "detail": "" }
   ],
   "awards": [
-    { "date": "2021 ~ 2026", "title": "성적우수장학금", "org": "수원대학교 · 성적 기반, 5학기 수혜", "image": "" },
-    { "date": "2025.12", "title": "장려상", "org": "한국정보과학회 (KIISE)", "image": "" },
-    { "date": "2025.11", "title": "1위 — 주식 차트 데이터 수집 #2", "org": "수원대학교 DSML", "image": "" },
-    { "date": "2025.10", "title": "1위 — 주식 차트 데이터 수집 #1", "org": "수원대학교 DSML", "image": "" },
-    { "date": "2025.08", "title": "Top 4% · 20위 / 1,134팀 — JUMP AI 2025 신약 개발 경진대회", "org": "DACON", "image": "" },
-    { "date": "2024.08", "title": "우수상 — AI/Develops", "org": "수원대학교 DSML", "image": "" }
+    { "date": "2021 – 2026", "title": "Academic Excellence Scholarship", "org": "University of Suwon · merit-based, 5 semesters", "image": "" },
+    { "date": "Dec. 2025", "title": "Encouragement Award", "org": "Korean Institute of Information Scientists and Engineers (KIISE)", "image": "" },
+    { "date": "Nov. 2025", "title": "1st Place — Stock Chart Data Collection #2", "org": "DSML, University of Suwon", "image": "" },
+    { "date": "Oct. 2025", "title": "1st Place — Stock Chart Data Collection #1", "org": "DSML, University of Suwon", "image": "" },
+    { "date": "Aug. 2025", "title": "Top 4% (20th / 1,134 teams) — JUMP AI 2025 Drug Discovery Challenge", "org": "DACON", "image": "" },
+    { "date": "Aug. 2024", "title": "Excellence Award — AI/Develops", "org": "DSML, University of Suwon", "image": "" }
   ],
   "certificates": [
-    { "date": "2025.02", "title": "Google Data Analytics Professional Certificate", "org": "Coursera × Google", "image": "" },
-    { "date": "2025.11 ~ 12", "title": "디지털 헬스케어 (입문)", "org": "GUIP 바이오헬스 플랫폼", "image": "" }
+    { "date": "Feb. 2025", "title": "Google Data Analytics Professional Certificate", "org": "Coursera × Google", "image": "" },
+    { "date": "Nov. – Dec. 2025", "title": "Digital Healthcare (Introductory)", "org": "GUIP Bio-Health Platform", "image": "" }
   ],
   "skills": [
     { "category": "Deep Learning", "items": ["PyTorch", "PyTorch Lightning", "LLM Fine-tuning (LoRA/PEFT)", "DDP", "Optuna", "W&B"] },

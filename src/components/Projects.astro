@@ -4,10 +4,10 @@ const projects = profile.projects;
 const PLACEHOLDER = '/assets/thumb-placeholder.svg';
 ---
 
-<div class="list">
+<div>
   {
     projects.map((p) => (
-      <article class="proj">
+      <article class="media">
         <img
           class="thumb-img"
           src={p.image || PLACEHOLDER}
@@ -16,12 +16,12 @@ const PLACEHOLDER = '/assets/thumb-placeholder.svg';
           onerror={`this.onerror=null;this.src='${PLACEHOLDER}'`}
         />
         <div>
-          <p class="head">
-            <span class="title">{p.title}</span>
-            <span class="period">{p.period}</span>
+          <p class="media-title">{p.title}</p>
+          <p class="media-meta">
+            {p.period}
+            {p.subtitle && <span> · {p.subtitle}</span>}
           </p>
-          {p.subtitle && <p class="muted small">{p.subtitle}</p>}
-          <p class="summary">{p.summary}</p>
+          <p class="media-body">{p.summary}</p>
           <p class="stack">{p.stack.join(' · ')}</p>
           {p.links.length > 0 && (
             <p class="chips">
@@ -35,45 +35,9 @@ const PLACEHOLDER = '/assets/thumb-placeholder.svg';
 </div>
 
 <style>
-  .proj {
-    display: grid;
-    grid-template-columns: 180px minmax(0, 1fr);
-    gap: 1.5rem;
-    align-items: start;
-  }
-  .proj + .proj {
-    margin-top: 1.5rem;
-  }
-  .head {
-    display: flex;
-    justify-content: space-between;
-    gap: 0.25rem 1rem;
-    flex-wrap: wrap;
-  }
-  .title {
-    font-weight: 500;
-  }
-  .period {
-    color: var(--text-muted);
-    font-size: var(--fs-small);
-    white-space: nowrap;
-  }
-  .summary {
-    font-size: var(--fs-small);
-    margin-top: 0.2rem;
-  }
   .stack {
     color: var(--text-muted);
     font-size: var(--fs-tiny);
-    margin-top: 0.15rem;
-  }
-  @media (max-width: 560px) {
-    .proj {
-      grid-template-columns: minmax(0, 1fr);
-      gap: 0.6rem;
-    }
-    .proj .thumb-img {
-      max-width: 240px;
-    }
+    margin-top: 0.3rem;
   }
 </style>

@@ -1,128 +1,77 @@
 ---
 import { profile, type Publication } from '../lib/data';
 
-const me = profile.person.nameKo;
+const me = profile.person.nameEn;
 /** hidden: true 인 항목은 데이터에만 남기고 화면에서 뺀다 */
 const pubs = profile.publications.filter((p) => !(p as { hidden?: boolean }).hidden);
 const PLACEHOLDER = '/assets/thumb-placeholder.svg';
-const years = [...new Set(pubs.map((p) => p.year))].sort((a, b) => b - a);
 
-const linksOf = (p: Publication) => [
-  ...(p.pdf ? [{ label: 'PDF', url: p.pdf }] : []),
-  ...p.links,
-];
+const linksOf = (p: Publication) => [...(p.pdf ? [{ label: 'PDF', url: p.pdf }] : []), ...p.links];
 ---
 
-{
-  years.map((y) => (
-    <div class="year-group">
-      <h3 class="year">{y}</h3>
-      {pubs
-        .filter((p) => p.year === y)
-        .map((p) => (
-          <article class="pub">
-            <a class="thumb" href={p.pdf || undefined} target="_blank" rel="noopener noreferrer">
-              <img
-                class="thumb-img"
-                src={p.thumb || PLACEHOLDER}
-                alt=""
-                loading="lazy"
-                onerror={`this.onerror=null;this.src='${PLACEHOLDER}'`}
-              />
-            </a>
-            <div class="body">
-              <p class="title">
-                {p.pdf ? (
-                  <a href={p.pdf} target="_blank" rel="noopener noreferrer">
-                    {p.title}
-                  </a>
-                ) : (
-                  p.title
-                )}
-              </p>
-              <p class="authors">
-                {p.authors.map((a, i) => (
-                  <>
-                    {i > 0 && ', '}
-                    {a === me ? <b>{a}</b> : a}
-                    {(p.coFirst as string[]).includes(a) && '*'}
-                  </>
-                ))}
-              </p>
-              <p class="venue">
-                <i>{p.venue}</i>
-                {p.note && <span class="note"> · {p.note}</span>}
-              </p>
-              {p.summary && <p class="summary">{p.summary}</p>}
-              {linksOf(p).length > 0 && (
-                <p class="chips">
-                  {linksOf(p).map((l) => (
-                    <a href={l.url} target="_blank" rel="noopener noreferrer">
-                      {l.label}
-                    </a>
-                  ))}
-                </p>
-              )}
-            </div>
-          </article>
-        ))}
-    </div>
-  ))
-}
-{pubs.some((p) => p.coFirst.length > 0) && <p class="muted small">* 공동 1저자</p>}
+<div>
+  {
+    pubs.map((p) => (
+      <article class="media">
+        <a class="thumb" href={p.pdf || undefined} target="_blank" rel="noopener noreferrer">
+          <img
+            class="thumb-img"
+            src={p.thumb || PLACEHOLDER}
+            alt=""
+            loading="lazy"
+            onerror={`this.onerror=null;this.src='${PLACEHOLDER}'`}
+          />
+        </a>
+        <div>
+          <p class="media-title">
+            {p.pdf ? (
+              <a href={p.pdf} target="_blank" rel="noopener noreferrer">
+                {p.title}
+              </a>
+            ) : (
+              p.title
+            )}
+          </p>
+          <p class="authors">
+            {p.authors.map((a, i) => (
+              <>
+                {i > 0 && ', '}
+                {a === me ? <b>{a}</b> : a}
+                {(p.coFirst as string[]).includes(a) && '*'}
+              </>
+            ))}
+          </p>
+          <p class="media-meta">
+            <span class="venue">{p.venue}</span>
+            {p.note && <span> · {p.note}</span>}
+          </p>
+          {p.summary && <p class="media-body">{p.summary}</p>}
+          {linksOf(p).length > 0 && (
+            <p class="chips">
+              {linksOf(p).map((l) => <a href={l.url} target="_blank" rel="noopener noreferrer">{l.label}</a>)}
+            </p>
+          )}
+        </div>
+      </article>
+    ))
+  }
+</div>
+{pubs.some((p) => p.coFirst.length > 0) && <p class="muted small note">* Equal contribution</p>}
 
 <style>
-  .year-group + .year-group {
-    margin-top: 1.5rem;
-  }
-  .year {
+  .authors {
     font-size: var(--fs-small);
-    font-weight: 500;
-    color: var(--text-muted);
-    margin-bottom: 0.6rem;
-  }
-  .pub {
-    display: grid;
-    grid-template-columns: 180px minmax(0, 1fr);
-    gap: 1.5rem;
-    align-items: start;
-  }
-  .pub + .pub {
-    margin-top: 1.5rem;
-  }
-  .title {
-    font-weight: 500;
-    line-height: 1.45;
-  }
-  .title a {
-    color: var(--text);
-  }
-  .title a:hover {
-    color: var(--accent);
-  }
-  .authors,
-  .venue {
-    font-size: var(--fs-small);
+    margin-top: 0.15rem;
   }
   .authors b {
     font-weight: 600;
   }
-  .venue,
-  .note,
-  .summary {
-    color: var(--text-muted);
+  .venue {
+    font-style: normal;
+    font-weight: 600;
+    color: var(--accent);
   }
-  .summary {
-    font-size: var(--fs-small);
-    margin-top: 0.2rem;
-  }
-  @media (max-width: 560px) {
-    .pub {
-      grid-template-columns: minmax(0, 1fr);
-      gap: 0.6rem;
-    }
-    .thumb {
-      max-width: 240px;
-    }
+  .note {
+    margin-top: 1rem;
   }
 </style>

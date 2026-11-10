@@ -1,6 +1,7 @@
 ---
 /**
  * 홈 — 섹션 순서만 정한다. 내용은 src/data/profile.json, src/data/log.json.
+ * (skills 데이터는 profile.json 에 남아 있지만 화면에서는 뺐다)
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
@@ -11,14 +12,13 @@ import Publications from '../components/Publications.astro';
 import Projects from '../components/Projects.astro';
 import { profile } from '../lib/data';
 
-const p = profile.person;
 const news = profile.news.slice(0, 8).map((n: { date: string; text: string; link?: string }) => ({
   date: n.date,
   title: n.text,
   href: n.link,
 }));
 const experience = profile.experience.map((e) => ({ date: e.period, title: e.title, sub: e.org, detail: e.detail }));
-const education = profile.education.map((e) => ({ date: e.period, title: e.school, detail: e.detail }));
+const education = profile.education.map((e) => ({ date: e.period, title: e.school, sub: e.detail }));
 const awards = profile.awards.map((a) => ({ date: a.date, title: a.title, sub: a.org, href: a.image || undefined }));
 const certificates = profile.certificates.map((c) => ({
   date: c.date,
@@ -32,7 +32,7 @@ const certificates = profile.certificates.map((c) => ({
   <Header />
 
   <Section id="news" title="News">
-    <DatedList items={news} empty="소식이 아직 없습니다." />
+    <DatedList items={news} empty="No news yet." />
   </Section>
 
   <Section id="log" title="Research Log">
@@ -48,24 +48,11 @@ const certificates = profile.certificates.map((c) => ({
   </Section>
 
   <Section id="experience" title="Experience">
-    <DatedList items={experience} />
+    <DatedList items={experience} variant="stacked" />
   </Section>
 
   <Section id="education" title="Education">
-    <DatedList items={education} />
-  </Section>
-
-  <Section id="skills" title="Skills">
-    <div class="rows">
-      {
-        profile.skills.map((s) => (
-          <div class="row">
-            <span class="row-date">{s.category}</span>
-            <span class="small">{s.items.join(' · ')}</span>
-          </div>
-        ))
-      }
-    </div>
+    <DatedList items={education} variant="stacked" />
   </Section>
 
   <Section id="awards" title="Honors & Awards">
@@ -73,29 +60,13 @@ const certificates = profile.certificates.map((c) => ({
     <h3 class="sub-title">Certificates</h3>
     <DatedList items={certificates} />
   </Section>
-
-  <Section id="contact" title="Contact">
-    <div class="rows">
-      <div class="row"><span class="row-date">Email</span><a href={`mailto:${p.email}`}>{p.email}</a></div>
-      <div class="row">
-        <span class="row-date">GitHub</span>
-        <a href={`https://github.com/${p.githubUsername}`} target="_blank" rel="noopener noreferrer"
-          >github.com/{p.githubUsername}</a
-        >
-      </div>
-      <div class="row">
-        <span class="row-date">Blog</span>
-        <a href={p.blog} target="_blank" rel="noopener noreferrer">{p.blog.replace(/^https?:\/\//, '')}</a>
-      </div>
-    </div>
-  </Section>
 </BaseLayout>
 
 <style>
   .sub-title {
     font-size: var(--fs-small);
-    font-weight: 500;
+    font-weight: 600;
     color: var(--text-muted);
-    margin: 1.6rem 0 0.6rem;
+    margin: 1.75rem 0 0.75rem;
   }
 </style>

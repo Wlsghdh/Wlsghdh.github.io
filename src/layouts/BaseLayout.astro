@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import { profile, todayKST } from '../lib/data';
+import { navSections } from '../data/site';
 
 interface Props {
   title?: string;
@@ -9,11 +10,14 @@ interface Props {
 
 const p = profile.person;
 const { title, description = profile.site.description } = Astro.props;
-const pageTitle = title ? `${title} · ${p.nameKo}` : `${p.nameKo} ${p.nameEn}`;
+const pageTitle = title ? `${title} · ${p.nameEn}` : p.nameEn;
+const MON = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Oct.', 'Nov.', 'Dec.'];
+const [y, m] = todayKST().split('-');
+const updated = `${MON[Number(m) - 1]} ${y}`;
 ---
 
 <!doctype html>
-<html lang="ko">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -21,34 +25,91 @@ const pageTitle = title ? `${title} · ${p.nameKo}` : `${p.nameKo} ${p.nameEn}`;
     <meta name="generator" content={Astro.generator} />
     <meta name="color-scheme" content="light" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&display=swap" rel="stylesheet" />
     <title>{pageTitle}</title>
   </head>
   <body>
-    <main class="container">
+    <div class="topbar">
+      <div class="container topbar-inner">
+        <a class="brand" href="#top">{p.nameEn}</a>
+        <nav class="topnav" aria-label="Sections">
+          {navSections.map((s) => <a href={`#${s.id}`}>{s.label}</a>)}
+        </nav>
+      </div>
+    </div>
+    <main class="container" id="top">
       <slot />
     </main>
     <footer class="container footer">
-      <span>© {p.nameKo} · {p.nameEn}</span>
-      <span>Last updated {todayKST()}</span>
+      <p>Last updated on {updated}. © {y} {p.nameEn}.</p>
     </footer>
   </body>
 </html>
 
 <style>
-  .footer {
+  .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--bar-bg);
+    backdrop-filter: saturate(1.2) blur(6px);
+    border-bottom: 1px solid var(--line);
+  }
+  .topbar-inner {
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 0.5rem 1rem;
+    gap: 1rem;
+    min-height: 52px;
+  }
+  .brand {
+    font-weight: 700;
+    color: var(--text);
+    white-space: nowrap;
+  }
+  .brand:hover {
+    text-decoration: none;
+  }
+  .topnav {
+    display: flex;
+    gap: 1.4rem;
+    font-size: 13.5px;
+  }
+  .topnav a {
+    color: var(--text-muted);
+  }
+  .topnav a:hover {
+    color: var(--text);
+    text-decoration: none;
+  }
+  .footer {
     color: var(--text-muted);
     font-size: var(--fs-tiny);
-    padding-top: 1.25rem;
+    padding-top: 1.5rem;
     padding-bottom: 3rem;
+    text-align: center;
   }
-  .footer::before {
-    content: '';
-    flex-basis: 100%;
+  .footer p {
     border-top: 1px solid var(--line);
-    margin-bottom: 0.75rem;
+    padding-top: 1.5rem;
+  }
+
+  @media (max-width: 720px) {
+    .topbar {
+      position: static;
+    }
+    .topbar-inner {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.25rem;
+      padding-top: 0.6rem;
+      padding-bottom: 0.6rem;
+    }
+    .topnav {
+      flex-wrap: wrap;
+      gap: 0.2rem 1rem;
+    }
   }
 </style>

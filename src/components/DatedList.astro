@@ -1,7 +1,9 @@
 ---
 /**
- * 날짜(좌) + 내용(우) 목록 — News, Experience, Education, Awards, Certificates 공용.
- * image 가 있으면 제목이 그 이미지(또는 PDF)로 연결된다.
+ * 날짜가 붙은 목록.
+ * - variant="rows"    : 날짜(좌) + 한 줄(우)  — News, Honors, Certificates
+ * - variant="stacked" : 날짜 → 제목 → 소속(이탤릭) → 설명, 항목 사이 얇은 선 — Experience, Education
+ * href 가 있으면 제목이 그 파일(이미지/PDF)로 연결된다.
  */
 interface Item {
   date: string;
@@ -12,31 +14,36 @@ interface Item {
 }
 interface Props {
   items: Item[];
+  variant?: 'rows' | 'stacked';
   empty?: string;
 }
-const { items, empty = '아직 항목이 없습니다.' } = Astro.props;
+const { items, variant = 'rows', empty = 'Nothing here yet.' } = Astro.props;
+const ext = { target: '_blank', rel: 'noopener noreferrer' };
 ---
 
 {
   items.length === 0 ? (
     <p class="muted small">{empty}</p>
+  ) : variant === 'stacked' ? (
+    <div class="entries-lined">
+      {items.map((it) => (
+        <div class="stacked">
+          <p class="s-date">{it.date}</p>
+          <p class="s-title">{it.href ? <a href={it.href} {...ext}>{it.title}</a> : it.title}</p>
+          {it.sub && <p class="s-sub">{it.sub}</p>}
+          {it.detail && <p class="s-detail">{it.detail}</p>}
+        </div>
+      ))}
+    </div>
   ) : (
     <div class="rows">
       {items.map((it) => (
         <div class="row">
           <span class="row-date">{it.date}</span>
           <div>
-            <span class="t">
-              {it.href ? (
-                <a href={it.href} target="_blank" rel="noopener noreferrer">
-                  {it.title}
-                </a>
-              ) : (
-                it.title
-              )}
-            </span>
-            {it.sub && <span class="muted small sub">{it.sub}</span>}
-            {it.detail && <p class="muted small detail">{it.detail}</p>}
+            <span>{it.href ? <a href={it.href} {...ext}>{it.title}</a> : it.title}</span>
+            {it.sub && <span class="muted small r-sub">{it.sub}</span>}
+            {it.detail && <p class="muted small">{it.detail}</p>}
           </div>
         </div>
       ))}
@@ -45,10 +52,24 @@ const { items, empty = '아직 항목이 없습니다.' } = Astro.props;
 }
 
 <style>
-  .sub {
-    margin-left: 0.5rem;
+  .s-date {
+    font-size: var(--fs-tiny);
+    color: var(--text-muted);
   }
-  .detail {
+  .s-title {
+    font-weight: 600;
     margin-top: 0.1rem;
+  }
+  .s-sub {
+    font-size: var(--fs-small);
+    font-style: italic;
+    color: var(--text-muted);
+  }
+  .s-detail {
+    font-size: var(--fs-small);
+    margin-top: 0.2rem;
+  }
+  .r-sub {
+    margin-left: 0.5rem;
   }
 </style>

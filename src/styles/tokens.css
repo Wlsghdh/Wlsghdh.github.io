@@ -1,13 +1,15 @@
 /* ============================================
    디자인 토큰 — 밝은 베이지 배경, 얇은 선, 정갈한 활자 (다크모드 없음)
+   구조 참고: chaemin-hwang.github.io (Jon Barron 계열)
    ============================================ */
 :root {
   color-scheme: light;
 
   --bg: #faf7f0;
-  --text: #1a1a1a;
+  --bar-bg: rgba(250, 247, 240, 0.92);
+  --text: #1f2328;
   --text-muted: #6b6a66;
-  --accent: #1f4f8f;
+  --accent: #23466e;
   --line: #e4ddcf;
   --cell-empty: #ece6d9;
   --thumb-bg: #f1ece1;
@@ -20,11 +22,12 @@
 
   --font-body: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
     'Noto Sans KR', system-ui, sans-serif;
+  --font-serif: 'EB Garamond', 'Times New Roman', Georgia, serif;
 
   --fs-body: 15px;
-  --fs-small: 13px;
+  --fs-small: 13.5px;
   --fs-tiny: 12px;
-  --lh-body: 1.65;
-  --content-width: 740px;
+  --lh-body: 1.7;
+  --content-width: 760px;
   --gutter: 24px;
 }

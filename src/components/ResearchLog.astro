@@ -9,7 +9,7 @@ import { categories, categoryById, type CategoryId } from '../data/categories';
 
 const LIMIT = 20;
 const DAY = 86400000;
-const WD = ['일', '월', '화', '수', '목', '금', '토'];
+const WD = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 const iso = (d: Date) => d.toISOString().slice(0, 10);
 const asDate = (s: string) => new Date(s + 'T00:00:00Z');
@@ -39,7 +39,7 @@ for (let t = start.getTime(), i = 0; t <= end.getTime(); t += DAY, i++) {
     const counts = categories.map((c) => ({ c, n: entries.filter((e) => e.category === c.id).length }));
     const top = counts.reduce((a, b) => (b.n > a.n ? b : a));
     color = top.c.color;
-    tip += ' · ' + counts.filter((x) => x.n).map((x) => `${x.c.label} ${x.n}`).join(', ');
+    tip += ' · ' + counts.filter((x) => x.n).map((x) => `${x.c.en} ${x.n}`).join(', ');
   }
   cells.push({ date, col, row: d.getUTCDay() + 1, color, level: Math.min(entries.length, 3), tip });
 }
@@ -53,7 +53,7 @@ log.forEach((e, idx) => {
   if (last && last.date === e.date) last.items.push({ e, idx });
   else {
     const d = asDate(e.date);
-    days.push({ date: e.date, label: `${e.date.replaceAll('-', '.')} (${WD[d.getUTCDay()]})`, items: [{ e, idx }] });
+    days.push({ date: e.date, label: `${MON[d.getUTCMonth()]} ${d.getUTCDate()}, ${d.getUTCFullYear()} · ${WD[d.getUTCDay()]}`, items: [{ e, idx }] });
   }
 });
 const countOf = (id: CategoryId) => log.filter((e) => e.category === id).length;
@@ -75,7 +75,7 @@ const filterCss = categories
   {categories.map((c) => <input class="visually-hidden lf" type="radio" name="log-filter" id={`lf-${c.id}`} />)}
   <input class="visually-hidden" type="checkbox" id="log-more" />
 
-  <div class="heatmap-wrap" aria-label={`최근 12개월 활동: ${inRange}개 기록, ${activeDays}일`}>
+  <div class="heatmap-wrap" aria-label={`Past 12 months: ${inRange} entries on ${activeDays} days`}>
     <div class="heatmap" style={`--weeks:${weeks}`}>
       {months.map((m) => <span class="month" style={`grid-column:${m.col} / span 4`}>{m.label}</span>)}
       {
@@ -89,15 +89,15 @@ const filterCss = categories
       }
     </div>
   </div>
-  <p class="stats">최근 12개월 · {inRange}개 기록 · {activeDays}일</p>
+  <p class="stats">{inRange} entries on {activeDays} days in the past year</p>
 
-  <div class="filters" role="group" aria-label="카테고리 필터">
-    <label for="lf-all">전체 <span class="n">{log.length}</span></label>
+  <div class="filters" role="group" aria-label="Filter by category">
+    <label for="lf-all">All <span class="n">{log.length}</span></label>
     {
       categories.map((c) => (
         <label for={`lf-${c.id}`}>
           <span class="dot" style={`background:${c.color}`} />
-          {c.label} <span class="n">{countOf(c.id)}</span>
+          {c.en} <span class="n">{countOf(c.id)}</span>
         </label>
       ))
     }
@@ -105,7 +105,7 @@ const filterCss = categories
 
   {
     log.length === 0 ? (
-      <p class="empty">아직 기록이 없습니다. 첫 기록이 추가되면 여기에 날짜별로 쌓입니다.</p>
+      <p class="empty">No entries yet. Daily research notes will appear here, grouped by date.</p>
     ) : (
       <ol class="log-list">
         {days.map((d) => (
@@ -117,7 +117,7 @@ const filterCss = categories
               {d.items.map(({ e, idx }) => (
                 <li class:list={['entry', { extra: idx >= LIMIT }]} data-cat={e.category}>
                   <span class="cat" style={`color:${categoryById[e.category].color}`}>
-                    {categoryById[e.category].label}
+                    {categoryById[e.category].en}
                   </span>
                   <div class="content">
                     <p class="title">
@@ -144,7 +144,7 @@ const filterCss = categories
       </ol>
     )
   }
-  {log.length > LIMIT && <label class="more" for="log-more">더 보기 ({log.length - LIMIT})</label>}
+  {log.length > LIMIT && <label class="more" for="log-more">Show more ({log.length - LIMIT})</label>}
 </div>
 
 <style is:inline set:html={filterCss}></style>

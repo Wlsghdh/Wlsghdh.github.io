@@ -32,8 +32,7 @@ export const navSections = [
   { id: 'projects', label: 'Projects' },
   { id: 'experience', label: 'Experience' },
   { id: 'education', label: 'Education' },
-  { id: 'awards', label: 'Awards' },
-  { id: 'contact', label: 'Contact' },
+  { id: 'awards', label: 'Honors' },
 ] as const;
 
 /** 이전 이름 유지 */
