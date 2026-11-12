@@ -42,5 +42,33 @@
     "title": "KLingVLA — starting a new personal research project",
     "summary": "Planned and began writing code for a new personal research project on KLingVLA.",
     "tags": ["klingvla", "vla", "personal-research"]
+  },
+  {
+    "date": "2026-11-12",
+    "category": "coding",
+    "title": "KLingVLA — baseline done, control experiments in progress",
+    "summary": "Completed the baseline experiments for KLingVLA and started running the control-group experiments.",
+    "tags": ["klingvla", "experiments", "baseline"]
+  },
+  {
+    "date": "2026-11-12",
+    "category": "coding",
+    "title": "Coding test practice — 1 problem",
+    "summary": "Solved one coding test problem.",
+    "tags": ["coding-test", "algorithms"]
+  },
+  {
+    "date": "2026-11-12",
+    "category": "coding",
+    "title": "Reducing GPU power-spike risk — limiting training to 2 GPUs",
+    "summary": "Running on 4 GPUs caused power to spike all at once, which could affect the power supply, so switched to using only 2 GPUs to reduce the risk.",
+    "tags": ["gpu", "power", "multi-gpu"]
+  },
+  {
+    "date": "2026-11-12",
+    "category": "writing",
+    "title": "Preparing the weekly report",
+    "summary": "Prepared the weekly progress report.",
+    "tags": ["weekly-report", "progress"]
   }
 ]
