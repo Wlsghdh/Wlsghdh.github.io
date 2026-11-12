@@ -28,5 +28,19 @@
     "title": "Personal research 2 — exploring solutions",
     "summary": "Thought through possible approaches for my second personal research project.",
     "tags": ["personal-research", "ideation"]
+  },
+  {
+    "date": "2026-11-11",
+    "category": "coding",
+    "title": "phCoT — adding ablation studies",
+    "summary": "Modified the code for my first personal research project (phCoT) to add ablation studies.",
+    "tags": ["phcot", "ablation", "personal-research"]
+  },
+  {
+    "date": "2026-11-11",
+    "category": "coding",
+    "title": "KLingVLA — starting a new personal research project",
+    "summary": "Planned and began writing code for a new personal research project on KLingVLA.",
+    "tags": ["klingvla", "vla", "personal-research"]
   }
 ]
