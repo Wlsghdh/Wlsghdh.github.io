@@ -82,10 +82,9 @@
       "subtitle": "Team project · Competition",
       "summary": "An automated pipeline that turns a seller's one-minute video into FastGS-based 3D reconstruction → YOLOv8 defect detection → LightGBM price prediction → LLM natural-language search. PSNR 31.88 with vanilla 3DGS; about 15× faster after porting to FastGS.",
       "stack": ["FastGS", "COLMAP", "SAM", "YOLOv8", "LightGBM", "FastAPI", "RAG", "React Native"],
-      "image": "/assets/projects/carnerf.png",
+      "image": "/assets/projects/carnerf.gif",
       "links": [
-        { "label": "Code", "url": "https://github.com/Wlsghdh/CarNeRF" },
-        { "label": "Demo", "url": "http://lifeai.suwon.ac.kr:5199" }
+        { "label": "Code", "url": "https://github.com/Wlsghdh/CarNeRF" }
       ]
     },
     {
@@ -94,10 +93,9 @@
       "subtitle": "Team project · Ongoing competition",
       "summary": "LightGBM LambdaRank trained on 85 features, integrated with an automated TradingView collector and a Next.js dashboard. Live trading through the Korea Investment & Securities API with cron-based daily prediction and monthly retraining; scaling to 1,000 tickers.",
       "stack": ["LightGBM LambdaRank", "FastAPI", "Next.js", "Playwright", "MySQL", "Docker", "KIS API"],
-      "image": "/assets/projects/etf-with-ai.png",
+      "image": "/assets/projects/etf-with-ai.gif",
       "links": [
-        { "label": "Code", "url": "https://github.com/Wlsghdh/etf-trading-projects" },
-        { "label": "Demo", "url": "https://ahnbi2.suwon.ac.kr/trading" }
+        { "label": "Code", "url": "https://github.com/Wlsghdh/etf-trading-projects" }
       ]
     },
     {
