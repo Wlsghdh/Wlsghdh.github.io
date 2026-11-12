@@ -46,7 +46,8 @@
 
 화면 구성:
 - 최근 12개월 히트맵. 칸에 마우스를 올리면 그날 기록이 박스로 뜨고, 클릭하면 아래 목록이 그날만 보인다("Show all"로 해제).
-- 날짜 역순 리스트(하루 단위로 묶음), CSS만 쓰는 카테고리 필터, 최근 20개 + 더 보기.
+- 히트맵은 첫 기록(또는 1년 전)부터 오늘까지 그리고, 길어지면 가로 스크롤한다. 처음 열면 오늘 쪽(오른쪽 끝)이 보인다.
+- 날짜 역순 리스트(하루 단위로 묶음), CSS만 쓰는 카테고리 필터(기본 탭 "Recent Activity"), 최근 5일 + "Show more"를 누를 때마다 7일씩.
 
 ## 실적 업데이트 (논문 억셉, 수상 등)
 
@@ -73,7 +74,7 @@
 - Skills 섹션은 화면에서 뺐다. 데이터는 profile.json 에 남아 있다. Contact 섹션도 없다. 연락처는 헤더 버튼으로 대신한다.
 - 모든 publication과 project에 썸네일 칸이 있다. 파일이 없으면 `/assets/thumb-placeholder.svg`가 보인다.
   - 논문: `public/assets/publications/P2.png`처럼 id 이름으로 넣는다.
-  - 프로젝트: `public/assets/projects/carnerf.png`, `etf-with-ai.png`, `jump-ai-2025.png`, `personal-color.png`.
+  - 프로젝트: `public/assets/projects/carnerf.gif`, `etf-with-ai.gif`, `jump-ai-2025.png`, `personal-color.png`.
   - 다른 이름이나 확장자를 쓰려면 profile.json 의 `thumb`/`image` 경로를 바꾼다.
 - publication에 `"hidden": true`를 넣으면 데이터에는 남고 화면에서만 빠진다. P1(BMVC 탈락)이 지금 이 상태다. 다시 내려면 `hidden`을 지운다.
 - 단일 중앙 컬럼, 본문 폭 740px, 사이드바 없음.
