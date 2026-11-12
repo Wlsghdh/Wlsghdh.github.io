@@ -1,13 +1,16 @@
 ---
 /**
  * Research Log — src/data/log.json 만 읽는다.
- * (a) 최근 12개월 히트맵  (b) 날짜 역순 리스트(하루 = 한 덩어리)
- * (c) 카테고리 필터 — CSS만 (라디오 + :checked)  (d) 최근 20개 + 더 보기 — CSS만 (체크박스)
+ * (a) 히트맵 — 첫 기록(또는 1년 전) ~ 오늘. 가로 스크롤, 처음엔 오늘 쪽(오른쪽)이 보인다.
+ * (b) 날짜 역순 리스트(하루 = 한 덩어리)
+ * (c) 카테고리 필터 — CSS만 (라디오 + :checked). 기본 탭 이름은 "Recent Activity".
+ * (d) 최근 FIRST_DAYS일만 보이고 "Show more"를 누를 때마다 MORE_DAYS일씩 더 보인다.
  */
 import { log, todayKST, type LogEntry } from '../lib/data';
 import { categories, categoryById, type CategoryId } from '../data/categories';
 
-const LIMIT = 20;
+const FIRST_DAYS = 5;
+const MORE_DAYS = 7;
 const DAY = 86400000;
 const WD = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -16,7 +19,8 @@ const asDate = (s: string) => new Date(s + 'T00:00:00Z');
 
 /* ---------- (a) 히트맵 ---------- */
 const end = asDate(todayKST());
-const start = new Date(end.getTime() - 364 * DAY);
+const oldest = log.length ? asDate(log[log.length - 1].date) : end;
+const start = new Date(Math.min(end.getTime() - 364 * DAY, oldest.getTime()));
 start.setTime(start.getTime() - start.getUTCDay() * DAY); // 일요일부터
 
 const perDay = new Map<string, LogEntry[]>();
@@ -32,7 +36,10 @@ for (let t = start.getTime(), i = 0; t <= end.getTime(); t += DAY, i++) {
   const col = Math.floor(i / 7) + 1;
   const entries = perDay.get(date) ?? [];
   inRange += entries.length;
-  if (d.getUTCDate() === 1 && col > 1) months.push({ col, label: MON[d.getUTCMonth()] });
+  if (d.getUTCDate() === 1 && col > 1) {
+    const m = d.getUTCMonth();
+    months.push({ col, label: m === 0 ? `Jan ’${String(d.getUTCFullYear()).slice(2)}` : MON[m] });
+  }
   let color: string | undefined;
   let tip = date;
   if (entries.length) {
@@ -89,9 +96,7 @@ const filterCss = categories
 <div class="rlog">
   <input class="visually-hidden lf" type="radio" name="log-filter" id="lf-all" checked />
   {categories.map((c) => <input class="visually-hidden lf" type="radio" name="log-filter" id={`lf-${c.id}`} />)}
-  <input class="visually-hidden" type="checkbox" id="log-more" />
-
-  <div class="heatmap-wrap" aria-label={`Past 12 months: ${inRange} entries on ${activeDays} days`}>
+  <div class="heatmap-wrap" aria-label={`${inRange} entries on ${activeDays} days`}>
     <div class="heatmap" style={`--weeks:${weeks}`}>
       {months.map((m) => <span class="month" style={`grid-column:${m.col} / span 4`}>{m.label}</span>)}
       {
@@ -108,11 +113,11 @@ const filterCss = categories
     </div>
   </div>
   <p class="stats">
-    {inRange} {inRange === 1 ? 'entry' : 'entries'} on {activeDays} {activeDays === 1 ? 'day' : 'days'} in the past year
+    {inRange} {inRange === 1 ? 'entry' : 'entries'} on {activeDays} {activeDays === 1 ? 'day' : 'days'}
   </p>
 
   <div class="filters" role="group" aria-label="Filter by category">
-    <label for="lf-all">All <span class="n">{log.length}</span></label>
+    <label for="lf-all">Recent Activity <span class="n">{log.length}</span></label>
     {
       categories.map((c) => (
         <label for={`lf-${c.id}`}>
@@ -131,14 +136,14 @@ const filterCss = categories
         Showing <b class="dayfilter-label" /> <button type="button" class="dayfilter-clear">Show all ✕</button>
       </p>
       <ol class="log-list">
-        {days.map((d) => (
-          <li class:list={['day', 'row', { extra: d.items.every((x) => x.idx >= LIMIT) }]} data-date={d.date}>
+        {days.map((d, i) => (
+          <li class:list={['day', 'row', { extra: i >= FIRST_DAYS }]} data-date={d.date}>
             <time class="row-date" datetime={d.date}>
               {d.label}
             </time>
             <ul class="entries">
               {d.items.map(({ e, idx }) => (
-                <li class:list={['entry', { extra: idx >= LIMIT }]} data-cat={e.category}>
+                <li class="entry" data-cat={e.category}>
                   <span class="cat" style={`color:${categoryById[e.category].color}`}>
                     {categoryById[e.category].en}
                   </span>
@@ -167,7 +172,13 @@ const filterCss = categories
       </ol>
     )
   }
-  {log.length > LIMIT && <label class="more" for="log-more">Show more ({log.length - LIMIT})</label>}
+  {
+    days.length > FIRST_DAYS && (
+      <button type="button" class="more" data-step={MORE_DAYS}>
+        Show more
+      </button>
+    )
+  }
   <div class="rlog-tip" role="tooltip" hidden></div>
   <script type="application/json" id="rlog-data" set:html={dayJson}></script>
 </div>
@@ -264,6 +275,22 @@ const filterCss = categories
       });
     });
     addEventListener('scroll', hide, { passive: true });
+
+    /* 히트맵 가로 스크롤: 처음엔 오늘(오른쪽 끝)이 보이게 */
+    const wrap = root.querySelector<HTMLElement>('.heatmap-wrap');
+    if (wrap) {
+      wrap.scrollLeft = wrap.scrollWidth;
+      wrap.addEventListener('scroll', hide, { passive: true });
+    }
+
+    /* Show more: 누를 때마다 다음 MORE_DAYS일 */
+    const more = root.querySelector<HTMLButtonElement>('.more');
+    more?.addEventListener('click', () => {
+      const step = Number(more.dataset.step) || 7;
+      const hiddenDays = root.querySelectorAll<HTMLElement>('.log-list .day.extra');
+      hiddenDays.forEach((d, i) => i < step && d.classList.remove('extra'));
+      if (hiddenDays.length <= step) more.remove();
+    });
     root.querySelector('.dayfilter-clear')?.addEventListener('click', clearDay);
     root.querySelectorAll('input.lf').forEach((r) => r.addEventListener('change', clearDay));
   }
@@ -271,10 +298,24 @@ const filterCss = categories
 
 <style is:global>
   /* ---------- 히트맵 ---------- */
+  /* 기록이 1년보다 길어지거나 화면이 좁으면 가로 스크롤. 짧으면 오른쪽 정렬 */
   .rlog .heatmap-wrap {
     display: flex;
-    justify-content: flex-end; /* 좁은 화면에선 오래된 주가 왼쪽에서 잘림 (가로 스크롤 없음) */
-    overflow: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 6px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--line) transparent;
+  }
+  .rlog .heatmap-wrap > .heatmap {
+    margin-left: auto;
+  }
+  .rlog .heatmap-wrap::-webkit-scrollbar {
+    height: 6px;
+  }
+  .rlog .heatmap-wrap::-webkit-scrollbar-thumb {
+    background: var(--line);
+    border-radius: 3px;
   }
   .rlog .heatmap {
     display: grid;
@@ -411,22 +452,27 @@ const filterCss = categories
     text-align: center;
   }
 
-  /* 더 보기: 기본 20개. 체크하거나 카테고리 필터를 쓰면 전부 */
+  /* 더 보기: 기본 최근 며칠. 카테고리 필터를 쓰면 그 카테고리 전부 */
   .rlog .extra {
     display: none;
   }
-  #log-more:checked ~ .log-list .extra,
   .lf:not(#lf-all):checked ~ .log-list .extra {
     display: grid;
   }
   .rlog .more {
     display: block;
     margin-top: 1.25rem;
+    padding: 0;
+    font: inherit;
     font-size: var(--fs-small);
     color: var(--accent);
+    background: none;
+    border: 0;
     cursor: pointer;
   }
-  #log-more:checked ~ .more,
+  .rlog .more:hover {
+    text-decoration: underline;
+  }
   .lf:not(#lf-all):checked ~ .more {
     display: none;
   }
