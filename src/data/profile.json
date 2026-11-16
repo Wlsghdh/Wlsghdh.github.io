@@ -24,6 +24,7 @@
     "description": "Jin-Ho Ju — academic homepage and daily research log"
   },
   "news": [
+    { "date": "Sep. 2026", "text": "Our preprint ReShoot, on generative visual domain randomization of robot demonstrations, is on arXiv.", "link": "https://arxiv.org/abs/2609.19661" },
     { "date": "Jul. 2026", "text": "Started as an undergraduate research intern at Chung-Ang University." },
     { "date": "Dec. 2025", "text": "Received the Encouragement Award from KIISE." },
     { "date": "Nov. 2025", "text": "1st place in DSML Stock Chart Data Collection #2, University of Suwon." },
@@ -31,6 +32,20 @@
     { "date": "Aug. 2025", "text": "Top 4% (20th / 1,134 teams) at the DACON JUMP AI 2025 drug discovery challenge." }
   ],
   "publications": [
+    {
+      "id": "P4",
+      "year": 2026,
+      "title": "ReShoot: Generative Visual Domain Randomization of Recorded Robot Demonstrations for Visuomotor Policy Learning",
+      "authors": ["Chiyoung Kim", "Min Sung Choi", "Jin-Ho Ju", "Chanhoe Gu", "Donghwan Hwang", "Wonseok Choi", "Woongsun Jeon", "Minhyeok Lee"],
+      "authorsKo": [],
+      "coFirst": [],
+      "venue": "arXiv preprint",
+      "note": "Under review",
+      "summary": "Re-renders recorded robot demonstrations under new appearances (a VLM edits one scene attribute, an edge-conditioned video generator re-renders both camera views, and actions are kept unchanged). On LIBERO-Plus scene perturbations, mixing in re-rendered demos raises success from 82.3% to 85.5%; on two real robots, success on recolored objects rises from 0% to 42.9% and 47.5%.",
+      "pdf": "https://arxiv.org/pdf/2609.19661",
+      "thumb": "/assets/publications/P4.png",
+      "links": [{ "label": "arXiv", "url": "https://arxiv.org/abs/2609.19661" }]
+    },
     {
       "id": "P1",
       "hidden": true,
