@@ -51,7 +51,7 @@
       "hidden": true,
       "year": 2026,
       "title": "Why Deep ResNets Train Successfully: Self-Selection of Effective Depth Enabled by Skip Connections",
-      "authors": ["Jin-Ho Ju", "Hongryeol Ahn"],
+      "authors": ["Jin-Ho Ju", "Hongryul Ahn"],
       "authorsKo": ["주진호", "안홍렬"],
       "coFirst": [],
       "venue": "arXiv",
@@ -64,14 +64,14 @@
     {
       "id": "P2",
       "year": 2026,
-      "title": "Effects of Generative-AI Augmentation for Small-Sample Industrial Defect Detection",
-      "authors": ["Jin-Ho Ju", "Daeyun Lim", "Jinwoo Yang", "Hongryeol Ahn"],
+      "title": "Effects of Generative AI Augmentation for Small-Scale Industrial Defect Detection",
+      "authors": ["Jin-Ho Ju", "Daeyun Lim", "Jinwoo Yang", "Hongryul Ahn"],
       "authorsKo": ["주진호", "임대윤", "양진우", "안홍렬"],
       "coFirst": [],
       "venue": "KIISE 2026",
       "note": "First author",
       "summary": "Under extreme data scarcity (~20 images per class), semantic diversity matters more than quantity: traditional augmentation gives −1.76 mAP, Gemini-2.0-based generative augmentation +1.90, and their combination at an 8× optimum +5.0 mAP across detector families.",
-      "pdf": "",
+      "pdf": "/assets/publications/P2.pdf",
       "thumb": "/assets/publications/P2.gif",
       "links": [{ "label": "Code", "url": "https://github.com/Wlsghdh/VISION-Instance-Seg" }]
     },
@@ -79,13 +79,13 @@
       "id": "P3",
       "year": 2025,
       "title": "An Integrated Preprocessing Pipeline for Model Performance Comparison on a Multimodal Gas Sensor Dataset",
-      "authors": ["Youngmin Maeng", "Jin-Ho Ju", "Jaehoon Yoon", "Woochang Jung", "Hongryeol Ahn"],
+      "authors": ["Yeongmin Maeng", "Jin-Ho Ju", "Jaehoon Yun", "Woochang Jeong", "Hongryul Ahn"],
       "authorsKo": ["맹영민", "주진호", "윤재훈", "정우창", "안홍렬"],
       "coFirst": [],
       "venue": "KIISE 2025",
       "note": "Second author",
       "summary": "Designs a standardized four-stage preprocessing pipeline for the MultimodalGasData benchmark and compares eight models fairly, finding a 22.2%p gap between best and worst and showing that the fusion strategy matters more than model depth.",
-      "pdf": "",
+      "pdf": "/assets/publications/P3.pdf",
       "thumb": "/assets/publications/P3.gif",
       "links": [{ "label": "Code", "url": "https://github.com/Ahn-Laboratory/Gas-Leakage-Detection" }]
     }
@@ -135,7 +135,7 @@
   "experience": [
     { "period": "Feb. 2026 – Jun. 2026", "title": "Undergraduate Teaching Assistant — DSML Vibe Coding", "org": "DSML, University of Suwon", "detail": "Mentored undergraduate students." },
     { "period": "Sep. 2025 – Dec. 2025", "title": "Research Intern — Hadd Science", "org": "Sungkyunkwan University", "detail": "Managed the website, wrote articles, and worked on AutoCAD 3D modeling." },
-    { "period": "Jul. 2025 – Jun. 2026", "title": "Undergraduate Researcher", "org": "Prof. Hongryeol Ahn's Lab, University of Suwon", "detail": "Computer vision research that led to first- and co-authored papers; also built application prototypes with React / Node.js / MongoDB." },
+    { "period": "Jul. 2025 – Jun. 2026", "title": "Undergraduate Researcher", "org": "Prof. Hongryul Ahn's Lab, University of Suwon", "detail": "Computer vision research that led to first- and co-authored papers; also built application prototypes with React / Node.js / MongoDB." },
     { "period": "Aug. 2024 – Feb. 2025", "title": "Intern, Autonomous Driving Team", "org": "AIMMO Inc.", "detail": "Cleaned vision failure data, reviewed Labellerr annotations, collected training data, and analyzed sensor graphs of detection failures." },
     { "period": "Jan. 2022 – Jul. 2023", "title": "Military Service — Republic of Korea Marine Corps", "org": "", "detail": "Honorably discharged." }
   ],
