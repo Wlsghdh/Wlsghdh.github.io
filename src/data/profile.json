@@ -43,7 +43,7 @@
       "note": "Under review",
       "summary": "Re-renders recorded robot demonstrations under new appearances (a VLM edits one scene attribute, an edge-conditioned video generator re-renders both camera views, and actions are kept unchanged). On LIBERO-Plus scene perturbations, mixing in re-rendered demos raises success from 82.3% to 85.5%; on two real robots, success on recolored objects rises from 0% to 42.9% and 47.5%.",
       "pdf": "https://arxiv.org/pdf/2609.19661",
-      "thumb": "/assets/publications/P4.png",
+      "thumb": "/assets/publications/P4.gif",
       "links": [{ "label": "arXiv", "url": "https://arxiv.org/abs/2609.19661" }]
     },
     {
@@ -72,7 +72,7 @@
       "note": "First author",
       "summary": "Under extreme data scarcity (~20 images per class), semantic diversity matters more than quantity: traditional augmentation gives −1.76 mAP, Gemini-2.0-based generative augmentation +1.90, and their combination at an 8× optimum +5.0 mAP across detector families.",
       "pdf": "",
-      "thumb": "/assets/publications/P2.png",
+      "thumb": "/assets/publications/P2.gif",
       "links": [{ "label": "Code", "url": "https://github.com/Wlsghdh/VISION-Instance-Seg" }]
     },
     {
@@ -86,7 +86,7 @@
       "note": "Second author",
       "summary": "Designs a standardized four-stage preprocessing pipeline for the MultimodalGasData benchmark and compares eight models fairly, finding a 22.2%p gap between best and worst and showing that the fusion strategy matters more than model depth.",
       "pdf": "",
-      "thumb": "/assets/publications/P3.png",
+      "thumb": "/assets/publications/P3.gif",
       "links": [{ "label": "Code", "url": "https://github.com/Ahn-Laboratory/Gas-Leakage-Detection" }]
     }
   ],
@@ -119,7 +119,7 @@
       "subtitle": "DACON · Solo · Top 4% (20th / 1,134 teams)",
       "summary": "Predicts MAP3K5 IC50 activity from SMILES. Designed 140-dimensional features, tuned five base learners with Optuna, and combined them in a two-track ensemble (SLSQP weighting + quantile matching).",
       "stack": ["RDKit", "LightGBM", "XGBoost", "Optuna", "scikit-learn"],
-      "image": "/assets/projects/jump-ai-2025.png",
+      "image": "/assets/projects/jump-ai-2025.gif",
       "links": [{ "label": "Code", "url": "https://github.com/Wlsghdh/Jump-AI-2025" }]
     },
     {
@@ -128,7 +128,7 @@
       "subtitle": "Team project · Invited talk, Hwaseong AI Forum",
       "summary": "An interactive kiosk web service that diagnoses personal color from a face photo and plays tailored video content. Collected ~50K celebrity reference images; white-balancing with OpenCV skin-tone segmentation; OpenAI prompt routing.",
       "stack": ["PyTorch", "OpenCV", "OpenAI API", "AWS", "Docker", "React"],
-      "image": "/assets/projects/personal-color.png",
+      "image": "/assets/projects/personal-color.gif",
       "links": [{ "label": "Code", "url": "https://github.com/Woochang4862/personal-color-app" }]
     }
   ],
