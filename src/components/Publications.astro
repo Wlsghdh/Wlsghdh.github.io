@@ -1,6 +1,7 @@
 ---
 /** Publications — 왼쪽 175px 썸네일, 제목(굵게) / 저자(내 이름 굵게+밑줄) / 학회(이탤릭) / TL;DR / 링크 "PDF / arXiv / Code" */
 import { profile, type Publication } from '../lib/data';
+import { nb } from '../lib/text';
 
 const me = profile.person.nameEn;
 /** hidden: true 인 항목은 데이터에만 남기고 화면에서 뺀다 */
@@ -36,7 +37,7 @@ const linksOf = (p: Publication) => [...(p.pdf ? [{ label: 'PDF', url: p.pdf }] 
             {p.authors.map((a, i) => (
               <>
                 {i > 0 && ', '}
-                {a === me ? <b class="me">{a}</b> : a}
+                {a === me ? <b class="me">{nb(a)}</b> : nb(a)}
                 {(p.coFirst as string[]).includes(a) && '*'}
               </>
             ))}

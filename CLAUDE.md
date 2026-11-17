@@ -64,25 +64,26 @@
 ## 디자인 원칙 (2026-11-10 확정 — 바꾸지 말 것)
 
 - CVPR 논문처럼 아주 단순하게 만든다. 얇은 1px 선, 정갈한 활자, 여백과 활자 크기로만 위계를 만든다. 참고 대상: seokju-cho.github.io, yejich.github.io, 연세대 전해곤 교수 연구실 석사생 사이트.
-- **밝은 베이지 배경(`#faf7f0`) 하나만 쓴다. 다크모드와 테마 토글은 넣지 않는다** (2026-11-10 사용자 지시).
+- **흰 배경(`#ffffff`) + 차가운 회청색 선(`#e7edf3`) + 청록 포인트(`--accent: #0e7490`) 하나** (2026-11-17 사용자 지시: 베이지·파랑이 별로라 시원한 느낌으로). 다크모드와 테마 토글은 넣지 않는다.
 - **구조는 jiiiisoo.github.io(Jon Barron 템플릿 계열)를 따른다** (2026-11-17, chaemin-hwang 스타일을 대체):
   - 상단 메뉴 바 없음. 본문 폭 800px.
-  - 헤더: 왼쪽 63%에 가운데 정렬 이름(Lato 32px) + 소속 줄 "Intelligent Semiconductor Engineering · Chung-Ang University" + 소개 문단 + "Email / GitHub / Blog" 텍스트 링크. 오른쪽 37%에 정사각 사진(테두리 없음). 키워드 pill, 태그라인은 넣지 않는다.
+  - 헤더: 왼쪽 63%에 가운데 정렬 영문 이름만(Inter 600 34px, 한글 이름은 넣지 않는다) + 소속 줄 "Intelligent Semiconductor Engineering · Chung-Ang University" + 소개 문단 + "Email / GitHub / Blog" 텍스트 링크. 오른쪽 37%에 정사각 사진(테두리 없음). 키워드 pill, 태그라인은 넣지 않는다.
   - 섹션 제목: 22px 보통 굵기, 밑줄·구분선 없음.
   - News: 날짜 pill 배지(포인트 색) + 한 줄, 항목 사이 얇은 선.
   - 논문과 프로젝트: 왼쪽 175px 썸네일(contain), 제목 굵게, 저자(내 이름 굵게+밑줄), 학회 이탤릭, "TL;DR" 요약, 링크는 "PDF / arXiv / Code" 텍스트. 마우스를 올리면 행 배경이 살짝 어두워진다.
-  - 포인트 색은 `--accent: #2c5f8f` 하나만 쓴다(링크, 날짜 배지, TL;DR 라벨).
+  - 포인트 색은 `--accent` 하나만 쓴다(링크, 날짜 배지, TL;DR 라벨).
 - **Research Log 섹션은 화면에서 뺐다** (2026-11-17 사용자 지시). `log.json`, `ResearchLog.astro`는 남아 있고 일일 기록 append 규칙도 그대로다.
 - **사이트 언어는 영어.** profile.json 내용도 영어로 쓴다. 공동저자 영문 표기는 `authors`, 한글은 `authorsKo`에 둔다. log.json 항목은 사용자가 쓴 언어 그대로 둔다.
 - Skills 섹션은 화면에서 뺐다. 데이터는 profile.json 에 남아 있다. Contact 섹션도 없다. 연락처는 헤더 버튼으로 대신한다.
 - 모든 publication과 project에 썸네일 칸이 있다. 파일이 없으면 `/assets/thumb-placeholder.svg`가 보인다.
-  - 논문: `public/assets/publications/P2.gif`처럼 id 이름으로 넣는다. 지금 P2~P4와 프로젝트 4개에는 Claude가 그린 임시 애니메이션 GIF가 들어 있다(실제 결과 이미지로 바꾸면 더 좋다).
+  - 논문: `public/assets/publications/P2.gif`처럼 id 이름으로 넣는다. P4.gif는 사용자가 준 실제 로봇 실험 영상(trial_05_posA05.mp4, mp4v 코덱이라 브라우저 재생 불가)을 잘라 만든 GIF다. P2·P3와 프로젝트 4개는 Claude가 그린 애니메이션 GIF다.
   - 프로젝트: `public/assets/projects/carnerf.gif`, `etf-with-ai.gif`, `jump-ai-2025.gif`, `personal-color.gif`.
   - 다른 이름이나 확장자를 쓰려면 profile.json 의 `thumb`/`image` 경로를 바꾼다.
 - publication에 `"hidden": true`를 넣으면 데이터에는 남고 화면에서만 빠진다. P1(BMVC 탈락)이 지금 이 상태다. 다시 내려면 `hidden`을 지운다.
 - 단일 중앙 컬럼, 본문 폭 800px, 사이드바 없음.
-- 폰트는 Lato(Google Fonts), 한글은 Pretendard로 대체된다. 본문 15px, 행간 1.6.
-- 색: 본문 `#1a1a1a`, 보조 `#6b7280`, 링크 액센트 1개, 선 `#e7e7e7`. 카테고리 5색은 채도를 낮게 쓴다.
+- 폰트는 Inter(Google Fonts), 한글은 Pretendard로 대체된다. 본문 15px, 행간 1.65.
+- 줄바꿈: 문단은 `text-wrap: pretty`, 제목은 `balance`. 단어 안 하이픈(Jin-Ho, Chung-Ang)은 `src/lib/text.ts`의 `nb()`로 줄이 안 바뀌게 한다.
+- 색: 본문 `#0f172a`, 보조 `#64748b`, 링크 액센트 1개, 선 `#e7edf3`.
 - 그라데이션, 그림자, 카드 테두리, 둥근 큰 박스는 쓰지 않는다.
 - 모바일 380px에서 가로 스크롤이 생기면 안 된다.
 - 섹션 순서: Header → News → Publications → Projects → Experience → Education → Honors & Awards(+Certificates)

@@ -17,7 +17,9 @@ interface Props {
   variant?: 'rows' | 'stacked' | 'news';
   empty?: string;
 }
-const { items, variant = 'rows', empty = 'Nothing here yet.' } = Astro.props;
+import { nb } from '../lib/text';
+const { items: raw, variant = 'rows', empty = 'Nothing here yet.' } = Astro.props;
+const items = raw.map((it) => ({ ...it, title: nb(it.title), sub: it.sub && nb(it.sub), detail: it.detail && nb(it.detail) }));
 const ext = { target: '_blank', rel: 'noopener noreferrer' };
 ---
 

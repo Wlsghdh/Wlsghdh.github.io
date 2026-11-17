@@ -4,6 +4,7 @@
  * (person.keywords 는 데이터에만 남아 있고 화면에서는 뺐다)
  */
 import { profile } from '../lib/data';
+import { nb } from '../lib/text';
 
 const p = profile.person;
 const links = [
@@ -17,10 +18,23 @@ const links = [
 
 <header class="header">
   <div class="desc">
-    <h1 class="name">{p.nameEn}<span class="ko">{p.nameKo}</span></h1>
-    {p.headline && <p class="headline">{p.headline}</p>}
+    <h1 class="name">{p.nameEn}</h1>
+    {
+      p.headline && (
+        <p class="headline">
+          {p.headline.split(' · ').map((part: string, i: number, arr: string[]) => (
+            <>
+              <span class="nowrap">
+                {nb(part)}
+                {i < arr.length - 1 && <span class="dot"> ·</span>}
+              </span>{' '}
+            </>
+          ))}
+        </p>
+      )
+    }
     <div class="bio">
-      {p.intro.map((s: string) => <p>{s}</p>)}
+      {p.intro.map((s: string) => <p>{nb(s)}</p>)}
     </div>
     <p class="links">
       {
@@ -48,20 +62,23 @@ const links = [
   }
   .name {
     text-align: center;
-    font-size: 32px;
-    font-weight: 400;
-    line-height: 1.2;
-  }
-  .ko {
-    font-size: 15px;
-    color: var(--text-muted);
-    margin-left: 0.6rem;
+    font-size: 34px;
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.15;
   }
   .headline {
     text-align: center;
-    margin-top: 0.35rem;
-    font-size: var(--fs-small);
+    margin-top: 0.45rem;
+    font-size: 13.5px;
     color: var(--text-muted);
+    text-wrap: balance;
+  }
+  .nowrap {
+    white-space: nowrap;
+  }
+  .dot {
+    color: #b6c2cf;
   }
   .bio {
     margin-top: 1.25rem;

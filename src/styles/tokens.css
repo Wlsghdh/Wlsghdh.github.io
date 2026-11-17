@@ -1,36 +1,36 @@
 /* ============================================
-   디자인 토큰 — 밝은 베이지 배경 + 포인트 색 하나 (다크모드 없음)
+   디자인 토큰 — 흰 배경 + 차가운 회청색 선 + 청록 포인트 하나 (다크모드 없음)
    구조 참고: jiiiisoo.github.io (Jon Barron 템플릿 계열)
    ============================================ */
 :root {
   color-scheme: light;
 
-  --bg: #faf7f0;
-  --bar-bg: rgba(250, 247, 240, 0.92);
-  --text: #1f2328;
-  --text-muted: #66645f;
+  --bg: #ffffff;
+  --bar-bg: rgba(255, 255, 255, 0.92);
+  --text: #0f172a;
+  --text-muted: #64748b;
   /* 포인트 색은 이것 하나. 링크, News 날짜 배지, TL;DR 라벨에 쓴다 */
-  --accent: #2c5f8f;
-  --accent-soft: color-mix(in srgb, var(--accent) 11%, var(--bg));
-  --line: #ebe5d8;
-  --hover-bg: #f3eee3;
-  --cell-empty: #ece6d9;
-  --thumb-bg: #f1ece1;
+  --accent: #0e7490;
+  --accent-soft: #e6f4f8;
+  --line: #e7edf3;
+  --hover-bg: #f4f8fb;
+  --cell-empty: #edf1f5;
+  --thumb-bg: #f8fafc;
 
-  --cat-reading: #5a7598;
-  --cat-coding: #5f8a73;
+  --cat-reading: #4f7cac;
+  --cat-coding: #3f8f7f;
   --cat-industry: #a5824f;
-  --cat-writing: #86709a;
-  --cat-seminar: #ad6d70;
+  --cat-writing: #7f6aa8;
+  --cat-seminar: #b0656c;
 
-  --font-body: 'Lato', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
-    'Noto Sans KR', Verdana, Helvetica, sans-serif;
+  --font-body: 'Inter', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
+    'Noto Sans KR', system-ui, sans-serif;
   --font-serif: var(--font-body);
 
   --fs-body: 15px;
   --fs-small: 14px;
   --fs-tiny: 12.5px;
-  --lh-body: 1.6;
+  --lh-body: 1.65;
   --content-width: 800px;
   --gutter: 20px;
 }
