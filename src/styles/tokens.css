@@ -1,6 +1,6 @@
 /* ============================================
-   디자인 토큰 — 밝은 베이지 배경, 얇은 선, 정갈한 활자 (다크모드 없음)
-   구조 참고: chaemin-hwang.github.io (Jon Barron 계열)
+   디자인 토큰 — 밝은 베이지 배경 + 포인트 색 하나 (다크모드 없음)
+   구조 참고: jiiiisoo.github.io (Jon Barron 템플릿 계열)
    ============================================ */
 :root {
   color-scheme: light;
@@ -8,9 +8,12 @@
   --bg: #faf7f0;
   --bar-bg: rgba(250, 247, 240, 0.92);
   --text: #1f2328;
-  --text-muted: #6b6a66;
-  --accent: #23466e;
-  --line: #e4ddcf;
+  --text-muted: #66645f;
+  /* 포인트 색은 이것 하나. 링크, News 날짜 배지, TL;DR 라벨에 쓴다 */
+  --accent: #2c5f8f;
+  --accent-soft: color-mix(in srgb, var(--accent) 11%, var(--bg));
+  --line: #ebe5d8;
+  --hover-bg: #f3eee3;
   --cell-empty: #ece6d9;
   --thumb-bg: #f1ece1;
 
@@ -20,14 +23,14 @@
   --cat-writing: #86709a;
   --cat-seminar: #ad6d70;
 
-  --font-body: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
-    'Noto Sans KR', system-ui, sans-serif;
-  --font-serif: 'EB Garamond', 'Times New Roman', Georgia, serif;
+  --font-body: 'Lato', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
+    'Noto Sans KR', Verdana, Helvetica, sans-serif;
+  --font-serif: var(--font-body);
 
   --fs-body: 15px;
-  --fs-small: 13.5px;
-  --fs-tiny: 12px;
-  --lh-body: 1.7;
-  --content-width: 760px;
-  --gutter: 24px;
+  --fs-small: 14px;
+  --fs-tiny: 12.5px;
+  --lh-body: 1.6;
+  --content-width: 800px;
+  --gutter: 20px;
 }

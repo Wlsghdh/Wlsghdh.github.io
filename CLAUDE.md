@@ -65,11 +65,14 @@
 
 - CVPR 논문처럼 아주 단순하게 만든다. 얇은 1px 선, 정갈한 활자, 여백과 활자 크기로만 위계를 만든다. 참고 대상: seokju-cho.github.io, yejich.github.io, 연세대 전해곤 교수 연구실 석사생 사이트.
 - **밝은 베이지 배경(`#faf7f0`) 하나만 쓴다. 다크모드와 테마 토글은 넣지 않는다** (2026-11-10 사용자 지시).
-- **구조는 chaemin-hwang.github.io를 따른다** (2026-11-10):
-  - 상단 sticky 바: 이름 + 섹션 링크.
-  - 헤더: 세리프(EB Garamond) 영문 이름, 대문자 소속 줄 "Intelligent Semiconductor Engineering · Chung-Ang University", 소개 문단, 키워드 pill, 아이콘이 붙은 테두리 링크 버튼. 사진은 오른쪽에 테두리 없이 둔다. 태그라인은 넣지 않는다.
-  - 섹션 제목: 대문자 + 글자 폭만큼 짧은 밑줄. 항목 사이는 얇은 구분선.
-  - 논문과 프로젝트: 왼쪽에 120px 정사각 썸네일.
+- **구조는 jiiiisoo.github.io(Jon Barron 템플릿 계열)를 따른다** (2026-11-17, chaemin-hwang 스타일을 대체):
+  - 상단 메뉴 바 없음. 본문 폭 800px.
+  - 헤더: 왼쪽 63%에 가운데 정렬 이름(Lato 32px) + 소속 줄 "Intelligent Semiconductor Engineering · Chung-Ang University" + 소개 문단 + "Email / GitHub / Blog" 텍스트 링크. 오른쪽 37%에 정사각 사진(테두리 없음). 키워드 pill, 태그라인은 넣지 않는다.
+  - 섹션 제목: 22px 보통 굵기, 밑줄·구분선 없음.
+  - News: 날짜 pill 배지(포인트 색) + 한 줄, 항목 사이 얇은 선.
+  - 논문과 프로젝트: 왼쪽 175px 썸네일(contain), 제목 굵게, 저자(내 이름 굵게+밑줄), 학회 이탤릭, "TL;DR" 요약, 링크는 "PDF / arXiv / Code" 텍스트. 마우스를 올리면 행 배경이 살짝 어두워진다.
+  - 포인트 색은 `--accent: #2c5f8f` 하나만 쓴다(링크, 날짜 배지, TL;DR 라벨).
+- **Research Log 섹션은 화면에서 뺐다** (2026-11-17 사용자 지시). `log.json`, `ResearchLog.astro`는 남아 있고 일일 기록 append 규칙도 그대로다.
 - **사이트 언어는 영어.** profile.json 내용도 영어로 쓴다. 공동저자 영문 표기는 `authors`, 한글은 `authorsKo`에 둔다. log.json 항목은 사용자가 쓴 언어 그대로 둔다.
 - Skills 섹션은 화면에서 뺐다. 데이터는 profile.json 에 남아 있다. Contact 섹션도 없다. 연락처는 헤더 버튼으로 대신한다.
 - 모든 publication과 project에 썸네일 칸이 있다. 파일이 없으면 `/assets/thumb-placeholder.svg`가 보인다.
@@ -77,12 +80,12 @@
   - 프로젝트: `public/assets/projects/carnerf.gif`, `etf-with-ai.gif`, `jump-ai-2025.png`, `personal-color.png`.
   - 다른 이름이나 확장자를 쓰려면 profile.json 의 `thumb`/`image` 경로를 바꾼다.
 - publication에 `"hidden": true`를 넣으면 데이터에는 남고 화면에서만 빠진다. P1(BMVC 탈락)이 지금 이 상태다. 다시 내려면 `hidden`을 지운다.
-- 단일 중앙 컬럼, 본문 폭 740px, 사이드바 없음.
-- 폰트는 Pretendard 하나. 라틴 글리프가 Inter 계열이라 한글, 영문, 숫자가 흔들리지 않는다. 본문 15px, 행간 1.65, 숫자는 tabular.
+- 단일 중앙 컬럼, 본문 폭 800px, 사이드바 없음.
+- 폰트는 Lato(Google Fonts), 한글은 Pretendard로 대체된다. 본문 15px, 행간 1.6.
 - 색: 본문 `#1a1a1a`, 보조 `#6b7280`, 링크 액센트 1개, 선 `#e7e7e7`. 카테고리 5색은 채도를 낮게 쓴다.
 - 그라데이션, 그림자, 카드 테두리, 둥근 큰 박스는 쓰지 않는다.
 - 모바일 380px에서 가로 스크롤이 생기면 안 된다.
-- 섹션 순서: Header → News → Research Log → Publications → Projects → Experience → Education → Honors & Awards(+Certificates)
+- 섹션 순서: Header → News → Publications → Projects → Experience → Education → Honors & Awards(+Certificates)
 - 디자인 수정은 한 번에 한 가지만 한다. 데이터 추가와 디자인 수정을 한 커밋에 섞지 않는다.
 
 ## Git / 배포

@@ -1,7 +1,6 @@
 ---
 import '../styles/global.css';
 import { profile, todayKST } from '../lib/data';
-import { navSections } from '../data/site';
 
 interface Props {
   title?: string;
@@ -27,18 +26,13 @@ const updated = `${MON[Number(m) - 1]} ${y}`;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
     <title>{pageTitle}</title>
   </head>
   <body>
-    <div class="topbar">
-      <div class="container topbar-inner">
-        <a class="brand" href="#top">{p.nameEn}</a>
-        <nav class="topnav" aria-label="Sections">
-          {navSections.map((s) => <a href={`#${s.id}`}>{s.label}</a>)}
-        </nav>
-      </div>
-    </div>
     <main class="container" id="top">
       <slot />
     </main>
@@ -49,67 +43,11 @@ const updated = `${MON[Number(m) - 1]} ${y}`;
 </html>
 
 <style>
-  .topbar {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    background: var(--bar-bg);
-    backdrop-filter: saturate(1.2) blur(6px);
-    border-bottom: 1px solid var(--line);
-  }
-  .topbar-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
-    min-height: 52px;
-  }
-  .brand {
-    font-weight: 700;
-    color: var(--text);
-    white-space: nowrap;
-  }
-  .brand:hover {
-    text-decoration: none;
-  }
-  .topnav {
-    display: flex;
-    gap: 1.4rem;
-    font-size: 13.5px;
-  }
-  .topnav a {
-    color: var(--text-muted);
-  }
-  .topnav a:hover {
-    color: var(--text);
-    text-decoration: none;
-  }
   .footer {
     color: var(--text-muted);
     font-size: var(--fs-tiny);
-    padding-top: 1.5rem;
-    padding-bottom: 3rem;
+    padding-top: 1rem;
+    padding-bottom: 2.5rem;
     text-align: center;
-  }
-  .footer p {
-    border-top: 1px solid var(--line);
-    padding-top: 1.5rem;
-  }
-
-  @media (max-width: 720px) {
-    .topbar {
-      position: static;
-    }
-    .topbar-inner {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.25rem;
-      padding-top: 0.6rem;
-      padding-bottom: 0.6rem;
-    }
-    .topnav {
-      flex-wrap: wrap;
-      gap: 0.2rem 1rem;
-    }
   }
 </style>

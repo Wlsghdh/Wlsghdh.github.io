@@ -14,7 +14,7 @@ interface Item {
 }
 interface Props {
   items: Item[];
-  variant?: 'rows' | 'stacked';
+  variant?: 'rows' | 'stacked' | 'news';
   empty?: string;
 }
 const { items, variant = 'rows', empty = 'Nothing here yet.' } = Astro.props;
@@ -24,6 +24,15 @@ const ext = { target: '_blank', rel: 'noopener noreferrer' };
 {
   items.length === 0 ? (
     <p class="muted small">{empty}</p>
+  ) : variant === 'news' ? (
+    <ul class="news-list">
+      {items.map((it) => (
+        <li>
+          <span class="news-date">{it.date}</span>
+          <span>{it.href ? <a href={it.href} {...ext}>{it.title}</a> : it.title}</span>
+        </li>
+      ))}
+    </ul>
   ) : variant === 'stacked' ? (
     <div class="entries-lined">
       {items.map((it) => (

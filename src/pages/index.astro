@@ -2,12 +2,12 @@
 /**
  * 홈 — 섹션 순서만 정한다. 내용은 src/data/profile.json, src/data/log.json.
  * (skills 데이터는 profile.json 에 남아 있지만 화면에서는 뺐다)
+ * (Research Log 섹션은 2026-11-17 사용자 요청으로 화면에서 뺐다. log.json 과 ResearchLog.astro 는 남아 있다)
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Section from '../components/Section.astro';
 import DatedList from '../components/DatedList.astro';
-import ResearchLog from '../components/ResearchLog.astro';
 import Publications from '../components/Publications.astro';
 import Projects from '../components/Projects.astro';
 import { profile } from '../lib/data';
@@ -32,11 +32,7 @@ const certificates = profile.certificates.map((c) => ({
   <Header />
 
   <Section id="news" title="News">
-    <DatedList items={news} empty="No news yet." />
-  </Section>
-
-  <Section id="log" title="Research Log">
-    <ResearchLog />
+    <DatedList items={news} variant="news" empty="No news yet." />
   </Section>
 
   <Section id="publications" title="Publications">

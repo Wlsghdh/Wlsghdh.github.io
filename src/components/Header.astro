@@ -1,145 +1,87 @@
 ---
+/**
+ * 헤더 — Jon Barron 계열: 왼쪽(이름 가운데 정렬, 소속, 소개, 링크 "Email / GitHub / Blog"), 오른쪽 정사각 사진.
+ * (person.keywords 는 데이터에만 남아 있고 화면에서는 뺐다)
+ */
 import { profile } from '../lib/data';
 
 const p = profile.person;
-const icons: Record<string, string> = {
-  Email: 'M3 5.5h18v13H3z M3.5 6l8.5 7 8.5-7',
-  CV: 'M6 3h8l4 4v14H6z M14 3v4h4 M9 12h6 M9 16h6',
-  GitHub:
-    'M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.2 4.2 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21',
-  Scholar: 'M12 4 2 9l10 5 10-5z M6 11v5c0 1.5 3 3 6 3s6-1.5 6-3v-5',
-  Blog: 'M4 20h4L19 9l-4-4L4 16z M13.5 6.5l4 4',
-};
 const links = [
   { label: 'Email', url: `mailto:${p.email}` },
   { label: 'CV', url: p.cv },
   { label: 'GitHub', url: `https://github.com/${p.githubUsername}` },
-  { label: 'Scholar', url: p.scholar },
+  { label: 'Google Scholar', url: p.scholar },
   { label: 'Blog', url: p.blog },
 ].filter((l) => l.url);
 ---
 
 <header class="header">
   <div class="desc">
-    <h1>{p.nameEn}<span class="ko">{p.nameKo}</span></h1>
+    <h1 class="name">{p.nameEn}<span class="ko">{p.nameKo}</span></h1>
     {p.headline && <p class="headline">{p.headline}</p>}
     <div class="bio">
       {p.intro.map((s: string) => <p>{s}</p>)}
     </div>
-    {
-      p.keywords.length > 0 && (
-        <p class="keywords">
-          {p.keywords.map((k: string) => (
-            <span>{k}</span>
-          ))}
-        </p>
-      )
-    }
     <p class="links">
       {
-        links.map((l) => (
-          <a href={l.url} {...(l.url.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d={icons[l.label]} />
-            </svg>
-            {l.label}
-          </a>
+        links.map((l, i) => (
+          <>
+            {i > 0 && <span class="sep">/</span>}
+            <a href={l.url} {...(l.url.startsWith('http') ? { target: '_blank', rel: 'noopener noreferrer' } : {})}>
+              {l.label}
+            </a>
+          </>
         ))
       }
     </p>
   </div>
-  <img
-    class="photo"
-    src={p.photo}
-    alt={p.nameEn}
-    width="200"
-    onerror="this.onerror=null;this.src='/profile-placeholder.svg'"
-  />
+  <img class="photo" src={p.photo} alt={p.nameEn} onerror="this.onerror=null;this.src='/profile-placeholder.svg'" />
 </header>
 
 <style>
   .header {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 200px;
+    grid-template-columns: minmax(0, 63fr) minmax(0, 37fr);
     gap: 2.5rem;
-    align-items: start;
-    padding: 3.25rem 0 2.75rem;
+    align-items: center;
+    padding: 2.5rem 16px 1rem;
   }
-  h1 {
-    font-family: var(--font-serif);
-    font-size: 2.6rem;
-    font-weight: 500;
-    line-height: 1.15;
-    letter-spacing: -0.005em;
+  .name {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 400;
+    line-height: 1.2;
   }
   .ko {
-    font-family: var(--font-body);
-    font-size: 1rem;
-    font-weight: 400;
+    font-size: 15px;
     color: var(--text-muted);
-    margin-left: 0.75rem;
-    letter-spacing: 0;
+    margin-left: 0.6rem;
   }
   .headline {
-    margin-top: 0.5rem;
-    font-size: 12.5px;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
+    text-align: center;
+    margin-top: 0.35rem;
+    font-size: var(--fs-small);
     color: var(--text-muted);
   }
   .bio {
-    margin-top: 1.4rem;
+    margin-top: 1.25rem;
   }
   .bio p + p {
-    margin-top: 0.75rem;
-  }
-  .keywords {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    margin-top: 1.1rem;
-  }
-  .keywords span {
-    font-size: var(--fs-tiny);
-    padding: 0.25rem 0.7rem;
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    color: var(--text-muted);
+    margin-top: 0.7rem;
   }
   .links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-top: 1.4rem;
+    text-align: center;
+    margin-top: 1.1rem;
   }
-  .links a {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-size: 13px;
-    padding: 0.4rem 0.8rem;
-    border: 1px solid var(--line);
-    border-radius: 4px;
-    color: var(--text);
-  }
-  .links a:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-    text-decoration: none;
-  }
-  .links svg {
-    width: 14px;
-    height: 14px;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 1.6;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+  .sep {
+    color: var(--text-muted);
+    margin: 0 0.6rem;
   }
   .photo {
-    width: 200px;
-    height: auto;
-    border-radius: 6px;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    object-position: center 25%;
     display: block;
   }
 
@@ -147,14 +89,12 @@ const links = [
     .header {
       grid-template-columns: minmax(0, 1fr);
       gap: 1.5rem;
-      padding-top: 2rem;
+      padding: 2rem 0 0.5rem;
     }
     .photo {
       grid-row: 1;
-      width: 140px;
-    }
-    h1 {
-      font-size: 2.2rem;
+      width: 160px;
+      margin: 0 auto;
     }
   }
 </style>

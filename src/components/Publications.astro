@@ -1,10 +1,12 @@
 ---
+/** Publications — 왼쪽 175px 썸네일, 제목(굵게) / 저자(내 이름 굵게+밑줄) / 학회(이탤릭) / TL;DR / 링크 "PDF / arXiv / Code" */
 import { profile, type Publication } from '../lib/data';
 
 const me = profile.person.nameEn;
 /** hidden: true 인 항목은 데이터에만 남기고 화면에서 뺀다 */
 const pubs = profile.publications.filter((p) => !(p as { hidden?: boolean }).hidden);
 const PLACEHOLDER = '/assets/thumb-placeholder.svg';
+const ext = { target: '_blank', rel: 'noopener noreferrer' };
 
 const linksOf = (p: Publication) => [...(p.pdf ? [{ label: 'PDF', url: p.pdf }] : []), ...p.links];
 ---
@@ -12,43 +14,51 @@ const linksOf = (p: Publication) => [...(p.pdf ? [{ label: 'PDF', url: p.pdf }] 
 <div>
   {
     pubs.map((p) => (
-      <article class="media">
-        <a class="thumb" href={p.pdf || undefined} target="_blank" rel="noopener noreferrer">
-          <img
-            class="thumb-img"
-            src={p.thumb || PLACEHOLDER}
-            alt=""
-            loading="lazy"
-            onerror={`this.onerror=null;this.src='${PLACEHOLDER}'`}
-          />
-        </a>
+      <article class="pub">
+        <img
+          class="pub-thumb"
+          src={p.thumb || PLACEHOLDER}
+          alt=""
+          loading="lazy"
+          onerror={`this.onerror=null;this.src='${PLACEHOLDER}'`}
+        />
         <div>
-          <p class="media-title">
+          <p class="pub-title">
             {p.pdf ? (
-              <a href={p.pdf} target="_blank" rel="noopener noreferrer">
+              <a href={p.pdf} {...ext}>
                 {p.title}
               </a>
             ) : (
               p.title
             )}
           </p>
-          <p class="authors">
+          <p class="pub-line">
             {p.authors.map((a, i) => (
               <>
                 {i > 0 && ', '}
-                {a === me ? <b>{a}</b> : a}
+                {a === me ? <b class="me">{a}</b> : a}
                 {(p.coFirst as string[]).includes(a) && '*'}
               </>
             ))}
           </p>
-          <p class="media-meta">
-            <span class="venue">{p.venue}</span>
-            {p.note && <span> · {p.note}</span>}
+          <p class="pub-line">
+            <em>{p.venue}</em>{p.note && <span class="muted">, {p.note}</span>}
           </p>
-          {p.summary && <p class="media-body">{p.summary}</p>}
+          {p.summary && (
+            <p class="tldr">
+              <b>TL;DR</b> {p.summary}
+            </p>
+          )}
           {linksOf(p).length > 0 && (
-            <p class="chips">
-              {linksOf(p).map((l) => <a href={l.url} target="_blank" rel="noopener noreferrer">{l.label}</a>)}
+            <p class="pub-links">
+              {linksOf(p).map((l, i) => (
+                <>
+                  {i > 0 && ' / '}
+                  <a href={l.url} {...ext}>
+                    {l.label}
+                  </a>
+                </>
+              ))}
             </p>
           )}
         </div>
@@ -59,17 +69,10 @@ const linksOf = (p: Publication) => [...(p.pdf ? [{ label: 'PDF', url: p.pdf }] 
 {pubs.some((p) => p.coFirst.length > 0) && <p class="muted small note">* Equal contribution</p>}
 
 <style>
-  .authors {
-    font-size: var(--fs-small);
-    margin-top: 0.15rem;
-  }
-  .authors b {
-    font-weight: 600;
-  }
-  .venue {
-    font-style: normal;
-    font-weight: 600;
-    color: var(--accent);
+  .me {
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 2px;
   }
   .note {
     margin-top: 1rem;
