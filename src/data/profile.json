@@ -6,9 +6,9 @@
     "tagline": "",
     "intro": [
       "I am with the Department of Intelligent Semiconductor Engineering at Chung-Ang University, where I have been an undergraduate research intern since July 2026.",
-      "My work so far spans computer vision and applied machine learning — generative data augmentation for small-sample industrial defect detection, multimodal sensor learning, and 3D reconstruction pipelines."
+      "My research focuses on large language models (LLMs), vision-language-action (VLA) models, and model compression and architecture design."
     ],
-    "keywords": ["Computer Vision", "Generative Augmentation", "3D Reconstruction", "Applied ML"],
+    "keywords": ["LLM", "VLA", "Model Compression", "Architecture Design"],
     "role": "Undergraduate Research Intern, Chung-Ang University",
     "rolePeriod": "Jul. 13, 2026 – Present",
     "affiliation": "Chung-Ang University",
