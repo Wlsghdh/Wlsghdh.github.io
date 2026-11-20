@@ -87,7 +87,6 @@
 - 색: 본문 `#0f172a`, 보조 `#64748b`, 링크 액센트 1개, 선 `#e7edf3`.
 - 그라데이션, 그림자, 카드 테두리, 둥근 큰 박스는 쓰지 않는다.
 - 모바일 380px에서 가로 스크롤이 생기면 안 된다.
-- 섹션 순서: Header → News → Publications → Projects → Experience → Education → Honors & Awards(+Certificates)
 - 디자인 수정은 한 번에 한 가지만 한다. 데이터 추가와 디자인 수정을 한 커밋에 섞지 않는다.
 
 ## Git / 배포
