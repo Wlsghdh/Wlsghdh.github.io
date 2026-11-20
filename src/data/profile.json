@@ -24,12 +24,7 @@
     "description": "Jin-Ho Ju — academic homepage and daily research log"
   },
   "news": [
-    { "date": "Sep. 2026", "text": "Our preprint ReShoot, on generative visual domain randomization of robot demonstrations, is on arXiv.", "link": "https://arxiv.org/abs/2609.19661" },
-    { "date": "Jul. 2026", "text": "Started as an undergraduate research intern at Chung-Ang University." },
-    { "date": "Dec. 2025", "text": "Received the Encouragement Award from KIISE." },
-    { "date": "Nov. 2025", "text": "1st place in DSML Stock Chart Data Collection #2, University of Suwon." },
-    { "date": "Oct. 2025", "text": "1st place in DSML Stock Chart Data Collection #1, University of Suwon." },
-    { "date": "Aug. 2025", "text": "Top 4% (20th / 1,134 teams) at the DACON JUMP AI 2025 drug discovery challenge." }
+    { "date": "Sep. 2026", "text": "Our preprint ReShoot, on generative visual domain randomization of robot demonstrations, is on arXiv.", "link": "https://arxiv.org/abs/2609.19661" }
   ],
   "publications": [
     {
