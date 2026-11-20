@@ -1,36 +1,41 @@
 ---
-/** Projects — Publications 와 같은 구성: 썸네일 + 제목 / 기간 · 설명 / 요약 / 스택 / 링크 */
+/** Projects — Publications 와 같은 줄 구성: 썸네일 / 제목 / 기간·설명(이탤릭) / 요약 / 스택 / 링크 */
 import { profile } from '../lib/data';
 const projects = profile.projects;
 const PLACEHOLDER = '/assets/thumb-placeholder.svg';
 const ext = { target: '_blank', rel: 'noopener noreferrer' };
 ---
 
-<div class="entries">
+<div>
   {
     projects.map((p) => (
-      <article class="entry">
+      <article class="pub">
         <img
-          class="entry-thumb"
+          class="pub-thumb"
           src={p.image || PLACEHOLDER}
           alt=""
           loading="lazy"
           onerror={`this.onerror=null;this.src='${PLACEHOLDER}'`}
         />
         <div>
-          <p class="entry-title">{p.title}</p>
-          <p class="entry-meta">
-            <span class="venue">{p.period}</span>
-            {p.subtitle && <span> · {p.subtitle}</span>}
+          <p class="pub-title">{p.title}</p>
+          <p class="pub-line">
+            <em>
+              {p.period}
+              {p.subtitle && <> · {p.subtitle}</>}
+            </em>
           </p>
-          <p class="entry-summary">{p.summary}</p>
-          <p class="entry-stack">{p.stack.join(' · ')}</p>
+          <p class="tldr">{p.summary}</p>
+          <p class="stack">{p.stack.join(' · ')}</p>
           {p.links.length > 0 && (
-            <p class="entry-links">
-              {p.links.map((l) => (
-                <a href={l.url} {...ext}>
-                  {l.label}
-                </a>
+            <p class="pub-links">
+              {p.links.map((l, i) => (
+                <>
+                  {i > 0 && ' / '}
+                  <a href={l.url} {...ext}>
+                    {l.label}
+                  </a>
+                </>
               ))}
             </p>
           )}
@@ -39,3 +44,11 @@ const ext = { target: '_blank', rel: 'noopener noreferrer' };
     ))
   }
 </div>
+
+<style>
+  .stack {
+    color: var(--text-muted);
+    font-size: var(--fs-tiny);
+    margin-top: 0.2rem;
+  }
+</style>

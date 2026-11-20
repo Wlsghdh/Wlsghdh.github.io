@@ -1,13 +1,10 @@
 ---
 /**
  * 날짜가 붙은 목록.
- * - variant="news"    : 날짜(좌, 회색) + 한 줄
- * - variant="stacked" : 제목(굵게) · 소속 · 설명 + 날짜(우측 정렬) — Experience, Education
- * - variant="rows"    : 제목 · 소속(작게) + 날짜(우측 정렬) — Honors, Certificates
+ * - variant="rows"    : 날짜(좌) + 한 줄(우)  — News, Honors, Certificates
+ * - variant="stacked" : 날짜 → 제목 → 소속(이탤릭) → 설명, 항목 사이 얇은 선 — Experience, Education
  * href 가 있으면 제목이 그 파일(이미지/PDF)로 연결된다.
  */
-import { nb } from '../lib/text';
-
 interface Item {
   date: string;
   title: string;
@@ -20,6 +17,7 @@ interface Props {
   variant?: 'rows' | 'stacked' | 'news';
   empty?: string;
 }
+import { nb } from '../lib/text';
 const { items: raw, variant = 'rows', empty = 'Nothing here yet.' } = Astro.props;
 const items = raw.map((it) => ({ ...it, title: nb(it.title), sub: it.sub && nb(it.sub), detail: it.detail && nb(it.detail) }));
 const ext = { target: '_blank', rel: 'noopener noreferrer' };
@@ -29,100 +27,60 @@ const ext = { target: '_blank', rel: 'noopener noreferrer' };
   items.length === 0 ? (
     <p class="muted small">{empty}</p>
   ) : variant === 'news' ? (
-    <ul class="news">
+    <ul class="news-list">
       {items.map((it) => (
         <li>
-          <span class="date">{it.date}</span>
+          <span class="news-date">{it.date}</span>
           <span>{it.href ? <a href={it.href} {...ext}>{it.title}</a> : it.title}</span>
         </li>
       ))}
     </ul>
-  ) : (
-    <ul class:list={['cv', variant]}>
+  ) : variant === 'stacked' ? (
+    <div class="entries-lined">
       {items.map((it) => (
-        <li>
-          <div>
-            <p class="cv-title">{it.href ? <a href={it.href} {...ext}>{it.title}</a> : it.title}</p>
-            {it.sub && <p class="cv-sub">{it.sub}</p>}
-            {it.detail && <p class="cv-detail">{it.detail}</p>}
-          </div>
-          <span class="date">{it.date}</span>
-        </li>
+        <div class="stacked">
+          <p class="s-date">{it.date}</p>
+          <p class="s-title">{it.href ? <a href={it.href} {...ext}>{it.title}</a> : it.title}</p>
+          {it.sub && <p class="s-sub">{it.sub}</p>}
+          {it.detail && <p class="s-detail">{it.detail}</p>}
+        </div>
       ))}
-    </ul>
+    </div>
+  ) : (
+    <div class="rows">
+      {items.map((it) => (
+        <div class="row">
+          <span class="row-date">{it.date}</span>
+          <div>
+            <span>{it.href ? <a href={it.href} {...ext}>{it.title}</a> : it.title}</span>
+            {it.sub && <span class="muted small r-sub">{it.sub}</span>}
+            {it.detail && <p class="muted small">{it.detail}</p>}
+          </div>
+        </div>
+      ))}
+    </div>
   )
 }
 
 <style>
-  ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-  .date {
-    font-size: 13px;
+  .s-date {
+    font-size: var(--fs-tiny);
     color: var(--text-muted);
-    font-variant-numeric: tabular-nums;
-    white-space: nowrap;
   }
-
-  /* News */
-  .news li {
-    display: grid;
-    grid-template-columns: 76px minmax(0, 1fr);
-    column-gap: 1rem;
-    align-items: baseline;
-  }
-  .news li + li {
-    margin-top: 0.5rem;
-  }
-
-  /* Experience / Education / Honors */
-  .cv li {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    column-gap: 1.5rem;
-    align-items: baseline;
-  }
-  .stacked li + li {
-    margin-top: 1.15rem;
-  }
-  .rows li + li {
-    margin-top: 0.7rem;
-  }
-  .cv-title {
+  .s-title {
     font-weight: 600;
-    line-height: 1.45;
+    margin-top: 0.1rem;
   }
-  .rows .cv-title {
-    font-weight: 500;
-  }
-  .cv-title a {
-    color: var(--text);
-  }
-  .cv-title a:hover {
-    color: var(--accent);
-  }
-  .cv-sub {
+  .s-sub {
     font-size: var(--fs-small);
+    font-style: italic;
     color: var(--text-muted);
   }
-  .cv-detail {
+  .s-detail {
     font-size: var(--fs-small);
-    color: #334155;
-    margin-top: 0.15rem;
+    margin-top: 0.2rem;
   }
-
-  @media (max-width: 640px) {
-    .cv li {
-      grid-template-columns: minmax(0, 1fr);
-    }
-    .cv .date {
-      grid-row: 1;
-      font-size: 12.5px;
-    }
-    .news li {
-      grid-template-columns: minmax(0, 1fr);
-    }
+  .r-sub {
+    margin-left: 0.5rem;
   }
 </style>

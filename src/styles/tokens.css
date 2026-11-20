@@ -1,19 +1,19 @@
 /* ============================================
-   디자인 토큰 — 흰 배경 + 차가운 회청색 선 + 청록 포인트 하나 (다크모드 없음)
+   디자인 토큰 — 거의 흰 배경 + 옅은 회보라 선 + 인디고 포인트 하나 (다크모드 없음)
    구조 참고: jiiiisoo.github.io (Jon Barron 템플릿 계열)
    ============================================ */
 :root {
   color-scheme: light;
 
-  --bg: #ffffff;
-  --bar-bg: rgba(255, 255, 255, 0.92);
-  --text: #0f172a;
-  --text-muted: #64748b;
+  --bg: #fbfcfe;
+  --bar-bg: rgba(251, 252, 254, 0.92);
+  --text: #111827;
+  --text-muted: #6b7280;
   /* 포인트 색은 이것 하나. 링크, News 날짜 배지, TL;DR 라벨에 쓴다 */
-  --accent: #0e7490;
-  --accent-soft: #e6f4f8;
-  --line: #e7edf3;
-  --hover-bg: #f4f8fb;
+  --accent: #4f5bd5;
+  --accent-soft: #eef0fc;
+  --line: #e7e9f2;
+  --hover-bg: #f3f4fb;
   --cell-empty: #edf1f5;
   --thumb-bg: #f8fafc;
 
