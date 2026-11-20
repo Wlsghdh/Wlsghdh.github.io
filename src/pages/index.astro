@@ -1,16 +1,18 @@
 ---
 /**
- * 홈 — 섹션 순서만 정한다. 내용은 src/data/profile.json, src/data/log.json.
- * (skills 데이터는 profile.json 에 남아 있지만 화면에서는 뺐다)
- * (Research Log 섹션은 2026-11-17 사용자 요청으로 화면에서 뺐다. log.json 과 ResearchLog.astro 는 남아 있다)
+ * 홈 — 섹션 순서만 정한다. 내용은 src/data/profile.json.
+ * 화면에서 뺐지만 데이터는 남아 있는 것:
+ *  - skills (profile.json)
+ *  - Research Log (2026-11-17, log.json + ResearchLog.astro)
+ *  - Projects (2026-11-20, profile.json projects + Projects.astro) — 다시 넣으려면 아래 주석의 섹션을 되살린다
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Header from '../components/Header.astro';
 import Section from '../components/Section.astro';
 import DatedList from '../components/DatedList.astro';
 import Publications from '../components/Publications.astro';
-import Projects from '../components/Projects.astro';
 import { profile } from '../lib/data';
+import { nb } from '../lib/text';
 
 const news = profile.news.slice(0, 8).map((n: { date: string; text: string; link?: string }) => ({
   date: n.date,
@@ -31,6 +33,12 @@ const certificates = profile.certificates.map((c) => ({
 <BaseLayout>
   <Header />
 
+  <Section id="about" title="About">
+    <div class="about">
+      {profile.person.intro.map((s: string) => <p>{nb(s)}</p>)}
+    </div>
+  </Section>
+
   <Section id="news" title="News">
     <DatedList items={news} variant="news" empty="No news yet." />
   </Section>
@@ -39,9 +47,7 @@ const certificates = profile.certificates.map((c) => ({
     <Publications />
   </Section>
 
-  <Section id="projects" title="Projects">
-    <Projects />
-  </Section>
+  {/* <Section id="projects" title="Projects"><Projects /></Section>  (import Projects from '../components/Projects.astro') */}
 
   <Section id="experience" title="Experience">
     <DatedList items={experience} variant="stacked" />
@@ -51,7 +57,7 @@ const certificates = profile.certificates.map((c) => ({
     <DatedList items={education} variant="stacked" />
   </Section>
 
-  <Section id="awards" title="Honors & Awards">
+  <Section id="awards" title="Honors">
     <DatedList items={awards} />
     <h3 class="sub-title">Certificates</h3>
     <DatedList items={certificates} />
@@ -59,10 +65,13 @@ const certificates = profile.certificates.map((c) => ({
 </BaseLayout>
 
 <style>
+  .about p + p {
+    margin-top: 0.7rem;
+  }
   .sub-title {
-    font-size: var(--fs-small);
+    font-size: 13px;
     font-weight: 600;
     color: var(--text-muted);
-    margin: 1.75rem 0 0.75rem;
+    margin: 1.75rem 0 0.7rem;
   }
 </style>

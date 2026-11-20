@@ -37,7 +37,7 @@ li {
 }
 h1,
 h2,
-.pub-title {
+.entry-title {
   text-wrap: balance;
 }
 
@@ -72,133 +72,112 @@ a:hover {
   }
 }
 
-/* ---------- 섹션 — 구분선 없이 여백과 제목 크기로만 나눈다 ---------- */
+/* ---------- 섹션 — 왼쪽 칸에 섹션 이름, 오른쪽에 내용. 섹션 사이 얇은 선 하나 ---------- */
+:root {
+  --label-w: 120px;
+  --col-gap: 40px;
+}
 .section {
-  padding: 1.75rem 16px 0.75rem;
+  display: grid;
+  grid-template-columns: var(--label-w) minmax(0, 1fr);
+  column-gap: var(--col-gap);
+  padding: 2rem 0;
+  border-top: 1px solid var(--line);
   scroll-margin-top: 1rem;
 }
 .section-title {
-  font-size: 21px;
+  font-size: 14px;
   font-weight: 600;
-  letter-spacing: -0.015em;
-  line-height: 1.3;
-  margin-bottom: 1rem;
+  letter-spacing: -0.005em;
+  line-height: var(--lh-body);
 }
 @media (max-width: 640px) {
   .section {
-    padding-left: 0;
-    padding-right: 0;
+    grid-template-columns: minmax(0, 1fr);
+    row-gap: 0.75rem;
+    padding: 1.6rem 0;
   }
 }
 
-/* ---------- News — 날짜 배지(포인트 색) + 한 줄 ---------- */
-.news-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+/* ---------- Publications / Projects 항목 ---------- */
+.entry {
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr);
+  column-gap: 1.4rem;
+  align-items: start;
 }
-.news-list li {
-  display: flex;
-  gap: 14px;
-  align-items: baseline;
-  padding: 8px 0;
-  border-bottom: 1px solid var(--line);
+.entry + .entry {
+  margin-top: 1.75rem;
 }
-.news-list li:last-child {
-  border-bottom: 0;
-}
-.news-date {
-  flex-shrink: 0;
-  width: 76px;
-  text-align: center;
-  font-size: 11.5px;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  color: var(--accent);
-  background: var(--accent-soft);
-  border-radius: 999px;
-  padding: 2px 0;
-}
-
-/* ---------- Publications / Projects ---------- */
-.pub {
-  display: flex;
-  gap: 18px;
-  align-items: center;
-  padding: 12px;
-  margin: 0 -12px 6px;
-  border-radius: 10px;
-  transition: background-color 0.2s ease-in-out;
-}
-.pub:hover {
-  background: var(--hover-bg);
-}
-.pub-thumb {
-  width: 175px;
-  max-height: 175px;
-  flex-shrink: 0;
-  object-fit: contain;
+.entry-thumb {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
   border-radius: 8px;
-  border: 1px solid var(--line);
-  background: #fff;
+  background: var(--thumb-bg);
+  outline: 1px solid var(--line);
+  outline-offset: -1px;
   display: block;
 }
-.pub-title {
-  font-size: 15.5px;
+.entry-title {
   font-weight: 600;
-  line-height: 1.4;
-  margin-bottom: 2px;
+  line-height: 1.45;
 }
-.pub-title a {
+.entry-title a {
   color: var(--text);
 }
-.pub-title a:hover {
+.entry-title a:hover {
   color: var(--accent);
+  text-decoration: none;
 }
-.pub-line {
+.entry-authors {
   font-size: var(--fs-small);
+  color: #334155;
+  margin-top: 0.2rem;
 }
-.pub-line em {
+.entry-authors b {
+  font-weight: 600;
+  color: var(--text);
+}
+.entry-meta {
+  font-size: 13px;
   color: var(--text-muted);
+  margin-top: 0.15rem;
 }
-.tldr {
+.entry-meta .venue {
+  color: var(--accent);
+  font-weight: 600;
+}
+.entry-summary {
   font-size: 13.5px;
   color: #475569;
-  line-height: 1.5;
-  margin: 5px 0 2px;
+  line-height: 1.55;
+  margin-top: 0.4rem;
 }
-.tldr b {
-  color: var(--accent);
-  font-weight: 700;
-  margin-right: 0.3rem;
+.entry-stack {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  margin-top: 0.3rem;
 }
-.pub-links {
-  font-size: var(--fs-small);
-  margin-top: 3px;
+.entry-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 1rem;
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 0.45rem;
 }
-@media (max-width: 560px) {
-  .pub {
-    align-items: flex-start;
-    gap: 12px;
-    margin: 0 0 6px;
-    padding: 10px 0;
+.entry-links a::after {
+  content: ' ↗';
+  font-size: 0.85em;
+  opacity: 0.6;
+}
+@media (max-width: 640px) {
+  .entry {
+    grid-template-columns: 96px minmax(0, 1fr);
+    column-gap: 1rem;
   }
-  .pub:hover {
-    background: none;
-  }
-  .pub-thumb {
-    width: 88px;
-    max-height: 88px;
-  }
 }
-
-/* 항목 사이 얇은 구분선 목록 — Experience / Education */
-.entries-lined > * + * {
-  border-top: 1px solid var(--line);
-  margin-top: 1.1rem;
-  padding-top: 1.1rem;
-}
-
 .muted {
   color: var(--text-muted);
 }

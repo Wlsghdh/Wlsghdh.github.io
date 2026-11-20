@@ -45,9 +45,18 @@ const updated = `${MON[Number(m) - 1]} ${y}`;
 <style>
   .footer {
     color: var(--text-muted);
-    font-size: var(--fs-tiny);
-    padding-top: 1rem;
-    padding-bottom: 2.5rem;
-    text-align: center;
+    font-size: 12.5px;
+    padding-top: 1.5rem;
+    padding-bottom: 3rem;
+  }
+  .footer p {
+    border-top: 1px solid var(--line);
+    padding-top: 1.25rem;
+    padding-left: calc(var(--label-w) + var(--col-gap));
+  }
+  @media (max-width: 640px) {
+    .footer p {
+      padding-left: 0;
+    }
   }
 </style>

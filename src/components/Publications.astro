@@ -1,5 +1,5 @@
 ---
-/** Publications — 왼쪽 175px 썸네일, 제목(굵게) / 저자(내 이름 굵게+밑줄) / 학회(이탤릭) / TL;DR / 링크 "PDF / arXiv / Code" */
+/** Publications — 썸네일 + 제목 / 저자(내 이름 굵게) / 학회 · 비고 / 요약 / 링크 */
 import { profile, type Publication } from '../lib/data';
 import { nb } from '../lib/text';
 
@@ -12,19 +12,19 @@ const ext = { target: '_blank', rel: 'noopener noreferrer' };
 const linksOf = (p: Publication) => [...(p.pdf ? [{ label: 'PDF', url: p.pdf }] : []), ...p.links];
 ---
 
-<div>
+<div class="entries">
   {
     pubs.map((p) => (
-      <article class="pub">
+      <article class="entry">
         <img
-          class="pub-thumb"
+          class="entry-thumb"
           src={p.thumb || PLACEHOLDER}
           alt=""
           loading="lazy"
           onerror={`this.onerror=null;this.src='${PLACEHOLDER}'`}
         />
         <div>
-          <p class="pub-title">
+          <p class="entry-title">
             {p.pdf ? (
               <a href={p.pdf} {...ext}>
                 {p.title}
@@ -33,32 +33,26 @@ const linksOf = (p: Publication) => [...(p.pdf ? [{ label: 'PDF', url: p.pdf }] 
               p.title
             )}
           </p>
-          <p class="pub-line">
+          <p class="entry-authors">
             {p.authors.map((a, i) => (
               <>
                 {i > 0 && ', '}
-                {a === me ? <b class="me">{nb(a)}</b> : nb(a)}
+                {a === me ? <b>{nb(a)}</b> : nb(a)}
                 {(p.coFirst as string[]).includes(a) && '*'}
               </>
             ))}
           </p>
-          <p class="pub-line">
-            <em>{p.venue}</em>{p.note && <span class="muted">, {p.note}</span>}
+          <p class="entry-meta">
+            <span class="venue">{p.venue}</span>
+            {p.note && <span> · {p.note}</span>}
           </p>
-          {p.summary && (
-            <p class="tldr">
-              <b>TL;DR</b> {p.summary}
-            </p>
-          )}
+          {p.summary && <p class="entry-summary">{p.summary}</p>}
           {linksOf(p).length > 0 && (
-            <p class="pub-links">
-              {linksOf(p).map((l, i) => (
-                <>
-                  {i > 0 && ' / '}
-                  <a href={l.url} {...ext}>
-                    {l.label}
-                  </a>
-                </>
+            <p class="entry-links">
+              {linksOf(p).map((l) => (
+                <a href={l.url} {...ext}>
+                  {l.label}
+                </a>
               ))}
             </p>
           )}
@@ -70,11 +64,6 @@ const linksOf = (p: Publication) => [...(p.pdf ? [{ label: 'PDF', url: p.pdf }] 
 {pubs.some((p) => p.coFirst.length > 0) && <p class="muted small note">* Equal contribution</p>}
 
 <style>
-  .me {
-    font-weight: 700;
-    text-decoration: underline;
-    text-underline-offset: 2px;
-  }
   .note {
     margin-top: 1rem;
   }
