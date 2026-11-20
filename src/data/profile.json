@@ -133,7 +133,6 @@
     }
   ],
   "experience": [
-    { "period": "Feb. 2026 – Jun. 2026", "title": "Undergraduate Teaching Assistant — DSML Vibe Coding", "org": "DSML, University of Suwon", "detail": "Mentored undergraduate students." },
     { "period": "Sep. 2025 – Dec. 2025", "title": "Research Intern — Hadd Science", "org": "Sungkyunkwan University", "detail": "Managed the website, wrote articles, and worked on AutoCAD 3D modeling." },
     { "period": "Jul. 2025 – Jun. 2026", "title": "Undergraduate Researcher", "org": "Prof. Hongryul Ahn's Lab, University of Suwon", "detail": "Computer vision research that led to first- and co-authored papers; also built application prototypes with React / Node.js / MongoDB." },
     { "period": "Aug. 2024 – Feb. 2025", "title": "Intern, Autonomous Driving Team", "org": "AIMMO Inc.", "detail": "Cleaned vision failure data, reviewed Labellerr annotations, collected training data, and analyzed sensor graphs of detection failures." },
@@ -141,8 +140,7 @@
   ],
   "education": [
     { "period": "Jul. 2026 – Present", "school": "Chung-Ang University", "detail": "Undergraduate Research Intern" },
-    { "period": "Mar. 2021 – Feb. 2027 (expected)", "school": "University of Suwon", "detail": "B.S. in Data Science · GPA 4.33 / 4.5" },
-    { "period": "Mar. 2019 – Feb. 2021", "school": "Seongil High School", "detail": "" }
+    { "period": "Mar. 2021 – Feb. 2027 (expected)", "school": "University of Suwon", "detail": "B.S. in Data Science · GPA 4.35 / 4.5" }
   ],
   "awards": [
     { "date": "2021 – 2026", "title": "Academic Excellence Scholarship", "org": "University of Suwon · merit-based, 5 semesters", "image": "" },
