@@ -29,13 +29,13 @@
   --cat-writing: #7f6aa8;
   --cat-seminar: #b0656c;
 
-  --font-body: 'Inter', 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
-    'Noto Sans KR', system-ui, sans-serif;
+  /* CVPR 논문 본문 글꼴(Times) — 윈도/맥은 Times New Roman, 없으면 같은 폭의 Tinos(Google Fonts). 한글은 Pretendard */
+  --font-body: 'Times New Roman', 'Tinos', Times, 'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', serif;
   --font-serif: var(--font-body);
 
-  --fs-body: 15px;
-  --fs-small: 14px;
-  --fs-tiny: 12.5px;
+  --fs-body: 16.5px;
+  --fs-small: 15px;
+  --fs-tiny: 13.5px;
   --lh-body: 1.65;
   --content-width: 800px;
   --gutter: 20px;
