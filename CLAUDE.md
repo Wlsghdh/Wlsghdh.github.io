@@ -49,6 +49,13 @@
 - 히트맵은 첫 기록(또는 1년 전)부터 오늘까지 그리고, 길어지면 가로 스크롤한다. 처음 열면 오늘 쪽(오른쪽 끝)이 보인다.
 - 날짜 역순 리스트(하루 단위로 묶음), CSS만 쓰는 카테고리 필터(기본 탭 "Recent Activity"), 최근 5일 + "Show more"를 누를 때마다 7일씩.
 
+## 기사 추가 (Press 섹션)
+
+- 사용자가 기사 링크를 주면 `profile.json`의 `press` 배열 **맨 앞**에 추가한다. 화면에서는 Publications 바로 아래 "Press" 섹션에 보인다 (`src/components/Press.astro`).
+- 필드: `{ "date": "Sep. 19, 2025", "title": "기사 원제목 그대로", "outlet": "매체 영문명", "note": "한 줄 영문 설명(선택)", "url": "기사 주소", "image": "/assets/press/<yyyy-mm>-<매체>-<키워드>.jpg" }`
+- 썸네일은 기사 대표 사진(og:image 또는 본문 사진 원본)을 받아 `public/assets/press/`에 JPEG로 둔다. 화면에서는 175px 폭 16:10 칸에 꽉 채워진다.
+- 기사에 없는 내용은 note 에 쓰지 않는다.
+
 ## 실적 업데이트 (논문 억셉, 수상 등)
 
 - `profile.json`의 해당 배열(`publications`, `awards` 등)에 항목을 추가하고, `news` 맨 앞에도 한 줄 추가한다. News는 화면에 최근 8개만 보인다.
@@ -90,7 +97,7 @@
 - 색: 본문 `#16181d`, 보조 `#5c6068`, 포인트 cvprblue 1개, 선 `#e4e6ea`.
 - 그라데이션, 그림자, 카드 테두리, 둥근 큰 박스는 쓰지 않는다.
 - 모바일 380px에서 가로 스크롤이 생기면 안 된다.
-- 섹션 순서: Header → News → Publications → Experience → Education → Honors & Awards(+Certificates) → Contact
+- 섹션 순서: Header → News → Publications → Press → Experience → Education → Honors & Awards(+Certificates) → Contact
 - **Contact는 가상 명함 한 장**(2026-11-23 사용자 지시, 참고: fid-design.github.io/Interior 의 CONTACT). `src/components/Contact.astro`. 흰 카드 앞면 한 장뿐이다(뒷면 없음): 이름, "Undergraduate Researcher · LLM / VLA", E./G./B. 연락처(전화번호는 넣지 않는다), 오른쪽 위 로봇 선 아이콘(SVG). 기울이면 글자가 흐려져서 똑바로 두고, 마우스를 올리면 3px 떠오르며 테두리가 포인트 색이 된다. 소속 표기, 사진, 안내 문구, 그림자는 넣지 않는다(2026-11-23 사용자 지시). cqw 단위는 카드 안쪽 `.body`에서만 쓴다.
 - **Projects 섹션은 화면에서 뺐다** (2026-11-20 사용자 지시). profile.json `projects`와 `Projects.astro`는 남아 있다.
 - 2026-11-20에 "섹션 이름 왼쪽 칸 + 내용 오른쪽" 2단 레이아웃을 시도했지만 사용자가 지금 구조를 더 좋아해서 되돌렸다. 구조는 바꾸지 말 것.

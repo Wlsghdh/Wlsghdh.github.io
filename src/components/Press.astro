@@ -1,0 +1,53 @@
+---
+/**
+ * Press: 나와 관련된 기사. Publications 와 같은 줄 구성이지만 썸네일은 가로형(16:10).
+ * 데이터는 profile.json 의 press 배열 (최신이 맨 앞).
+ *   { date, title(기사 원제목 그대로), outlet(매체), note(한 줄 영문 설명, 선택), url, image(/assets/press/...) }
+ */
+import { profile } from '../lib/data';
+
+type PressItem = { date: string; title: string; outlet: string; note?: string; url: string; image?: string };
+const items = ((profile as { press?: PressItem[] }).press ?? []) as PressItem[];
+const PLACEHOLDER = '/assets/thumb-placeholder.svg';
+const ext = { target: '_blank', rel: 'noopener noreferrer' };
+---
+
+<div>
+  {
+    items.map((it) => (
+      <article class="pub">
+        <a class="press-thumb-link" href={it.url} {...ext} tabindex="-1" aria-hidden="true">
+          <img class="pub-thumb press-thumb" src={it.image || PLACEHOLDER} alt="" loading="lazy" />
+        </a>
+        <div>
+          <p class="pub-title">
+            <a href={it.url} {...ext}>
+              {it.title}
+            </a>
+          </p>
+          {it.note && <p class="pub-line">{it.note}</p>}
+          <p class="pub-line">
+            <em>{it.outlet}</em><span class="muted">, {it.date}</span>
+          </p>
+          <p class="pub-links">
+            <a href={it.url} {...ext}>
+              Article
+            </a>
+          </p>
+        </div>
+      </article>
+    ))
+  }
+</div>
+
+<style>
+  .press-thumb-link {
+    flex-shrink: 0;
+    display: block;
+  }
+  /* 기사 사진은 가로형이라 16:10 칸에 꽉 채운다 */
+  .press-thumb {
+    height: auto;
+    aspect-ratio: 16 / 10;
+  }
+</style>

@@ -128,6 +128,9 @@
       "links": [{ "label": "Code", "url": "https://github.com/Woochang4862/personal-color-app" }]
     }
   ],
+  "press": [
+    { "date": "Sep. 19, 2025", "title": "수원대 창업보육센터 -하드사이언스 바이오 청년창업인턴십 추진", "outlet": "Veritas Alpha", "note": "University of Suwon × HADD SCIENCE bio youth startup internship program", "url": "https://www.veritas-a.com/news/articleView.html?idxno=573485", "image": "/assets/press/2025-09-veritas-hadd.jpg" }
+  ],
   "experience": [
     { "period": "Jul. 2026 ~ Present", "title": "Undergraduate Research Intern", "keyword": "VLA", "org": "Intelligent Semiconductor Engineering, Chung-Ang University", "logo": "/assets/logos/cau-wide.png" },
     { "period": "Sep. 2025 ~ Dec. 2025", "title": "Research Intern, Hadd Science", "keyword": "3D Modeling", "org": "Sungkyunkwan University", "detail": "Managed the website, wrote articles, and worked on AutoCAD 3D modeling.", "logo": "/assets/logos/skku.svg" },

@@ -10,6 +10,7 @@ import Section from '../components/Section.astro';
 import DatedList from '../components/DatedList.astro';
 import Publications from '../components/Publications.astro';
 import Contact from '../components/Contact.astro';
+import Press from '../components/Press.astro';
 import { profile } from '../lib/data';
 
 const news = profile.news.slice(0, 8).map((n: { date: string; text: string; link?: string }) => ({
@@ -38,6 +39,10 @@ const certificates = profile.certificates.map((c) => ({
 
   <Section id="publications" title="Publications">
     <Publications />
+  </Section>
+
+  <Section id="press" title="Press">
+    <Press />
   </Section>
 
   {/* Projects 섹션은 2026-11-20 사용자 요청으로 뺐다. 데이터와 Projects.astro 는 남아 있다 */}
