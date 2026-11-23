@@ -1,9 +1,9 @@
 ---
 /**
- * Contact — 가상 명함 한 장 (참고: fid-design.github.io/Interior 의 CONTACT 명함).
- * 앞면: 이름, 직함, 연락처, 로봇 아이콘. 뒷면: 이니셜과 연구 키워드.
- * 마우스를 올리면(모바일은 탭) 뒤집힌다. 소속 표기, 사진, 안내 문구, 그림자는 넣지 않는다(2026-11-23 사용자 지시).
- * 글자 크기는 카드 폭(cqw)에 비례하므로 모바일에서도 비율이 그대로다.
+ * Contact: 가상 명함 한 장 (참고: fid-design.github.io/Interior 의 CONTACT 명함).
+ * 앞면만 있다: 이름, 직함, 연락처, 로봇 아이콘. 평소엔 살짝 기울어 있고 마우스를 올리면 똑바로 선다.
+ * 뒷면, 소속 표기, 사진, 안내 문구, 그림자는 넣지 않는다 (2026-11-23 사용자 지시).
+ * 글자 크기는 카드 폭(cqw)에 비례하고, 모바일에서 너무 작아지지 않게 최소 px 를 둔다.
  */
 import { profile } from '../lib/data';
 
@@ -14,39 +14,32 @@ const ext = { target: '_blank', rel: 'noopener noreferrer' };
 ---
 
 <div class="cardwrap">
-  <figure class="bizcard" tabindex="0" aria-label={`${p.nameEn} business card`}>
-    <div class="inner">
-      <div class="face front">
-        <svg class="robot" viewBox="0 0 64 64" aria-hidden="true">
-          <line x1="32" y1="6" x2="32" y2="14" />
-          <circle cx="32" cy="5" r="2.6" class="acc-fill" />
-          <rect x="14" y="14" width="36" height="26" rx="7" />
-          <circle cx="25" cy="27" r="3.4" class="acc-fill" />
-          <circle cx="39" cy="27" r="3.4" class="acc-fill" />
-          <line x1="9" y1="24" x2="9" y2="31" />
-          <line x1="55" y1="24" x2="55" y2="31" />
-          <path d="M20 40 v6 a4 4 0 0 0 4 4 h16 a4 4 0 0 0 4 -4 v-6" />
-          <line x1="24" y1="50" x2="24" y2="58" />
-          <line x1="40" y1="50" x2="40" y2="58" />
-          <line x1="19" y1="58" x2="29" y2="58" />
-          <line x1="35" y1="58" x2="45" y2="58" />
-        </svg>
-        <div class="who">
-          <p class="name">{p.nameEn}</p>
-          <p class="role">Undergraduate Researcher · LLM / VLA</p>
-        </div>
-        <ul class="info">
-          {p.phone && <li><b>M.</b><a href={`tel:${p.phone.replace(/-/g, '')}`}>{p.phone}</a></li>}
-          <li><b>E.</b><a href={`mailto:${p.email}`}>{p.email}</a></li>
-          <li><b>G.</b><a href={`https://${github}`} {...ext}>{github}</a></li>
-          <li><b>B.</b><a href={p.blog} {...ext}>{blogHost}</a></li>
-        </ul>
-      </div>
-      <div class="face back" aria-hidden="true">
-        <p class="mono">J<span>·</span>J</p>
-        <p class="back-name">{p.nameEn}</p>
-        <p class="kw">{p.keywords.join('  |  ')}</p>
-      </div>
+  <figure class="bizcard" aria-label={`${p.nameEn} business card`}>
+    <div class="body">
+    <svg class="robot" viewBox="0 0 64 64" aria-hidden="true">
+      <line x1="32" y1="6" x2="32" y2="14" />
+      <circle cx="32" cy="5" r="2.6" class="acc-fill" />
+      <rect x="14" y="14" width="36" height="26" rx="7" />
+      <circle cx="25" cy="27" r="3.4" class="acc-fill" />
+      <circle cx="39" cy="27" r="3.4" class="acc-fill" />
+      <line x1="9" y1="24" x2="9" y2="31" />
+      <line x1="55" y1="24" x2="55" y2="31" />
+      <path d="M20 40 v6 a4 4 0 0 0 4 4 h16 a4 4 0 0 0 4 -4 v-6" />
+      <line x1="24" y1="50" x2="24" y2="58" />
+      <line x1="40" y1="50" x2="40" y2="58" />
+      <line x1="19" y1="58" x2="29" y2="58" />
+      <line x1="35" y1="58" x2="45" y2="58" />
+    </svg>
+    <div class="who">
+      <p class="name">{p.nameEn}</p>
+      <p class="role">Undergraduate Researcher · LLM / VLA</p>
+    </div>
+    <ul class="info">
+      {p.phone && <li><b>M.</b><a href={`tel:${p.phone.replace(/\D/g, '')}`}>{p.phone}</a></li>}
+      <li><b>E.</b><a href={`mailto:${p.email}`}>{p.email}</a></li>
+      <li><b>G.</b><a href={`https://${github}`} {...ext}>{github}</a></li>
+      <li><b>B.</b><a href={p.blog} {...ext}>{blogHost}</a></li>
+    </ul>
     </div>
   </figure>
 </div>
@@ -58,41 +51,30 @@ const ext = { target: '_blank', rel: 'noopener noreferrer' };
     padding: 0.75rem 0 0.5rem;
   }
   .bizcard {
-    width: min(100%, 440px);
-    margin: 0;
-    perspective: 1500px;
-    outline: none;
-    transform: rotate(-1.5deg);
     container-type: inline-size;
-  }
-  .inner {
-    display: grid;
-    transform-style: preserve-3d;
-    transition: transform 0.75s cubic-bezier(0.55, 0.06, 0.2, 1);
-  }
-  .bizcard:hover .inner,
-  .bizcard:focus-visible .inner {
-    transform: rotateY(180deg);
-  }
-  .face {
-    grid-area: 1 / 1;
-    aspect-ratio: 1.75 / 1;
-    border-radius: 3.5cqw;
-    backface-visibility: hidden;
-    -webkit-backface-visibility: hidden;
-    overflow: hidden;
-  }
-
-  /* ---------- 앞면 ---------- */
-  .front {
     position: relative;
+    width: min(100%, 460px);
+    aspect-ratio: 1.75 / 1;
+    margin: 0;
     background: #fff;
     border: 1px solid var(--line);
+    border-radius: 14px;
     color: var(--text);
+    transform: rotate(-2deg);
+    transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  /* cqw 는 자기 자신이 아니라 바깥 컨테이너 기준이라, 안쪽 여백은 .body 에 준다 */
+  .body {
+    position: absolute;
+    inset: 0;
+    padding: 6.5cqw 7cqw 6cqw;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding: 6.5cqw 7cqw 6cqw;
+  }
+  .bizcard:hover,
+  .bizcard:focus-within {
+    transform: rotate(0deg);
   }
   .robot {
     position: absolute;
@@ -113,72 +95,44 @@ const ext = { target: '_blank', rel: 'noopener noreferrer' };
   .who {
     width: 62%;
     padding-bottom: 2cqw;
-    border-bottom: 0.3cqw solid var(--text);
+    border-bottom: 1px solid var(--text);
   }
   .name {
-    font-size: max(5.6cqw, 20px);
+    font-size: max(6cqw, 21px);
     font-weight: 700;
-    letter-spacing: -0.01em;
     line-height: 1.15;
   }
   .role {
-    font-size: max(2.7cqw, 11px);
+    font-size: max(2.9cqw, 12px);
     color: var(--text-muted);
     margin-top: 0.6cqw;
+    white-space: nowrap;
   }
   .info {
     list-style: none;
     margin: 2.6cqw 0 0;
     padding: 0;
-    font-size: max(2.9cqw, 11.5px);
-    line-height: 1.7;
+    font-size: max(3.1cqw, 12.5px);
+    line-height: 1.6;
+  }
+  .info li {
+    white-space: nowrap;
   }
   .info b {
     display: inline-block;
-    width: max(3.6cqw, 15px);
+    width: max(4.8cqw, 20px);
     color: var(--accent);
     font-weight: 700;
   }
   .info a {
     color: var(--text);
   }
-
-  /* ---------- 뒷면 ---------- */
-  .back {
-    transform: rotateY(180deg);
-    background: var(--text);
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-  }
-  .mono {
-    font-size: 10cqw;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    line-height: 1;
-  }
-  .mono span {
+  .info a:hover {
     color: var(--accent);
-  }
-  .back-name {
-    font-size: 2.8cqw;
-    letter-spacing: 0.3em;
-    text-transform: uppercase;
-    margin-top: 2.6cqw;
-    opacity: 0.92;
-  }
-  .kw {
-    font-size: 2.3cqw;
-    margin-top: 4.5cqw;
-    opacity: 0.6;
-    white-space: pre;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .inner {
+    .bizcard {
       transition: none;
     }
   }

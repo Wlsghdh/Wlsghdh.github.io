@@ -1,25 +1,25 @@
 /* ============================================
-   디자인 토큰 — 3색만 쓴다 (2026-11-23)
-   1) 네이비 #1d2b4f : 본문·제목 글자, 키워드 배지
-   2) 코랄   #d4573a : 링크, News 날짜 배지, 섹션 제목 앞 막대, 내 이름 밑줄
-   3) 옅은 회청 배경 #f4f6f9
+   디자인 토큰 — 3색만 쓴다 (2026-11-23, 논문 PDF 느낌)
+   1) 먹색 #1c2333 : 본문·제목 글자, 키워드 배지
+   2) 버건디 #9e2a3a : 링크, News 날짜 배지, 섹션 제목 앞 막대, 내 이름 밑줄
+   3) 거의 흰 배경 #fcfcfd
    (썸네일·로고 칸의 흰색, 보조 글자 회색은 위 색의 명도 변형으로 본다. 다크모드 없음)
    구조 참고: jiiiisoo.github.io (Jon Barron 템플릿 계열)
    ============================================ */
 :root {
   color-scheme: light;
 
-  --bg: #f4f6f9;
-  --bar-bg: rgba(244, 246, 249, 0.92);
-  --text: #1d2b4f;
-  --text-muted: #66708a;
+  --bg: #fcfcfd;
+  --bar-bg: rgba(252, 252, 253, 0.92);
+  --text: #1c2333;
+  --text-muted: #5f6676;
   /* 포인트 색 */
-  --accent: #d4573a;
-  --accent-soft: #fbe9e3;
+  --accent: #9e2a3a;
+  --accent-soft: #f6e8ea;
   /* 네이비 옅은 버전 — 키워드 배지, 마우스 올림 배경 */
-  --ink-soft: #e4e8f0;
-  --line: #dde2ea;
-  --hover-bg: #eaedf3;
+  --ink-soft: #eceef2;
+  --line: #e3e5ea;
+  --hover-bg: #f2f3f5;
   --cell-empty: #e6eaf0;
   --thumb-bg: #ffffff;
 
@@ -37,6 +37,6 @@
   --fs-small: 15px;
   --fs-tiny: 13.5px;
   --lh-body: 1.65;
-  --content-width: 800px;
+  --content-width: 940px;
   --gutter: 20px;
 }

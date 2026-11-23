@@ -1,12 +1,12 @@
 {
   "person": {
     "nameKo": "주진호",
-    "nameEn": "Jin-Ho Ju",
+    "nameEn": "Jinho Ju",
     "headline": "Intelligent Semiconductor Engineering · Chung-Ang University",
     "tagline": "",
     "intro": [
-      "I am with the Department of Intelligent Semiconductor Engineering at Chung-Ang University, where I have been an undergraduate research intern since July 2026.",
-      "My research focuses on large language models (LLMs), vision-language-action (VLA) models, and model compression and architecture design."
+      "Since July 2026, I have been an undergraduate research intern in the Department of Intelligent Semiconductor Engineering at Chung-Ang University.",
+      "My research focuses on large language models (LLMs), vision language action (VLA) models, and model compression and architecture design."
     ],
     "keywords": ["LLM", "VLA", "Model Compression", "Architecture Design"],
     "role": "Undergraduate Research Intern, Chung-Ang University",
@@ -22,7 +22,7 @@
   },
   "site": {
     "title": "Research Log",
-    "description": "Jin-Ho Ju — academic homepage and daily research log"
+    "description": "Jinho Ju · academic homepage and daily research log"
   },
   "news": [
     { "date": "Sep. 2026", "text": "Our preprint ReShoot, on generative visual domain randomization of robot demonstrations, is on arXiv.", "link": "https://arxiv.org/abs/2609.19661" }
@@ -32,7 +32,7 @@
       "id": "P4",
       "year": 2026,
       "title": "ReShoot: Generative Visual Domain Randomization of Recorded Robot Demonstrations for Visuomotor Policy Learning",
-      "authors": ["Chiyoung Kim", "Min Sung Choi", "Jin-Ho Ju", "Chanhoe Gu", "Donghwan Hwang", "Wonseok Choi", "Woongsun Jeon", "Minhyeok Lee"],
+      "authors": ["Chiyoung Kim", "Min Sung Choi", "Jinho Ju", "Chanhoe Gu", "Donghwan Hwang", "Wonseok Choi", "Woongsun Jeon", "Minhyeok Lee"],
       "authorsKo": [],
       "coFirst": [],
       "venue": "arXiv preprint",
@@ -47,7 +47,7 @@
       "hidden": true,
       "year": 2026,
       "title": "Why Deep ResNets Train Successfully: Self-Selection of Effective Depth Enabled by Skip Connections",
-      "authors": ["Jin-Ho Ju", "Hongryul Ahn"],
+      "authors": ["Jinho Ju", "Hongryul Ahn"],
       "authorsKo": ["주진호", "안홍렬"],
       "coFirst": [],
       "venue": "arXiv",
@@ -61,7 +61,7 @@
       "id": "P2",
       "year": 2026,
       "title": "Effects of Generative AI Augmentation for Small-Scale Industrial Defect Detection",
-      "authors": ["Jin-Ho Ju", "Daeyun Lim", "Jinwoo Yang", "Hongryul Ahn"],
+      "authors": ["Jinho Ju", "Daeyun Lim", "Jinwoo Yang", "Hongryul Ahn"],
       "authorsKo": ["주진호", "임대윤", "양진우", "안홍렬"],
       "coFirst": [],
       "venue": "KIISE 2026",
@@ -75,7 +75,7 @@
       "id": "P3",
       "year": 2025,
       "title": "An Integrated Preprocessing Pipeline for Model Performance Comparison on a Multimodal Gas Sensor Dataset",
-      "authors": ["Yeongmin Maeng", "Jin-Ho Ju", "Jaehoon Yun", "Woochang Jeong", "Hongryul Ahn"],
+      "authors": ["Yeongmin Maeng", "Jinho Ju", "Jaehoon Yun", "Woochang Jeong", "Hongryul Ahn"],
       "authorsKo": ["맹영민", "주진호", "윤재훈", "정우창", "안홍렬"],
       "coFirst": [],
       "venue": "KIISE 2025",
@@ -129,21 +129,21 @@
     }
   ],
   "experience": [
-    { "period": "Sep. 2025 – Dec. 2025", "title": "Research Intern — Hadd Science", "keyword": "3D Modeling", "org": "Sungkyunkwan University", "detail": "Managed the website, wrote articles, and worked on AutoCAD 3D modeling.", "logo": "/assets/logos/skku.svg" },
-    { "period": "Jul. 2025 – Jun. 2026", "title": "Undergraduate Researcher", "keyword": "Computer Vision", "org": "Prof. Hongryul Ahn's Lab, University of Suwon", "detail": "Computer vision research that led to first- and co-authored papers; also built application prototypes with React / Node.js / MongoDB.", "logo": "/assets/logos/usw.png" },
-    { "period": "Aug. 2024 – Feb. 2025", "title": "Intern, Autonomous Driving Team", "keyword": "Autonomous Driving Data", "org": "AIMMO Inc.", "detail": "Cleaned vision failure data, reviewed Labellerr annotations, collected training data, and analyzed sensor graphs of detection failures.", "logo": "/assets/logos/aimmo.svg" }
+    { "period": "Sep. 2025 ~ Dec. 2025", "title": "Research Intern, Hadd Science", "keyword": "3D Modeling", "org": "Sungkyunkwan University", "detail": "Managed the website, wrote articles, and worked on AutoCAD 3D modeling.", "logo": "/assets/logos/skku.svg" },
+    { "period": "Jul. 2025 ~ Jun. 2026", "title": "Undergraduate Researcher", "keyword": "Computer Vision", "org": "Prof. Hongryul Ahn's Lab, University of Suwon", "detail": "Computer vision research that led to first- and co-authored papers; also built application prototypes with React / Node.js / MongoDB.", "logo": "/assets/logos/usw.png" },
+    { "period": "Aug. 2024 ~ Feb. 2025", "title": "Intern, Autonomous Driving Team", "keyword": "Autonomous Driving Data", "org": "AIMMO Inc.", "detail": "Cleaned vision failure data, reviewed Labellerr annotations, collected training data, and analyzed sensor graphs of detection failures.", "logo": "/assets/logos/aimmo.svg" }
   ],
   "education": [
-    { "period": "Jul. 2026 – Present", "school": "Chung-Ang University", "detail": "Undergraduate Research Intern", "logo": "/assets/logos/cau.png" },
-    { "period": "Mar. 2021 – Feb. 2027 (expected)", "school": "University of Suwon", "detail": "B.S. in Data Science · GPA 4.35 / 4.5", "logo": "/assets/logos/usw-seal.png" }
+    { "period": "Jul. 2026 ~ Present", "school": "Chung-Ang University", "detail": "Undergraduate Research Intern", "logo": "/assets/logos/cau.png" },
+    { "period": "Mar. 2021 ~ Feb. 2027 (expected)", "school": "University of Suwon", "detail": "B.S. in Data Science · GPA 4.35 / 4.5", "logo": "/assets/logos/usw-seal.png" }
   ],
   "awards": [
     { "date": "Dec. 2025", "title": "Encouragement Award", "org": "Korean Institute of Information Scientists and Engineers (KIISE)", "image": "" },
-    { "date": "Aug. 2024", "title": "Excellence Award — AI/Develops", "org": "DSML, University of Suwon", "image": "" }
+    { "date": "Aug. 2024", "title": "Excellence Award, AI/Develops", "org": "DSML, University of Suwon", "image": "" }
   ],
   "certificates": [
     { "date": "Feb. 2025", "title": "Google Data Analytics Professional Certificate", "org": "Coursera × Google", "image": "" },
-    { "date": "Nov. – Dec. 2025", "title": "Digital Healthcare (Introductory)", "org": "GUIP Bio-Health Platform", "image": "" }
+    { "date": "Nov. ~ Dec. 2025", "title": "Digital Healthcare (Introductory)", "org": "GUIP Bio-Health Platform", "image": "" }
   ],
   "skills": [
     { "category": "Deep Learning", "items": ["PyTorch", "PyTorch Lightning", "LLM Fine-tuning (LoRA/PEFT)", "DDP", "Optuna", "W&B"] },
