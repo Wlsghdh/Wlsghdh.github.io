@@ -69,7 +69,9 @@ const linksOf = (p: Publication) => [...(p.pdf ? [{ label: 'PDF', url: p.pdf }] 
   .me {
     font-weight: 700;
     text-decoration: underline;
-    text-underline-offset: 2px;
+    text-decoration-color: var(--accent);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 3px;
   }
   .note {
     margin-top: 1rem;

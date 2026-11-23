@@ -64,11 +64,11 @@
 ## 디자인 원칙 (2026-11-10 확정 — 바꾸지 말 것)
 
 - CVPR 논문처럼 아주 단순하게 만든다. 얇은 1px 선, 정갈한 활자, 여백과 활자 크기로만 위계를 만든다. 참고 대상: seokju-cho.github.io, yejich.github.io, 연세대 전해곤 교수 연구실 석사생 사이트.
-- **거의 흰 배경(`#fbfcfe`) + 옅은 회보라 선(`#e7e9f2`) + 인디고 포인트(`--accent: #4f5bd5`) 하나** (2026-11-20 사용자 지시로 청록에서 교체. 그전엔 베이지·파랑 → 흰·청록). 생성 GIF도 같은 포인트 색을 쓴다. 다크모드와 테마 토글은 넣지 않는다.
+- **3색만 쓴다** (2026-11-23 사용자 지시, 그전엔 베이지·파랑 → 흰·청록 → 흰·인디고): 옅은 회청 배경 `#f4f6f9` + 네이비 `#1d2b4f`(글자·제목·키워드 배지) + 코랄 `--accent: #d4573a`(링크, News 날짜 배지, 섹션 제목 앞 짧은 막대, 내 이름 밑줄). 생성 GIF도 이 색을 쓴다. 검정 배경, 다크모드, 테마 토글은 넣지 않는다.
 - **구조는 jiiiisoo.github.io(Jon Barron 템플릿 계열)를 따른다** (2026-11-17, chaemin-hwang 스타일을 대체):
   - 상단 메뉴 바 없음. 본문 폭 800px.
   - 헤더: 왼쪽 63%에 가운데 정렬 영문 이름만(Inter 600 34px, 한글 이름은 넣지 않는다) + 소속 줄 "Intelligent Semiconductor Engineering · Chung-Ang University" + 소개 문단 + "Email / GitHub / Blog" 텍스트 링크. 오른쪽 37%에 정사각 사진(테두리 없음). 키워드 pill, 태그라인은 넣지 않는다.
-  - 섹션 제목: 22px 보통 굵기, 밑줄·구분선 없음.
+  - 섹션 제목: 21px 600, 앞에 4×18px 코랄 막대. 밑줄·구분선 없음.
   - News: 날짜 pill 배지(포인트 색) + 한 줄, 항목 사이 얇은 선.
   - 논문과 프로젝트: 왼쪽 175px 썸네일(contain), 제목 굵게, 저자(내 이름 굵게+밑줄), 학회 이탤릭, 링크는 "PDF / arXiv / Code" 텍스트. 마우스를 올리면 행 배경이 살짝 어두워진다. 논문 TL;DR 요약은 2026-11-23 사용자 요청으로 화면에서 뺐다(`summary` 데이터는 남아 있다).
   - Experience는 왼쪽에 가로로 긴 네모 로고(132×56), Education은 동그라미 로고(64px). profile.json 항목의 `logo` 필드에 `/assets/logos/...` 경로를 적는다. 로고는 Wikimedia Commons(학교)와 aimmo.co.kr(AIMMO)에서 받았다.
@@ -84,7 +84,7 @@
 - 단일 중앙 컬럼, 본문 폭 800px, 사이드바 없음.
 - 폰트는 Inter(Google Fonts), 한글은 Pretendard로 대체된다. 본문 15px, 행간 1.65.
 - 줄바꿈: 문단은 `text-wrap: pretty`, 제목은 `balance`. 단어 안 하이픈(Jin-Ho, Chung-Ang)은 `src/lib/text.ts`의 `nb()`로 줄이 안 바뀌게 한다.
-- 색: 본문 `#111827`, 보조 `#6b7280`, 링크 액센트 1개, 선 `#e7e9f2`.
+- 색: 본문 `#1d2b4f`, 보조 `#66708a`, 포인트 코랄 1개, 선 `#dde2ea`.
 - 그라데이션, 그림자, 카드 테두리, 둥근 큰 박스는 쓰지 않는다.
 - 모바일 380px에서 가로 스크롤이 생기면 안 된다.
 - 섹션 순서: Header → News → Publications → Experience → Education → Honors & Awards(+Certificates)
