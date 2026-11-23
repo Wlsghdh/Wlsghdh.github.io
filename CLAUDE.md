@@ -77,7 +77,7 @@
 - **사이트 언어는 영어.** profile.json 내용도 영어로 쓴다. 공동저자 영문 표기는 `authors`, 한글은 `authorsKo`에 둔다. log.json 항목은 사용자가 쓴 언어 그대로 둔다.
 - Skills 섹션은 화면에서 뺐다. 데이터는 profile.json 에 남아 있다. Contact 섹션도 없다. 연락처는 헤더 버튼으로 대신한다.
 - 모든 publication과 project에 썸네일 칸이 있다. 파일이 없으면 `/assets/thumb-placeholder.svg`가 보인다.
-  - 논문: `public/assets/publications/P2.gif`처럼 id 이름으로 넣는다. P4.gif는 사용자가 준 실제 로봇 실험 영상(trial_05_posA05.mp4, mp4v 코덱이라 브라우저 재생 불가)을 잘라 만든 GIF다. P2·P3와 프로젝트 4개는 Claude가 그린 애니메이션 GIF다.
+  - 논문: `public/assets/publications/P2.gif`처럼 id 이름으로 넣는다. P4.gif는 사용자가 준 실제 로봇 실험 영상(trial_05_posA05.mp4, mp4v 코덱이라 브라우저 재생 불가)을 잘라 만든 GIF다. P2.gif(원본→생성형 증강 예시가 3개 클래스로 바뀜)와 P3.png(실험 장비 사진 + 원시 센서 신호)는 각 논문 PDF의 실제 그림(Fig.1, Fig.2)을 잘라 만든 것이다. 논문 썸네일은 모두 175×175 정사각 칸(cover)이다. 프로젝트 4개는 Claude가 그린 애니메이션 GIF다.
   - 프로젝트: `public/assets/projects/carnerf.gif`, `etf-with-ai.gif`, `jump-ai-2025.gif`, `personal-color.gif`.
   - 다른 이름이나 확장자를 쓰려면 profile.json 의 `thumb`/`image` 경로를 바꾼다.
 - publication에 `"hidden": true`를 넣으면 데이터에는 남고 화면에서만 빠진다. P1(BMVC 탈락)이 지금 이 상태다. 다시 내려면 `hidden`을 지운다.

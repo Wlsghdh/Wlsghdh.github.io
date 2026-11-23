@@ -81,7 +81,7 @@
       "note": "Second author",
       "summary": "Designs a standardized four-stage preprocessing pipeline for the MultimodalGasData benchmark and compares eight models fairly, finding a 22.2%p gap between best and worst and showing that the fusion strategy matters more than model depth.",
       "pdf": "/assets/publications/P3.pdf",
-      "thumb": "/assets/publications/P3.gif",
+      "thumb": "/assets/publications/P3.png",
       "links": [{ "label": "Code", "url": "https://github.com/Ahn-Laboratory/Gas-Leakage-Detection" }]
     }
   ],

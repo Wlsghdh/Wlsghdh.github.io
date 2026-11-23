@@ -134,10 +134,11 @@ a:hover {
   background: var(--hover-bg);
 }
 .pub-thumb {
+  /* 모든 논문 썸네일을 ReShoot(P4.gif, 정사각)과 같은 175×175 칸으로 맞춘다 */
   width: 175px;
-  max-height: 175px;
+  height: 175px;
   flex-shrink: 0;
-  object-fit: contain;
+  object-fit: cover;
   border-radius: 8px;
   border: 1px solid var(--line);
   background: #fff;
@@ -188,7 +189,7 @@ a:hover {
   }
   .pub-thumb {
     width: 88px;
-    max-height: 88px;
+    height: 88px;
   }
 }
 
