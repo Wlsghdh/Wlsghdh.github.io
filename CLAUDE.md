@@ -64,10 +64,10 @@
 ## 디자인 원칙 (2026-11-10 확정 — 바꾸지 말 것)
 
 - CVPR 논문처럼 아주 단순하게 만든다. 얇은 1px 선, 정갈한 활자, 여백과 활자 크기로만 위계를 만든다. 참고 대상: seokju-cho.github.io, yejich.github.io, 연세대 전해곤 교수 연구실 석사생 사이트.
-- **3색만 쓴다** (2026-11-23 사용자 지시, 논문 PDF 느낌): 거의 흰 배경 `#fcfcfd` + 먹색 `#1c2333`(글자·제목·키워드 배지) + 버건디 `--accent: #9e2a3a`(링크, News 날짜 배지, 섹션 제목 앞 짧은 막대, 내 이름 밑줄). 생성 GIF도 이 색을 쓴다. 검정 배경, 다크모드, 테마 토글은 넣지 않는다.
+- **3색만 쓴다** (2026-11-23 사용자 지시, CVPR·NeurIPS 논문 PDF 느낌): 흰 종이 `#ffffff` + 검정에 가까운 먹색 `#16181d` + CVPR 템플릿 링크색 cvprblue `--accent: #3682be`(링크, News 날짜 배지, 섹션 제목 앞 짧은 막대, 내 이름 밑줄). 생성 GIF도 이 색을 쓴다. 검정 배경, 다크모드, 테마 토글은 넣지 않는다.
 - **구조는 jiiiisoo.github.io(Jon Barron 템플릿 계열)를 따른다** (2026-11-17, chaemin-hwang 스타일을 대체):
   - 상단 메뉴 바 없음. 본문 폭 940px(2026-11-23 사용자 요청으로 800에서 넓힘).
-  - 헤더: 왼쪽 63%에 가운데 정렬 영문 이름만(Times 굵게 38px, 한글 이름은 넣지 않는다) + 소속 줄 "Intelligent Semiconductor Engineering · Chung-Ang University" + 소개 문단 + "Email / GitHub / Blog" 텍스트 링크. 오른쪽 37%에 정사각 사진(테두리 없음). 키워드 pill, 태그라인은 넣지 않는다.
+  - 헤더: 왼쪽에 가운데 정렬 영문 이름만(굵게 38px, 한글 이름은 넣지 않는다) + 소속 줄 "Intelligent Semiconductor Engineering · Chung-Ang University" + 소개 문단 + "Email / GitHub / Blog" 텍스트 링크. 오른쪽에 200px 정사각 사진(테두리 없음, 모바일 130px). 키워드 pill, 태그라인은 넣지 않는다.
   - 섹션 제목: 23px 굵게, 앞에 4×18px 코랄 막대. 밑줄·구분선 없음.
   - News: 날짜 pill 배지(포인트 색) + 한 줄, 항목 사이 얇은 선.
   - 논문과 프로젝트: 왼쪽 175px 썸네일(contain), 제목 굵게, 저자(내 이름 굵게+밑줄), 학회 이탤릭, 링크는 "PDF / arXiv / Code" 텍스트. 마우스를 올리면 행 배경이 살짝 어두워진다. 논문 TL;DR 요약은 2026-11-23 사용자 요청으로 화면에서 뺐다(`summary` 데이터는 남아 있다).
@@ -82,12 +82,12 @@
   - 다른 이름이나 확장자를 쓰려면 profile.json 의 `thumb`/`image` 경로를 바꾼다.
 - publication에 `"hidden": true`를 넣으면 데이터에는 남고 화면에서만 빠진다. P1(BMVC 탈락)이 지금 이 상태다. 다시 내려면 `hidden`을 지운다.
 - 단일 중앙 컬럼, 본문 폭 940px, 사이드바 없음.
-- 폰트는 CVPR 논문처럼 Times 계열(2026-11-23 사용자 지시): `'Times New Roman', 'Tinos'(Google Fonts), Times`, 한글은 Pretendard로 대체된다. 본문 16.5px, 행간 1.65. 이름 38px, 섹션 제목 23px, 논문 제목 17px.
+- 폰트는 LaTeX 논문 글꼴 **Computer Modern (CMU Serif)** (2026-11-23 사용자 지시). `public/fonts/cmu-serif-*.woff2` 4개를 직접 둔다(npm computer-modern@0.1.3 에서 받음). 대체 글꼴은 Times 계열, 한글은 Pretendard. 본문 16.5px, 행간 1.65.
 - **이름 표기는 `Jinho Ju`** (2026-11-23, 하이픈 없이). 논문 저자 목록도 같다.
-- **하이픈·대시 기호는 거의 쓰지 않는다** (2026-11-23 사용자 지시). 기간은 `Sep. 2025 ~ Dec. 2025`처럼 물결표, 제목 구분은 쉼표. 고유명사(Chung-Ang, 논문 제목)는 그대로 둔다.
+- **하이픈·대시 기호는 거의 쓰지 않는다** (2026-11-23 사용자 지시). 기간은 `Sep. 2025 ∼ Dec. 2025`처럼 물결표(U+223C. Computer Modern 의 `~`는 위로 붙어 보여서 이걸 쓴다), 제목 구분은 쉼표. 고유명사(Chung-Ang, 논문 제목)는 그대로 둔다.
 - 썸네일 GIF는 400×400으로 만든다(레티나에서 175px 칸이 흐려지지 않게). PDF는 scale 6으로 렌더링해서 자른다.
 - 줄바꿈: 문단은 `text-wrap: pretty`, 제목은 `balance`. 단어 안 하이픈(Jin-Ho, Chung-Ang)은 `src/lib/text.ts`의 `nb()`로 줄이 안 바뀌게 한다.
-- 색: 본문 `#1c2333`, 보조 `#5f6676`, 포인트 버건디 1개, 선 `#e3e5ea`.
+- 색: 본문 `#16181d`, 보조 `#5c6068`, 포인트 cvprblue 1개, 선 `#e4e6ea`.
 - 그라데이션, 그림자, 카드 테두리, 둥근 큰 박스는 쓰지 않는다.
 - 모바일 380px에서 가로 스크롤이 생기면 안 된다.
 - 섹션 순서: Header → News → Publications → Experience → Education → Honors & Awards(+Certificates) → Contact

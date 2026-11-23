@@ -55,8 +55,9 @@ const links = [
 <style>
   .header {
     display: grid;
-    grid-template-columns: minmax(0, 63fr) minmax(0, 37fr);
-    gap: 2.5rem;
+    /* 사진은 200px 고정 (2026-11-23 사용자 요청으로 줄임) */
+    grid-template-columns: minmax(0, 1fr) 200px;
+    gap: 3rem;
     align-items: center;
     padding: 2.5rem 16px 1rem;
   }
@@ -110,7 +111,7 @@ const links = [
     }
     .photo {
       grid-row: 1;
-      width: 160px;
+      width: 130px;
       margin: 0 auto;
     }
   }

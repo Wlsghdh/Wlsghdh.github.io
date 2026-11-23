@@ -1,25 +1,25 @@
 /* ============================================
-   디자인 토큰 — 3색만 쓴다 (2026-11-23, 논문 PDF 느낌)
-   1) 먹색 #1c2333 : 본문·제목 글자, 키워드 배지
-   2) 버건디 #9e2a3a : 링크, News 날짜 배지, 섹션 제목 앞 막대, 내 이름 밑줄
-   3) 거의 흰 배경 #fcfcfd
+   디자인 토큰 — 3색만 쓴다 (2026-11-23, CVPR·NeurIPS 논문 PDF 느낌)
+   1) 검정에 가까운 먹색 #16181d : 본문·제목 글자
+   2) CVPR 템플릿 링크색 cvprblue #3682be (rgb 0.21,0.49,0.74) : 링크, 날짜 배지, 섹션 제목 앞 막대, 내 이름 밑줄
+   3) 종이 흰색 #ffffff
    (썸네일·로고 칸의 흰색, 보조 글자 회색은 위 색의 명도 변형으로 본다. 다크모드 없음)
    구조 참고: jiiiisoo.github.io (Jon Barron 템플릿 계열)
    ============================================ */
 :root {
   color-scheme: light;
 
-  --bg: #fcfcfd;
-  --bar-bg: rgba(252, 252, 253, 0.92);
-  --text: #1c2333;
-  --text-muted: #5f6676;
+  --bg: #ffffff;
+  --bar-bg: rgba(255, 255, 255, 0.92);
+  --text: #16181d;
+  --text-muted: #5c6068;
   /* 포인트 색 */
-  --accent: #9e2a3a;
-  --accent-soft: #f6e8ea;
+  --accent: #3682be;
+  --accent-soft: #eaf2f9;
   /* 네이비 옅은 버전 — 키워드 배지, 마우스 올림 배경 */
-  --ink-soft: #eceef2;
-  --line: #e3e5ea;
-  --hover-bg: #f2f3f5;
+  --ink-soft: #f0f1f3;
+  --line: #e4e6ea;
+  --hover-bg: #f5f7fa;
   --cell-empty: #e6eaf0;
   --thumb-bg: #ffffff;
 
@@ -29,8 +29,8 @@
   --cat-writing: #7f6aa8;
   --cat-seminar: #b0656c;
 
-  /* CVPR 논문 본문 글꼴(Times) — 윈도/맥은 Times New Roman, 없으면 같은 폭의 Tinos(Google Fonts). 한글은 Pretendard */
-  --font-body: 'Times New Roman', 'Tinos', Times, 'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', serif;
+  /* LaTeX 논문 글꼴 Computer Modern. 못 받으면 Times 계열, 한글은 Pretendard */
+  --font-body: 'CMU Serif', 'Latin Modern Roman', 'Times New Roman', Times, 'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', serif;
   --font-serif: var(--font-body);
 
   --fs-body: 16.5px;
