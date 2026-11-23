@@ -67,7 +67,7 @@
 - **3색만 쓴다** (2026-11-23 사용자 지시, CVPR·NeurIPS 논문 PDF 느낌): 흰 종이 `#ffffff` + 검정에 가까운 먹색 `#16181d` + CVPR 템플릿 링크색 cvprblue `--accent: #3682be`(링크, News 날짜 배지, 섹션 제목 앞 짧은 막대, 내 이름 밑줄). 생성 GIF도 이 색을 쓴다. 검정 배경, 다크모드, 테마 토글은 넣지 않는다.
 - **구조는 jiiiisoo.github.io(Jon Barron 템플릿 계열)를 따른다** (2026-11-17, chaemin-hwang 스타일을 대체):
   - 상단 메뉴 바 없음. 본문 폭 940px(2026-11-23 사용자 요청으로 800에서 넓힘).
-  - 헤더: 왼쪽에 가운데 정렬 영문 이름만(굵게 38px, 한글 이름은 넣지 않는다) + 소속 줄 "Intelligent Semiconductor Engineering · Chung-Ang University" + 소개 문단 + "Email / GitHub / Blog" 텍스트 링크. 오른쪽에 200px 정사각 사진(테두리 없음, 모바일 130px). 키워드 pill, 태그라인은 넣지 않는다.
+  - 헤더: 왼쪽에 가운데 정렬 영문 이름만(굵게 38px, 한글 이름은 넣지 않는다). 이름 아래 소속 줄은 2026-11-23 사용자 요청으로 뺐다(`headline` 데이터는 남음) + 소개 문단 + "Email / GitHub / Blog" 텍스트 링크. 오른쪽에 200px 정사각 사진(테두리 없음, 모바일 130px). 키워드 pill, 태그라인은 넣지 않는다.
   - 섹션 제목: 23px 굵게, 앞에 4×18px 코랄 막대. 밑줄·구분선 없음.
   - News: 날짜 pill 배지(포인트 색) + 한 줄, 항목 사이 얇은 선.
   - 논문과 프로젝트: 왼쪽 175px 썸네일(contain), 제목 굵게, 저자(내 이름 굵게+밑줄), 학회 이탤릭, 링크는 "PDF / arXiv / Code" 텍스트. 마우스를 올리면 행 배경이 살짝 어두워진다. 논문 TL;DR 요약은 2026-11-23 사용자 요청으로 화면에서 뺐다(`summary` 데이터는 남아 있다).
@@ -82,16 +82,16 @@
   - 다른 이름이나 확장자를 쓰려면 profile.json 의 `thumb`/`image` 경로를 바꾼다.
 - publication에 `"hidden": true`를 넣으면 데이터에는 남고 화면에서만 빠진다. P1(BMVC 탈락)이 지금 이 상태다. 다시 내려면 `hidden`을 지운다.
 - 단일 중앙 컬럼, 본문 폭 940px, 사이드바 없음.
-- 폰트는 LaTeX 논문 글꼴 **Computer Modern (CMU Serif)** (2026-11-23 사용자 지시). `public/fonts/cmu-serif-*.woff2` 4개를 직접 둔다(npm computer-modern@0.1.3 에서 받음). 대체 글꼴은 Times 계열, 한글은 Pretendard. 본문 16.5px, 행간 1.65.
+- 폰트는 **Source Serif 4** (Google Fonts, 2026-11-23 사용자 지시). 논문 느낌 세리프이면서 화면에서 선명하다. Times → Computer Modern 을 거쳐 바꿨다. 한글은 Pretendard. 본문 16px, 행간 1.65.
 - **이름 표기는 `Jinho Ju`** (2026-11-23, 하이픈 없이). 논문 저자 목록도 같다.
-- **하이픈·대시 기호는 거의 쓰지 않는다** (2026-11-23 사용자 지시). 기간은 `Sep. 2025 ∼ Dec. 2025`처럼 물결표(U+223C. Computer Modern 의 `~`는 위로 붙어 보여서 이걸 쓴다), 제목 구분은 쉼표. 고유명사(Chung-Ang, 논문 제목)는 그대로 둔다.
+- **하이픈·대시 기호는 거의 쓰지 않는다** (2026-11-23 사용자 지시). 기간은 `Sep. 2025 ~ Dec. 2025`처럼 물결표, 제목 구분은 쉼표. 고유명사(Chung-Ang, 논문 제목)는 그대로 둔다.
 - 썸네일 GIF는 400×400으로 만든다(레티나에서 175px 칸이 흐려지지 않게). PDF는 scale 6으로 렌더링해서 자른다.
 - 줄바꿈: 문단은 `text-wrap: pretty`, 제목은 `balance`. 단어 안 하이픈(Jin-Ho, Chung-Ang)은 `src/lib/text.ts`의 `nb()`로 줄이 안 바뀌게 한다.
 - 색: 본문 `#16181d`, 보조 `#5c6068`, 포인트 cvprblue 1개, 선 `#e4e6ea`.
 - 그라데이션, 그림자, 카드 테두리, 둥근 큰 박스는 쓰지 않는다.
 - 모바일 380px에서 가로 스크롤이 생기면 안 된다.
 - 섹션 순서: Header → News → Publications → Experience → Education → Honors & Awards(+Certificates) → Contact
-- **Contact는 가상 명함 한 장**(2026-11-23 사용자 지시, 참고: fid-design.github.io/Interior 의 CONTACT). `src/components/Contact.astro`. 흰 카드 앞면 한 장뿐이다(뒷면 없음): 이름, "Undergraduate Researcher · LLM / VLA", M./E./G./B. 연락처(전화 `person.phone`), 오른쪽 위 로봇 선 아이콘(SVG). 평소엔 -2도 기울어 있고 마우스를 올리면 똑바로 선다. 소속 표기, 사진, 안내 문구, 그림자는 넣지 않는다(2026-11-23 사용자 지시). cqw 단위는 카드 안쪽 `.body`에서만 쓴다.
+- **Contact는 가상 명함 한 장**(2026-11-23 사용자 지시, 참고: fid-design.github.io/Interior 의 CONTACT). `src/components/Contact.astro`. 흰 카드 앞면 한 장뿐이다(뒷면 없음): 이름, "Undergraduate Researcher · LLM / VLA", E./G./B. 연락처(전화번호는 넣지 않는다), 오른쪽 위 로봇 선 아이콘(SVG). 기울이면 글자가 흐려져서 똑바로 두고, 마우스를 올리면 3px 떠오르며 테두리가 포인트 색이 된다. 소속 표기, 사진, 안내 문구, 그림자는 넣지 않는다(2026-11-23 사용자 지시). cqw 단위는 카드 안쪽 `.body`에서만 쓴다.
 - **Projects 섹션은 화면에서 뺐다** (2026-11-20 사용자 지시). profile.json `projects`와 `Projects.astro`는 남아 있다.
 - 2026-11-20에 "섹션 이름 왼쪽 칸 + 내용 오른쪽" 2단 레이아웃을 시도했지만 사용자가 지금 구조를 더 좋아해서 되돌렸다. 구조는 바꾸지 말 것.
 - 디자인 수정은 한 번에 한 가지만 한다. 데이터 추가와 디자인 수정을 한 커밋에 섞지 않는다.

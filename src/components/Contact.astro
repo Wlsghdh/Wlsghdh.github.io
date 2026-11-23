@@ -1,7 +1,7 @@
 ---
 /**
  * Contact: 가상 명함 한 장 (참고: fid-design.github.io/Interior 의 CONTACT 명함).
- * 앞면만 있다: 이름, 직함, 연락처, 로봇 아이콘. 평소엔 살짝 기울어 있고 마우스를 올리면 똑바로 선다.
+ * 앞면만 있다: 이름, 직함, 연락처(전화번호는 넣지 않음), 로봇 아이콘. 기울이면 글자가 흐려져서 똑바로 두고, 마우스를 올리면 살짝 떠오른다.
  * 뒷면, 소속 표기, 사진, 안내 문구, 그림자는 넣지 않는다 (2026-11-23 사용자 지시).
  * 글자 크기는 카드 폭(cqw)에 비례하고, 모바일에서 너무 작아지지 않게 최소 px 를 둔다.
  */
@@ -35,7 +35,6 @@ const ext = { target: '_blank', rel: 'noopener noreferrer' };
       <p class="role">Undergraduate Researcher · LLM / VLA</p>
     </div>
     <ul class="info">
-      {p.phone && <li><b>M.</b><a href={`tel:${p.phone.replace(/\D/g, '')}`}>{p.phone}</a></li>}
       <li><b>E.</b><a href={`mailto:${p.email}`}>{p.email}</a></li>
       <li><b>G.</b><a href={`https://${github}`} {...ext}>{github}</a></li>
       <li><b>B.</b><a href={p.blog} {...ext}>{blogHost}</a></li>
@@ -60,8 +59,9 @@ const ext = { target: '_blank', rel: 'noopener noreferrer' };
     border: 1px solid var(--line);
     border-radius: 14px;
     color: var(--text);
-    transform: rotate(-2deg);
-    transition: transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+    transition:
+      transform 0.25s ease,
+      border-color 0.25s ease;
   }
   /* cqw 는 자기 자신이 아니라 바깥 컨테이너 기준이라, 안쪽 여백은 .body 에 준다 */
   .body {
@@ -72,9 +72,11 @@ const ext = { target: '_blank', rel: 'noopener noreferrer' };
     flex-direction: column;
     justify-content: flex-end;
   }
+  /* 기울인 상태(rotate)는 글자가 흐려져서 뺐다. 마우스를 올리면 살짝 떠오르고 테두리가 포인트 색이 된다 */
   .bizcard:hover,
   .bizcard:focus-within {
-    transform: rotate(0deg);
+    transform: translateY(-3px);
+    border-color: var(--accent);
   }
   .robot {
     position: absolute;

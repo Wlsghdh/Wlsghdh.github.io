@@ -29,12 +29,12 @@
   --cat-writing: #7f6aa8;
   --cat-seminar: #b0656c;
 
-  /* LaTeX 논문 글꼴 Computer Modern. 못 받으면 Times 계열, 한글은 Pretendard */
-  --font-body: 'CMU Serif', 'Latin Modern Roman', 'Times New Roman', Times, 'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', serif;
+  /* Source Serif 4 (Google Fonts): 논문 느낌의 세리프이면서 화면용으로 만들어져 작은 크기에서도 선명하다. 한글은 Pretendard */
+  --font-body: 'Source Serif 4', 'Times New Roman', Times, 'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR', serif;
   --font-serif: var(--font-body);
 
-  --fs-body: 16.5px;
-  --fs-small: 15px;
+  --fs-body: 16px;
+  --fs-small: 14.5px;
   --fs-tiny: 13.5px;
   --lh-body: 1.65;
   --content-width: 940px;
