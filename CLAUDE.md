@@ -88,7 +88,7 @@
 - 그라데이션, 그림자, 카드 테두리, 둥근 큰 박스는 쓰지 않는다.
 - 모바일 380px에서 가로 스크롤이 생기면 안 된다.
 - 섹션 순서: Header → News → Publications → Experience → Education → Honors & Awards(+Certificates) → Contact
-- **Contact는 가상 명함 한 장**(2026-11-23 사용자 지시, 참고: fid-design.github.io/Interior 의 CONTACT). `src/components/Contact.astro`. 앞면은 흰 카드에 소속·이름·직함·이메일/GitHub/블로그·사진, 뒷면은 네이비에 J·J 이니셜과 keywords. 앞면 링크를 누를 수 있게 마우스 올림이 아니라 클릭으로 뒤집는다. 카드 그림자는 이 명함에만 예외로 쓴다. 내용은 profile.json `person`에서 읽는다.
+- **Contact는 가상 명함 한 장**(2026-11-23 사용자 지시, 참고: fid-design.github.io/Interior 의 CONTACT). `src/components/Contact.astro`. 앞면은 흰 카드에 이름, "Undergraduate Researcher · LLM / VLA", M./E./G./B. 연락처(전화 `person.phone`), 오른쪽 위 로봇 선 아이콘(SVG). 뒷면은 네이비에 J·J 이니셜과 keywords. 마우스를 올리면 뒤집힌다(참고 사이트와 같음). 소속 표기, 사진, "click to flip" 같은 안내 문구, 그림자는 넣지 않는다(2026-11-23 사용자 지시). 글자는 작게 유지한다.
 - **Projects 섹션은 화면에서 뺐다** (2026-11-20 사용자 지시). profile.json `projects`와 `Projects.astro`는 남아 있다.
 - 2026-11-20에 "섹션 이름 왼쪽 칸 + 내용 오른쪽" 2단 레이아웃을 시도했지만 사용자가 지금 구조를 더 좋아해서 되돌렸다. 구조는 바꾸지 말 것.
 - 디자인 수정은 한 번에 한 가지만 한다. 데이터 추가와 디자인 수정을 한 커밋에 섞지 않는다.
