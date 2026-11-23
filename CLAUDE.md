@@ -75,7 +75,7 @@
   - 포인트 색은 `--accent` 하나만 쓴다(링크, 날짜 배지).
 - **Research Log 섹션은 화면에서 뺐다** (2026-11-17 사용자 지시). `log.json`, `ResearchLog.astro`는 남아 있고 일일 기록 append 규칙도 그대로다.
 - **사이트 언어는 영어.** profile.json 내용도 영어로 쓴다. 공동저자 영문 표기는 `authors`, 한글은 `authorsKo`에 둔다. log.json 항목은 사용자가 쓴 언어 그대로 둔다.
-- Skills 섹션은 화면에서 뺐다. 데이터는 profile.json 에 남아 있다. Contact 섹션도 없다. 연락처는 헤더 버튼으로 대신한다.
+- Skills 섹션은 화면에서 뺐다. 데이터는 profile.json 에 남아 있다.
 - 모든 publication과 project에 썸네일 칸이 있다. 파일이 없으면 `/assets/thumb-placeholder.svg`가 보인다.
   - 논문: `public/assets/publications/P2.gif`처럼 id 이름으로 넣는다. P4.gif는 사용자가 준 실제 로봇 실험 영상(trial_05_posA05.mp4, mp4v 코덱이라 브라우저 재생 불가)을 잘라 만든 GIF다. P2.gif와 P3.gif는 각 논문 PDF의 실제 그림 여러 장(증강 예시, 파이프라인, 결과 그래프·표)이 차례로 넘어가는 슬라이드 GIF다. P3 첫 장의 센서 신호만 PDF 원본이 흐려서 Claude가 다시 그렸다. 만드는 스크립트는 scratchpad gifgen/slides.mjs(pdfjs-dist로 PDF를 렌더링해 잘라 붙임). 논문 썸네일은 모두 175×175 정사각 칸(cover)이다. 프로젝트 4개는 Claude가 그린 애니메이션 GIF다.
   - 프로젝트: `public/assets/projects/carnerf.gif`, `etf-with-ai.gif`, `jump-ai-2025.gif`, `personal-color.gif`.
@@ -87,7 +87,8 @@
 - 색: 본문 `#1d2b4f`, 보조 `#66708a`, 포인트 코랄 1개, 선 `#dde2ea`.
 - 그라데이션, 그림자, 카드 테두리, 둥근 큰 박스는 쓰지 않는다.
 - 모바일 380px에서 가로 스크롤이 생기면 안 된다.
-- 섹션 순서: Header → News → Publications → Experience → Education → Honors & Awards(+Certificates)
+- 섹션 순서: Header → News → Publications → Experience → Education → Honors & Awards(+Certificates) → Contact
+- **Contact는 가상 명함 한 장**(2026-11-23 사용자 지시, 참고: fid-design.github.io/Interior 의 CONTACT). `src/components/Contact.astro`. 앞면은 흰 카드에 소속·이름·직함·이메일/GitHub/블로그·사진, 뒷면은 네이비에 J·J 이니셜과 keywords. 앞면 링크를 누를 수 있게 마우스 올림이 아니라 클릭으로 뒤집는다. 카드 그림자는 이 명함에만 예외로 쓴다. 내용은 profile.json `person`에서 읽는다.
 - **Projects 섹션은 화면에서 뺐다** (2026-11-20 사용자 지시). profile.json `projects`와 `Projects.astro`는 남아 있다.
 - 2026-11-20에 "섹션 이름 왼쪽 칸 + 내용 오른쪽" 2단 레이아웃을 시도했지만 사용자가 지금 구조를 더 좋아해서 되돌렸다. 구조는 바꾸지 말 것.
 - 디자인 수정은 한 번에 한 가지만 한다. 데이터 추가와 디자인 수정을 한 커밋에 섞지 않는다.

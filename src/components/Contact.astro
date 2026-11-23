@@ -1,0 +1,230 @@
+---
+/**
+ * Contact — 가상 명함 한 장 (참고: fid-design.github.io/Interior 의 CONTACT 명함).
+ * 앞면: 소속, 이름, 직함, 연락처, 사진. 뒷면: 이니셜과 연구 키워드.
+ * 앞면 링크를 누를 수 있도록 마우스 올림이 아니라 클릭(탭)으로 뒤집는다. 링크를 누르면 뒤집히지 않는다.
+ * 글자 크기는 카드 폭(cqw)에 비례하므로 모바일에서도 비율이 그대로다.
+ */
+import { profile } from '../lib/data';
+
+const p = profile.person;
+const github = `github.com/${p.githubUsername}`;
+const blogHost = p.blog.replace(/^https?:\/\//, '').replace(/\/$/, '');
+const ext = { target: '_blank', rel: 'noopener noreferrer' };
+---
+
+<div class="cardwrap">
+  <div class="bizcard" role="button" tabindex="0" aria-label="Business card — click to flip" aria-pressed="false">
+    <div class="inner">
+      <div class="face front">
+        <div class="top">
+          <p class="org">Chung-Ang University</p>
+          <p class="dept">Intelligent Semiconductor Engineering</p>
+        </div>
+        <img class="photo" src={p.photo} alt="" />
+        <div class="who">
+          <p class="name">{p.nameEn}</p>
+          <p class="role">Undergraduate Research Intern</p>
+        </div>
+        <ul class="info">
+          <li><b>E.</b><a href={`mailto:${p.email}`}>{p.email}</a></li>
+          <li><b>G.</b><a href={`https://${github}`} {...ext}>{github}</a></li>
+          <li><b>B.</b><a href={p.blog} {...ext}>{blogHost}</a></li>
+        </ul>
+      </div>
+      <div class="face back" aria-hidden="true">
+        <p class="mono">J<span>·</span>J</p>
+        <p class="back-name">{p.nameEn}</p>
+        <p class="kw">{p.keywords.join('  |  ')}</p>
+      </div>
+    </div>
+  </div>
+  <p class="hint">Click the card to flip</p>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.bizcard').forEach((card) => {
+    const flip = () => {
+      const on = card.classList.toggle('flipped');
+      card.setAttribute('aria-pressed', String(on));
+    };
+    card.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('a')) return;
+      flip();
+    });
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        flip();
+      }
+    });
+  });
+</script>
+
+<style>
+  .cardwrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem 0 0.5rem;
+  }
+  .bizcard {
+    width: min(100%, 480px);
+    perspective: 1500px;
+    cursor: pointer;
+    outline: none;
+    transform: rotate(-1.5deg);
+    transition: transform 0.3s ease;
+    container-type: inline-size;
+  }
+  .bizcard:hover {
+    transform: rotate(0deg) translateY(-3px);
+  }
+  .bizcard:focus-visible .face {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+  .inner {
+    display: grid;
+    transform-style: preserve-3d;
+    transition: transform 0.75s cubic-bezier(0.55, 0.06, 0.2, 1);
+  }
+  .bizcard.flipped .inner {
+    transform: rotateY(180deg);
+  }
+  .face {
+    grid-area: 1 / 1;
+    aspect-ratio: 1.75 / 1;
+    border-radius: 3.5cqw;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    /* 명함이 놓인 느낌을 위한 그림자 — 이 카드에만 쓴다 */
+    box-shadow:
+      0 1px 2px rgba(29, 43, 79, 0.08),
+      0 14px 30px rgba(29, 43, 79, 0.14);
+    overflow: hidden;
+  }
+
+  /* ---------- 앞면 ---------- */
+  .front {
+    background: #fff;
+    color: var(--text);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto 1fr auto auto;
+    padding: 6.5cqw 7cqw 6cqw;
+    column-gap: 5cqw;
+  }
+  .top {
+    grid-column: 1;
+  }
+  .org {
+    font-size: 3.4cqw;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    line-height: 1.2;
+  }
+  .dept {
+    font-size: 2.7cqw;
+    color: var(--text-muted);
+    margin-top: 0.6cqw;
+    line-height: 1.3;
+  }
+  .photo {
+    grid-column: 2;
+    grid-row: 1 / 4;
+    align-self: start;
+    width: 21cqw;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    object-position: center 25%;
+    border-radius: 2cqw;
+  }
+  .who {
+    grid-column: 1;
+    grid-row: 3;
+    padding-bottom: 2.4cqw;
+    border-bottom: 0.35cqw solid var(--text);
+  }
+  .name {
+    font-size: 6.6cqw;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+  }
+  .role {
+    font-size: 2.9cqw;
+    color: var(--text-muted);
+    margin-top: 0.8cqw;
+  }
+  .info {
+    grid-column: 1 / 3;
+    grid-row: 4;
+    list-style: none;
+    margin: 2.8cqw 0 0;
+    padding: 0;
+    font-size: 3.1cqw;
+    line-height: 1.65;
+  }
+  .info b {
+    display: inline-block;
+    width: 4.2cqw;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .info a {
+    color: var(--text);
+  }
+  .info a:hover {
+    color: var(--accent);
+  }
+
+  /* ---------- 뒷면 ---------- */
+  .back {
+    transform: rotateY(180deg);
+    background: var(--text);
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .mono {
+    font-size: 13cqw;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    line-height: 1;
+  }
+  .mono span {
+    color: var(--accent);
+  }
+  .back-name {
+    font-size: 3.6cqw;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    margin-top: 3cqw;
+    opacity: 0.92;
+  }
+  .kw {
+    font-size: 2.9cqw;
+    margin-top: 5cqw;
+    opacity: 0.6;
+    white-space: pre;
+  }
+
+  .hint {
+    margin-top: 1rem;
+    font-size: var(--fs-tiny);
+    color: var(--text-muted);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .inner,
+    .bizcard {
+      transition: none;
+    }
+  }
+</style>

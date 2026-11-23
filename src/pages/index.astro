@@ -9,6 +9,7 @@ import Header from '../components/Header.astro';
 import Section from '../components/Section.astro';
 import DatedList from '../components/DatedList.astro';
 import Publications from '../components/Publications.astro';
+import Contact from '../components/Contact.astro';
 import { profile } from '../lib/data';
 
 const news = profile.news.slice(0, 8).map((n: { date: string; text: string; link?: string }) => ({
@@ -53,6 +54,10 @@ const certificates = profile.certificates.map((c) => ({
     <DatedList items={awards} />
     <h3 class="sub-title">Certificates</h3>
     <DatedList items={certificates} />
+  </Section>
+
+  <Section id="contact" title="Contact">
+    <Contact />
   </Section>
 </BaseLayout>
 
