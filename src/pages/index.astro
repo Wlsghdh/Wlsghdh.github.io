@@ -16,8 +16,8 @@ const news = profile.news.slice(0, 8).map((n: { date: string; text: string; link
   title: n.text,
   href: n.link,
 }));
-const experience = profile.experience.map((e) => ({ date: e.period, title: e.title, sub: e.org, detail: e.detail }));
-const education = profile.education.map((e) => ({ date: e.period, title: e.school, sub: e.detail }));
+const experience = profile.experience.map((e) => ({ date: e.period, title: e.title, sub: e.org, detail: e.detail, logo: e.logo }));
+const education = profile.education.map((e) => ({ date: e.period, title: e.school, sub: e.detail, logo: e.logo }));
 const awards = profile.awards.map((a) => ({ date: a.date, title: a.title, sub: a.org, href: a.image || undefined }));
 const certificates = profile.certificates.map((c) => ({
   date: c.date,
@@ -41,11 +41,11 @@ const certificates = profile.certificates.map((c) => ({
   {/* Projects 섹션은 2026-11-20 사용자 요청으로 뺐다. 데이터와 Projects.astro 는 남아 있다 */}
 
   <Section id="experience" title="Experience">
-    <DatedList items={experience} variant="stacked" />
+    <DatedList items={experience} variant="stacked" logoShape="wide" />
   </Section>
 
   <Section id="education" title="Education">
-    <DatedList items={education} variant="stacked" />
+    <DatedList items={education} variant="stacked" logoShape="round" />
   </Section>
 
   <Section id="awards" title="Honors & Awards">

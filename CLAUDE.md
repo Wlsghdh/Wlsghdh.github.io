@@ -70,8 +70,9 @@
   - 헤더: 왼쪽 63%에 가운데 정렬 영문 이름만(Inter 600 34px, 한글 이름은 넣지 않는다) + 소속 줄 "Intelligent Semiconductor Engineering · Chung-Ang University" + 소개 문단 + "Email / GitHub / Blog" 텍스트 링크. 오른쪽 37%에 정사각 사진(테두리 없음). 키워드 pill, 태그라인은 넣지 않는다.
   - 섹션 제목: 22px 보통 굵기, 밑줄·구분선 없음.
   - News: 날짜 pill 배지(포인트 색) + 한 줄, 항목 사이 얇은 선.
-  - 논문과 프로젝트: 왼쪽 175px 썸네일(contain), 제목 굵게, 저자(내 이름 굵게+밑줄), 학회 이탤릭, "TL;DR" 요약, 링크는 "PDF / arXiv / Code" 텍스트. 마우스를 올리면 행 배경이 살짝 어두워진다.
-  - 포인트 색은 `--accent` 하나만 쓴다(링크, 날짜 배지, TL;DR 라벨).
+  - 논문과 프로젝트: 왼쪽 175px 썸네일(contain), 제목 굵게, 저자(내 이름 굵게+밑줄), 학회 이탤릭, 링크는 "PDF / arXiv / Code" 텍스트. 마우스를 올리면 행 배경이 살짝 어두워진다. 논문 TL;DR 요약은 2026-11-23 사용자 요청으로 화면에서 뺐다(`summary` 데이터는 남아 있다).
+  - Experience는 왼쪽에 가로로 긴 네모 로고(132×56), Education은 동그라미 로고(64px). profile.json 항목의 `logo` 필드에 `/assets/logos/...` 경로를 적는다. 로고는 Wikimedia Commons(학교)와 aimmo.co.kr(AIMMO)에서 받았다.
+  - 포인트 색은 `--accent` 하나만 쓴다(링크, 날짜 배지).
 - **Research Log 섹션은 화면에서 뺐다** (2026-11-17 사용자 지시). `log.json`, `ResearchLog.astro`는 남아 있고 일일 기록 append 규칙도 그대로다.
 - **사이트 언어는 영어.** profile.json 내용도 영어로 쓴다. 공동저자 영문 표기는 `authors`, 한글은 `authorsKo`에 둔다. log.json 항목은 사용자가 쓴 언어 그대로 둔다.
 - Skills 섹션은 화면에서 뺐다. 데이터는 profile.json 에 남아 있다. Contact 섹션도 없다. 연락처는 헤더 버튼으로 대신한다.

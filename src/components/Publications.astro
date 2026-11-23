@@ -45,11 +45,7 @@ const linksOf = (p: Publication) => [...(p.pdf ? [{ label: 'PDF', url: p.pdf }] 
           <p class="pub-line">
             <em>{p.venue}</em>{p.note && <span class="muted">, {p.note}</span>}
           </p>
-          {p.summary && (
-            <p class="tldr">
-              <b>TL;DR</b> {p.summary}
-            </p>
-          )}
+          {/* summary(TL;DR)는 2026-11-23 사용자 요청으로 화면에서 뺐다. 데이터는 남아 있다 */}
           {linksOf(p).length > 0 && (
             <p class="pub-links">
               {linksOf(p).map((l, i) => (

@@ -11,14 +11,18 @@ interface Item {
   sub?: string;
   detail?: string;
   href?: string;
+  /** stacked 에서만: 왼쪽 로고 이미지 */
+  logo?: string;
 }
 interface Props {
   items: Item[];
   variant?: 'rows' | 'stacked' | 'news';
   empty?: string;
+  /** 로고 칸 모양 — wide: 가로로 긴 네모(Experience), round: 동그라미(Education) */
+  logoShape?: 'wide' | 'round';
 }
 import { nb } from '../lib/text';
-const { items: raw, variant = 'rows', empty = 'Nothing here yet.' } = Astro.props;
+const { items: raw, variant = 'rows', empty = 'Nothing here yet.', logoShape = 'wide' } = Astro.props;
 const items = raw.map((it) => ({ ...it, title: nb(it.title), sub: it.sub && nb(it.sub), detail: it.detail && nb(it.detail) }));
 const ext = { target: '_blank', rel: 'noopener noreferrer' };
 ---
@@ -38,11 +42,18 @@ const ext = { target: '_blank', rel: 'noopener noreferrer' };
   ) : variant === 'stacked' ? (
     <div class="entries-lined">
       {items.map((it) => (
-        <div class="stacked">
-          <p class="s-date">{it.date}</p>
-          <p class="s-title">{it.href ? <a href={it.href} {...ext}>{it.title}</a> : it.title}</p>
-          {it.sub && <p class="s-sub">{it.sub}</p>}
-          {it.detail && <p class="s-detail">{it.detail}</p>}
+        <div class:list={['stacked', it.logo && 'has-logo']}>
+          {it.logo && (
+            <span class:list={['logo', `logo-${logoShape}`]}>
+              <img src={it.logo} alt="" loading="lazy" />
+            </span>
+          )}
+          <div>
+            <p class="s-date">{it.date}</p>
+            <p class="s-title">{it.href ? <a href={it.href} {...ext}>{it.title}</a> : it.title}</p>
+            {it.sub && <p class="s-sub">{it.sub}</p>}
+            {it.detail && <p class="s-detail">{it.detail}</p>}
+          </div>
         </div>
       ))}
     </div>
@@ -82,5 +93,48 @@ const ext = { target: '_blank', rel: 'noopener noreferrer' };
   }
   .r-sub {
     margin-left: 0.5rem;
+  }
+  .has-logo {
+    display: flex;
+    gap: 1.1rem;
+    align-items: flex-start;
+  }
+  .logo {
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    border: 1px solid var(--line);
+    overflow: hidden;
+  }
+  .logo img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+  .logo-wide {
+    width: 132px;
+    height: 56px;
+    padding: 8px 12px;
+    border-radius: 6px;
+  }
+  .logo-round {
+    width: 64px;
+    height: 64px;
+    padding: 6px;
+    border-radius: 50%;
+  }
+  @media (max-width: 600px) {
+    .logo-wide {
+      width: 92px;
+      height: 42px;
+      padding: 6px 8px;
+    }
+    .logo-round {
+      width: 48px;
+      height: 48px;
+      padding: 4px;
+    }
   }
 </style>
