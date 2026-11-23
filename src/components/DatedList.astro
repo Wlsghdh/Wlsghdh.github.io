@@ -13,6 +13,8 @@ interface Item {
   href?: string;
   /** stacked 에서만: 왼쪽 로고 이미지 */
   logo?: string;
+  /** stacked 에서만: 설명 대신 보이는 키워드 하나 */
+  keyword?: string;
 }
 interface Props {
   items: Item[];
@@ -53,6 +55,7 @@ const ext = { target: '_blank', rel: 'noopener noreferrer' };
             <p class="s-title">{it.href ? <a href={it.href} {...ext}>{it.title}</a> : it.title}</p>
             {it.sub && <p class="s-sub">{it.sub}</p>}
             {it.detail && <p class="s-detail">{it.detail}</p>}
+            {it.keyword && <span class="s-keyword">{it.keyword}</span>}
           </div>
         </div>
       ))}
@@ -93,6 +96,16 @@ const ext = { target: '_blank', rel: 'noopener noreferrer' };
   }
   .r-sub {
     margin-left: 0.5rem;
+  }
+  .s-keyword {
+    display: inline-block;
+    margin-top: 0.35rem;
+    padding: 0.05rem 0.55rem;
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-size: var(--fs-tiny);
+    font-weight: 500;
   }
   .has-logo {
     display: flex;

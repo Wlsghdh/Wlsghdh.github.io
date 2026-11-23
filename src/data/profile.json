@@ -128,9 +128,9 @@
     }
   ],
   "experience": [
-    { "period": "Sep. 2025 – Dec. 2025", "title": "Research Intern — Hadd Science", "org": "Sungkyunkwan University", "detail": "Managed the website, wrote articles, and worked on AutoCAD 3D modeling.", "logo": "/assets/logos/skku.svg" },
-    { "period": "Jul. 2025 – Jun. 2026", "title": "Undergraduate Researcher", "org": "Prof. Hongryul Ahn's Lab, University of Suwon", "detail": "Computer vision research that led to first- and co-authored papers; also built application prototypes with React / Node.js / MongoDB.", "logo": "/assets/logos/usw.png" },
-    { "period": "Aug. 2024 – Feb. 2025", "title": "Intern, Autonomous Driving Team", "org": "AIMMO Inc.", "detail": "Cleaned vision failure data, reviewed Labellerr annotations, collected training data, and analyzed sensor graphs of detection failures.", "logo": "/assets/logos/aimmo.svg" }
+    { "period": "Sep. 2025 – Dec. 2025", "title": "Research Intern — Hadd Science", "keyword": "3D Modeling", "org": "Sungkyunkwan University", "detail": "Managed the website, wrote articles, and worked on AutoCAD 3D modeling.", "logo": "/assets/logos/skku.svg" },
+    { "period": "Jul. 2025 – Jun. 2026", "title": "Undergraduate Researcher", "keyword": "Computer Vision", "org": "Prof. Hongryul Ahn's Lab, University of Suwon", "detail": "Computer vision research that led to first- and co-authored papers; also built application prototypes with React / Node.js / MongoDB.", "logo": "/assets/logos/usw.png" },
+    { "period": "Aug. 2024 – Feb. 2025", "title": "Intern, Autonomous Driving Team", "keyword": "Autonomous Driving Data", "org": "AIMMO Inc.", "detail": "Cleaned vision failure data, reviewed Labellerr annotations, collected training data, and analyzed sensor graphs of detection failures.", "logo": "/assets/logos/aimmo.svg" }
   ],
   "education": [
     { "period": "Jul. 2026 – Present", "school": "Chung-Ang University", "detail": "Undergraduate Research Intern", "logo": "/assets/logos/cau.png" },
