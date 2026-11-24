@@ -66,7 +66,6 @@
       "coFirst": [],
       "venue": "KIISE 2026",
       "note": "First author",
-      "award": "Best Paper Award",
       "summary": "Under extreme data scarcity (~20 images per class), semantic diversity matters more than quantity: traditional augmentation gives −1.76 mAP, Gemini-2.0-based generative augmentation +1.90, and their combination at an 8× optimum +5.0 mAP across detector families.",
       "pdf": "/assets/publications/P2.pdf",
       "thumb": "/assets/publications/P2.gif",

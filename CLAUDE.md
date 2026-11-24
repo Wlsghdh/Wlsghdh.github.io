@@ -61,7 +61,7 @@
 - `profile.json`의 해당 배열(`publications`, `awards` 등)에 항목을 추가하고, `news` 맨 앞에도 한 줄 추가한다. News는 화면에 최근 8개만 보인다.
 - 필요하면 log.json 에 `writing` 카테고리로 한 줄을 남긴다.
 - publications 항목 필드: `id, year, title, authors[], coFirst[], venue, note, summary, pdf, thumb, links[{label,url}]`
-  - `award`(선택): 논문 수상 이름. 있으면 학회 줄 옆에 트로피 아이콘 + 포인트 색 배지로 보인다. 지금 P2 "Best Paper Award"(최우수상), P3 "Excellence Award"(우수상).
+  - `award`(선택): 논문 수상 이름. 있으면 학회 줄 옆에 트로피 아이콘 + 포인트 색 배지로 보인다. 지금 P3 "Excellence Award"(우수상)만 있다. P2(소규모 산업 결함)는 수상 아님(2026-11-24 사용자 정정).
   - 내 이름(`person.nameKo`)은 자동으로 bold 처리된다. `coFirst`에 넣은 이름 뒤에는 `*`가 붙는다.
   - 논문 PDF는 `public/assets/publications/P1.pdf`에 두고 `"pdf": "/assets/publications/P1.pdf"`로 적는다. 그러면 제목과 [PDF] 칩이 PDF로 연결된다.
   - 썸네일은 `public/assets/publications/P1.png`에 두고 `"thumb": "/assets/publications/P1.png"`로 적는다. 16:10 비율을 권장한다.
