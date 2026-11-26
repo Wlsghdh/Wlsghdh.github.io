@@ -21,7 +21,7 @@ const news = profile.news.slice(0, 8).map((n: { date: string; text: string; link
 // 설명(detail)은 2026-11-23 사용자 요청으로 화면에서 빼고 키워드 하나만 보인다. detail 데이터는 남아 있다
 const experience = profile.experience.map((e) => ({ date: e.period, title: e.title, sub: e.org, keyword: e.keyword, logo: e.logo }));
 const education = profile.education.map((e) => ({ date: e.period, title: e.school, sub: e.detail, logo: e.logo }));
-const awards = profile.awards.map((a) => ({ date: a.date, title: a.title, sub: a.org, href: a.image || undefined }));
+const awards = profile.awards.map((a) => ({ date: a.date, title: a.title, sub: a.org, href: a.image || undefined, highlight: (a as { highlight?: boolean }).highlight }));
 const certificates = profile.certificates.map((c) => ({
   date: c.date,
   title: c.title,

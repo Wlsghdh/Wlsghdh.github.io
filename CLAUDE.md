@@ -100,6 +100,7 @@
 - 모바일 380px에서 가로 스크롤이 생기면 안 된다.
 - 섹션 순서: Header → News → Publications → Press → Experience → Education → Honors & Awards(+Certificates) → Contact
 - **Contact는 가상 명함 한 장**(2026-11-23 사용자 지시, 참고: fid-design.github.io/Interior 의 CONTACT). `src/components/Contact.astro`. 흰 카드 앞면 한 장뿐이다(뒷면 없음): 이름, "Undergraduate Researcher · LLM / VLA", E./G./B. 연락처(전화번호는 넣지 않는다), 오른쪽 위 로봇 선 아이콘(SVG). 기울이면 글자가 흐려져서 똑바로 두고, 마우스를 올리면 3px 떠오르며 테두리가 포인트 색이 된다. 소속 표기, 사진, 안내 문구, 그림자는 넣지 않는다(2026-11-23 사용자 지시). cqw 단위는 카드 안쪽 `.body`에서만 쓴다.
+- Honors & Awards 항목에 `"highlight": true`를 넣으면 연한 포인트 색 바탕 + 포인트 색 굵은 제목 + 트로피 아이콘으로 강조된다 (2026-11-26 사용자 지시, 지금은 행정안전부 장관상 하나).
 - **Projects 섹션은 화면에서 뺐다** (2026-11-20 사용자 지시). profile.json `projects`와 `Projects.astro`는 남아 있다.
 - 2026-11-20에 "섹션 이름 왼쪽 칸 + 내용 오른쪽" 2단 레이아웃을 시도했지만 사용자가 지금 구조를 더 좋아해서 되돌렸다. 구조는 바꾸지 말 것.
 - 디자인 수정은 한 번에 한 가지만 한다. 데이터 추가와 디자인 수정을 한 커밋에 섞지 않는다.
