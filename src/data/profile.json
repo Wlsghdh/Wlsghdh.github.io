@@ -25,6 +25,7 @@
     "description": "Jinho Ju · academic homepage and daily research log"
   },
   "news": [
+    { "date": "Nov. 2026", "text": "Won the Grand Prize (1st place, Minister of the Interior and Safety Award) at the NIA AI Competition for dashcam video based intelligent intentional accident analysis." },
     { "date": "Sep. 2026", "text": "Our preprint ReShoot, on generative visual domain randomization of robot demonstrations, is on arXiv.", "link": "https://arxiv.org/abs/2609.19661" }
   ],
   "publications": [
@@ -143,6 +144,7 @@
     { "period": "Mar. 2021 ~ Feb. 2027 (expected)", "school": "University of Suwon", "detail": "B.S. in Data Science · GPA 4.35 / 4.5", "logo": "/assets/logos/usw-seal.png" }
   ],
   "awards": [
+    { "date": "Nov. 2026", "title": "Grand Prize (1st Place), Minister of the Interior and Safety Award", "org": "AI Competition for Dashcam Video Based Intelligent Intentional Accident Analysis, National Information Society Agency (NIA)", "image": "" },
     { "date": "Dec. 2025", "title": "Encouragement Award", "org": "Korean Institute of Information Scientists and Engineers (KIISE)", "image": "" },
     { "date": "Aug. 2024", "title": "Excellence Award, AI/Develops", "org": "DSML, University of Suwon", "image": "" }
   ],
